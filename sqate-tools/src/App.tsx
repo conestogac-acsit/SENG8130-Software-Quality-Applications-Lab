@@ -21,6 +21,3 @@ function App() {
 }
 
 export default App;
-// This is a simple React component that serves as the main application shell for SQATE tools.
-// It includes a header with a title and a welcome message, styled using Tailwind CSS.
-// The component is exported as the default export of the module, allowing it to be imported and used in other parts of the application.
