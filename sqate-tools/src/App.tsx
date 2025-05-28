@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.png';
-import './App.css';
+import React, { useState } from 'react';
+import UploadCsv from './components/UploadCsv';
+import EvaluationCalendar from './components/EvaluationCalendar';
 
-function App() {
+type Evaluation = {
+  Course: string;
+  Title: string;
+  Type: string;
+  Weight: string;
+  Date: string;
+  Time: string;
+};
+
+type CalendarEvent = {
+  title: string;
+  start: Date;
+  end: Date;
+};
+
+const App: React.FC = () => {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+  const handleCsvUpload = (data: Evaluation[]) => {
+    const calendarEvents = data.map((evalItem) => {
+      const start = new Date(`${evalItem.Date}T${evalItem.Time}`);
+      const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour
+      return {
+        title: `${evalItem.Course} - ${evalItem.Title}`,
+        start,
+        end,
+      };
+    });
+
+    setEvents(calendarEvents);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-        <div>
-          <h1 className="text-4xl font-bold text-blue-600">
-            SQATE Desktop Tool
-          </h1>
-        </div>
-        <p className="mt-4 text-lg text-gray-300">
-          Welcome! This is the desktop shell for SQATE tooling modules.
-        </p>
-      </header>
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">Centralized Evaluation Calendar</h1>
+      <UploadCsv onUpload={handleCsvUpload} />
+      <EvaluationCalendar events={events} />
     </div>
   );
-}
+};
 
 export default App;
-// This is a simple React component that serves as the main application shell for SQATE tools.
-// It includes a header with a title and a welcome message, styled using Tailwind CSS.
-// The component is exported as the default export of the module, allowing it to be imported and used in other parts of the application.
