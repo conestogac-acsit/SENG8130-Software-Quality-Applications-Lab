@@ -5,7 +5,7 @@ A cross-platform desktop application for SQATE tooling, built using React, TypeS
 
 ---
 ## ✅ Requirements
-- Node.js v18.x or later (LTS recommended)
+- Node.js @ LTS
 ---
 ## 📦 Installation
 ```bash
