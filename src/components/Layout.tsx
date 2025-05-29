@@ -1,3 +1,5 @@
+// src/components/Layout.tsx
+
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Users, Layers } from "lucide-react";
@@ -7,6 +9,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const navItems = [
+    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/sections", label: "Section List", icon: Layers },
+    { to: "/students", label: "Student List", icon: Users, hidden: true },
+  ];
 
   return (
     <div className="flex h-screen">
@@ -20,37 +28,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           Student Portal
         </div>
         <nav className="p-6 space-y-4">
-          <>
-            <Link
-              to="/dashboard"
-              className={`flex items-center gap-2 hover:text-blue-600 ${
-                isActive("/dashboard") ? "text-blue-600 font-semibold" : ""
-              }`}
-            >
-              <LayoutDashboard className="w-5 h-5" /> Dashboard
-            </Link>
-
-            <Link
-              to="/sections"
-              className={`flex items-center gap-2 hover:text-blue-600 ${
-                isActive("/sections") ? "text-blue-600 font-semibold" : ""
-              }`}
-            >
-              <Layers className="w-5 h-5" /> Section List
-            </Link>
-
-            {/* Student List link hidden but valid */}
-            {false && (
+          {navItems.map(({ to, label, icon: Icon, hidden }) =>
+            !hidden ? (
               <Link
-                to="/students"
+                key={to}
+                to={to}
                 className={`flex items-center gap-2 hover:text-blue-600 ${
-                  isActive("/students") ? "text-blue-600 font-semibold" : ""
+                  isActive(to) ? "text-blue-600 font-semibold" : ""
                 }`}
               >
-                <Users className="w-5 h-5" /> Student List
+                <Icon className="w-5 h-5" /> {label}
               </Link>
-            )}
-          </>
+            ) : null
+          )}
         </nav>
       </aside>
 
@@ -59,6 +49,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* Header */}
         <header className="bg-gray-100 shadow p-4 flex justify-between items-center">
           <button
+            aria-label="Toggle Sidebar"
             className="text-2xl font-bold md:hidden"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >

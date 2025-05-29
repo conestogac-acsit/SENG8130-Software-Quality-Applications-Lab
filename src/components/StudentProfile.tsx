@@ -1,17 +1,36 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 
-const StudentProfile = () => {
+type Grade = {
+  subject: string;
+  weight: string;
+  grade: string;
+  comment: string;
+};
+
+interface StudentProfileProps {
+  name: string;
+  email: string;
+  imageUrl: string;
+  grades: Grade[];
+  notes: string;
+}
+
+const StudentProfile: React.FC<StudentProfileProps> = ({
+  name,
+  email,
+  imageUrl,
+  grades,
+  notes,
+}) => {
   const { id } = useParams();
 
   const confirmAction = (actionType: "delete" | "email") => {
-    const message =
-      actionType === "delete"
-        ? "Are you sure you want to delete this student?"
-        : "Email sent successfully!";
-    const confirmed = window.confirm(message);
-    if (confirmed && actionType === "delete") {
-      alert("Student deleted successfully.");
+    if (actionType === "delete") {
+      const confirmed = window.confirm("Are you sure you want to delete this student?");
+      if (confirmed) {
+        alert("Student deleted successfully.");
+      }
     } else if (actionType === "email") {
       alert("Email sent successfully.");
     }
@@ -22,14 +41,14 @@ const StudentProfile = () => {
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex items-center space-x-6">
           <img
-            src="https://via.placeholder.com/100"
+            src={imageUrl || "https://via.placeholder.com/100"}
             alt="Profile"
             className="w-24 h-24 rounded-full"
           />
           <div>
-            <h2 className="text-2xl font-bold">Yash Ketanbhai Shah</h2>
+            <h2 className="text-2xl font-bold">{name}</h2>
             <p className="text-sm text-gray-500">Student ID: {id}</p>
-            <p className="text-sm text-gray-500">Email: yash.shah@example.com</p>
+            <p className="text-sm text-gray-500">Email: {email}</p>
           </div>
           <div className="ml-auto space-x-2">
             <Link
@@ -41,6 +60,10 @@ const StudentProfile = () => {
             <Link
               to={`/email/${id}`}
               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              onClick={(e) => {
+                e.preventDefault();
+                confirmAction("email");
+              }}
             >
               Send Email
             </Link>
@@ -65,38 +88,7 @@ const StudentProfile = () => {
               </tr>
             </thead>
             <tbody>
-              {[
-                {
-                  subject: "Planning & Validation",
-                  weight: "8 / 10",
-                  grade: "80%",
-                  comment: "More breakdowns needed. Overall good direction.",
-                },
-                {
-                  subject: "Milestone #1",
-                  weight: "0 / 20",
-                  grade: "0%",
-                  comment: "Pending submission.",
-                },
-                {
-                  subject: "Presentation & Pitch",
-                  weight: "9 / 10",
-                  grade: "90%",
-                  comment: "Excellent delivery and communication.",
-                },
-                {
-                  subject: "Team Collaboration",
-                  weight: "7.5 / 10",
-                  grade: "75%",
-                  comment: "Consistent participation. Good support to peers.",
-                },
-                {
-                  subject: "Final Project Delivery",
-                  weight: "18 / 20",
-                  grade: "90%",
-                  comment: "Completed with high accuracy and on time.",
-                },
-              ].map((item, idx) => (
+              {grades.map((item, idx) => (
                 <tr key={idx} className="border-t">
                   <td className="px-4 py-2">{item.subject}</td>
                   <td className="px-4 py-2">{item.weight}</td>
@@ -110,11 +102,7 @@ const StudentProfile = () => {
 
         <div className="mt-8">
           <h3 className="text-xl font-semibold mb-2">Additional Notes</h3>
-          <p className="text-gray-700 text-sm">
-            Student has shown good leadership qualities and is actively
-            participating in project discussions. Needs to complete pending
-            milestones to improve overall grade.
-          </p>
+          <p className="text-gray-700 text-sm">{notes}</p>
         </div>
       </div>
     </div>

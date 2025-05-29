@@ -1,12 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const StudentList = () => {
-  const students = [
-    { id: 1, name: "Alice Johnson", email: "alice.johnson@example.com", group: "G1" },
-    { id: 2, name: "Bob Smith", email: "bob.smith@example.com", group: "G2" },
-  ];
+type Student = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  section: string;
+  group: string;
+};
 
+type StudentListProps = {
+  students: Student[];
+};
+
+const StudentList: React.FC<StudentListProps> = ({ students }) => {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -31,6 +39,8 @@ const StudentList = () => {
             <th className="px-4 py-3"><input type="checkbox" /></th>
             <th className="px-4 py-3 text-left">Name</th>
             <th className="px-4 py-3 text-left">Email</th>
+            <th className="px-4 py-3 text-left">Role</th>
+            <th className="px-4 py-3 text-left">Section</th>
             <th className="px-4 py-3 text-left">Group</th>
             <th className="px-4 py-3 text-right">Actions</th>
           </tr>
@@ -40,14 +50,13 @@ const StudentList = () => {
             <tr key={student.id} className="border-t">
               <td className="px-4 py-3"><input type="checkbox" /></td>
               <td className="px-4 py-3">
-                <Link
-                  to={`/profile/${student.id}`}
-                  className="text-blue-600 hover:underline"
-                >
+                <Link to={`/profile/${student.id}`} className="text-blue-600 hover:underline">
                   {student.name}
                 </Link>
               </td>
               <td className="px-4 py-3">{student.email}</td>
+              <td className="px-4 py-3">{student.role}</td>
+              <td className="px-4 py-3">{student.section}</td>
               <td className="px-4 py-3">{student.group}</td>
               <td className="px-4 py-3 text-right space-x-2">
                 <button title="Edit">✏️</button>
@@ -60,7 +69,9 @@ const StudentList = () => {
       </table>
 
       <div className="flex items-center justify-between mt-6">
-        <div className="text-sm text-gray-600">Showing 1-2 of 2 students</div>
+        <div className="text-sm text-gray-600">
+          Showing {students.length > 0 ? `1-${students.length}` : '0'} of {students.length} students
+        </div>
         <div className="flex gap-2">
           <button className="px-3 py-1 border rounded">Prev</button>
           <button className="px-3 py-1 border rounded">Next</button>
