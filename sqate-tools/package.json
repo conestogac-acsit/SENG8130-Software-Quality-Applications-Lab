@@ -26,10 +26,10 @@
     "postcss": "^8.5.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "react:start": "react-scripts start",
+    "electron:start": "wait-on http://localhost:3000 && cross-env NODE_ENV=development electron public/electron.js",
+    "start": "concurrently \"npm run react:start\" \"npm run electron:start\"",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "electron": "electron public/electron.js",
     "desktop": "npm run build && npm run electron"
   },
   "eslintConfig": {
