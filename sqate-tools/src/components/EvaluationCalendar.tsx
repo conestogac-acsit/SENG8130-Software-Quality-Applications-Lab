@@ -1,6 +1,9 @@
 import React from 'react';
 import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
-import { format, parse, startOfWeek, getDay, isSameDay } from 'date-fns';
+import { format } from 'date-fns/format';
+import { parse } from 'date-fns/parse';
+import { startOfWeek } from 'date-fns/startOfWeek';
+import { getDay } from 'date-fns/getDay';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const locales = {
@@ -29,15 +32,11 @@ interface Props {
   onView: (view: string) => void;
 }
 
-const EvaluationCalendar: React.FC<Props> = ({
-  events,
-  date,
-  onNavigate,
-  view,
-  onView,
-}) => {
+const EvaluationCalendar: React.FC<Props> = ({ events, date, onNavigate, view, onView }) => {
   const getDayClass = (date: Date) => {
-    const count = events.filter((event) => isSameDay(event.start, date)).length;
+    const count = events.filter(event =>
+      event.start.toDateString() === date.toDateString()
+    ).length;
 
     if (count >= 3) {
       return {
