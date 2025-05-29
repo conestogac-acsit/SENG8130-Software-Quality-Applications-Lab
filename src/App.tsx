@@ -9,12 +9,24 @@ import StudentEmail from "./components/StudentEmail";
 import StudentEdit from "./components/StudentEdit";
 
 function App() {
+  // Section data moved here and passed as props
+  const sectionData = [
+    {
+      name: "Software Quality Applications Lab",
+      details: "SENG8130 – Spring 2025 – Section 2",
+    },
+    {
+      name: "Project Management Essentials",
+      details: "PMGT101 – Winter 2025 – Section 1",
+    },
+  ];
+
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/sections" element={<SectionList />} />
+        <Route path="/sections" element={<SectionList sections={sectionData} />} />
         <Route path="/students" element={<StudentList />} />
         <Route path="/profile/:id" element={<StudentProfile />} />
 

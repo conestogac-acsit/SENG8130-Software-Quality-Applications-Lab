@@ -1,28 +1,22 @@
 import React from "react";
 
-const SectionList = () => {
-  const sections = [
-    {
-      name: "Software Quality Applications Lab",
-      details: "SENG8130 – Spring 2025 – Section 2",
-    },
-    {
-      name: "Project Management Essentials",
-      details: "PMGT101 – Winter 2025 – Section 1",
-    },
-  ];
+type Section = {
+  name: string;
+  details: string;
+};
 
+type SectionListProps = {
+  sections: Section[];
+};
+
+const SectionList: React.FC<SectionListProps> = ({ sections }) => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-6">Section List</h1>
 
       <div className="flex justify-between mb-4">
         <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="border rounded px-3 py-1"
-          />
+          <input type="text" placeholder="Search..." className="border rounded px-3 py-1" />
           <button className="border rounded px-3 py-1">Sort by</button>
           <button className="border rounded px-3 py-1">Filters</button>
         </div>
@@ -47,10 +41,7 @@ const SectionList = () => {
           {sections.map((section, index) => (
             <tr key={index} className="border-t">
               <td className="px-6 py-4">
-                <a
-                  href="/students"
-                  className="font-semibold text-blue-600 hover:underline"
-                >
+                <a href="/students" className="font-semibold text-blue-600 hover:underline">
                   {section.name}
                 </a>
                 <div className="text-sm text-gray-500">{section.details}</div>
