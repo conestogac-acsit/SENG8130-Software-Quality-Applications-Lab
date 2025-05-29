@@ -1,39 +1,59 @@
-.App {
-  text-align: center;
+/* Smooth fade-in animation on page load */
+.app-container {
+  animation: fadeIn 0.6s ease-in;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Button hover effect */
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-   height: 40vmin;
-  pointer-events: none;
-  }
+button:hover {
+  transform: scale(1.05);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Add Evaluation button pulse on hover */
+button.add-eval:hover {
+  animation: pulse 0.6s infinite alternate;
 }
 
-.App-link {
-  color: #61dafb;
+/* Upload input hover effect */
+input[type="file"]:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.3s ease;
 }
 
-@keyframes App-logo-spin {
+/* Keyframes */
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+.calendar-slide {
+  animation: slideFade 0.4s ease-in-out;
+}
+
+@keyframes slideFade {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
