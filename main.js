@@ -27,17 +27,6 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-ipcMain.handle('read-csv', async (_, filePath) => {
-  const results = [];
-  return new Promise((resolve, reject) => {
-    fs.createReadStream(filePath)
-      .pipe(csvParser())
-      .on('data', (data) => results.push(data))
-      .on('end', () => resolve(results))
-      .on('error', reject);
-  });
-});
-
 ipcMain.handle('write-csv', async (_, { filePath, data, append = false }) => {
   const flags = append ? 'a' : 'w';
   const ws = fs.createWriteStream(filePath, { flags });
@@ -49,28 +38,4 @@ ipcMain.handle('write-csv', async (_, { filePath, data, append = false }) => {
       .on('finish', () => resolve('done'))
       .on('error', reject);
   });
-});
-
-
-ipcMain.handle('send-mails', async (_, { sender, password, recipients, subject, message }) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: sender, pass: password },
-  });
-
-  const results = [];
-  for (const recipient of recipients) {
-    try {
-      await transporter.sendMail({
-        from: sender,
-        to: recipient,
-        subject,
-        text: message,
-      });
-      results.push({ recipient, status: 'Sent' });
-    } catch (e) {
-      results.push({ recipient, status: 'Failed', error: e.message });
-    }
-  }
-  return results;
 });
