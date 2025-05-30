@@ -19,87 +19,8 @@ This is worth a mention as it is one of the main ways that we will be tracking o
 The OKRs are located in Microsoft Loop as well.
 As soon as you gain access to the Documentation, you will be able to see this under the subpage called OKR.
 
-
-### Objective4_KeyResult3: Data Entry Process  
-> Enable instructors to add and update evaluation submissions.  
-**Features:**
-- Submit evaluations via a form
-- Edit existing evaluations
-- Delete evaluations from the list
-- Client-side validation and feedback messages
-
-### Objective4_KeyResult5: Collect Program-Wide Evaluation Data  
-> Collect and standardize evaluation dates from all courses.  
-**Features:**
-- Display all evaluations in a consolidated table
-- CSV-based data storage (`evaluations.csv`)
-- Normalized structure: `{ courseCode, evaluationType, dueDate }`
-
-## 💻 Tech Stack
-
-| Area                | Technology             |
-|---------------------|------------------------|
-| Language            | [TypeScript](https://www.typescriptlang.org/) |
-| UI Library          | [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/) |
-| Desktop Framework   | [Electron](https://www.electronjs.org/) |
-| Data Storage        | CSV (filesystem access via Node.js `fs`) |
-| Testing             | [Jest](https://jestjs.io/), React Testing Library |
-
 ### Product Roadmap
 
 This is worth a mention as it is one of the main ways that we will be tracking outcomes and evaluation.
 The Product Roadmap is located in Microsoft Loop as well.
 As soon as you gain access to the Documentation, you will be able to see this under the subpage called Product Roadmap.
-
-
-## 📂 Project Structure
-
-project-root/
-├── public/
-├── src/
-│   ├── components/
-│   │   ├── EvaluationForm.tsx
-│   │   ├── EvaluationTable.tsx
-│   │   └── ConfirmationMessage.tsx
-│   ├── types/
-│   │   └── Evaluation.ts
-│   ├── utils/
-│   │   ├── csvHandler.ts
-│   │   └── validation.ts
-│   ├── App.tsx
-│   └── renderer.tsx
-├── tests/
-│   ├── EvaluationForm.test.tsx
-│   ├── EvaluationTable.test.tsx
-│   └── ConfirmationMessage.test.tsx
-├── package.json
-└── tsconfig.json
-
-
-### How to Use
-
-1. **Install dependencies**  
-   ```bash
-   npm install
-2. **Start the app (development mode)**
-   ```bash
-   npm run dev
-3. ***Build the app for production***
-   ```bash
-   npm run build
-4. ***Run tests***
-   ```bash
-   npm test
-
-
-### Tests Implemented
-## EvaluationForm.test.tsx
-    # Field rendering
-    # Empty form validation
-
-## EvaluationTable.test.tsx
-    # Table row display from mocked CSV data
-
-## ConfirmationMessage.test.tsx
-    # Message rendering based on input props
-    # Style assertion (success vs error)

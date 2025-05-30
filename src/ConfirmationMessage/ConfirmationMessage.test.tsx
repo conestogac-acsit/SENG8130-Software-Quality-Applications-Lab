@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ConfirmationMessage from '../src/components/ConfirmationMessage';
+import ConfirmationMessage from './ConfirmationMessage';
 
 describe('ConfirmationMessage', () => {
   it('renders nothing when message is empty', () => {

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Evaluation } from '../types/Evaluation';
-import { loadEvaluations, updateEvaluations } from '../utils/csvHandler';
+import { loadEvaluations, updateEvaluations } from '../csvHandler/csvHandler';
 
-// Implements User Story 2.2 by displaying the full list of evaluations in a sortable table.
-// Also supports User Story 1.2 – Edit and Delete
+export interface Evaluation {
+  id: string;
+  courseCode: string;
+  evaluationType: string;
+  dueDate: string;
+}
+
 const EvaluationTable: React.FC<{ onEdit: (evaluation: Evaluation) => void, refreshFlag: number }> = ({ onEdit, refreshFlag }) => {
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
 

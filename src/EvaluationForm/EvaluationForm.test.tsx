@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import EvaluationForm from '../src/components/EvaluationForm';
+import EvaluationForm from './EvaluationForm';
 
 describe('EvaluationForm', () => {
   it('renders input fields', () => {

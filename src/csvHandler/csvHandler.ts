@@ -1,17 +1,16 @@
-// Provides persistent storage and supports all 4 user stories.
-import { Evaluation } from '../types/Evaluation';
 import fs from 'fs';
 import path from 'path';
+import { Evaluation } from '../EvaluationForm/EvaluationFormValidation';
 
 const filePath = path.join(__dirname, 'evaluations.csv');
 
-// Supports User Story 1.1 by appending the new evaluation to the CSV file when a form is successfully submitted.
+// Append a single evaluation to the CSV file
 export function saveEvaluation(evaluation: Evaluation): void {
   const row = `"${evaluation.id}","${evaluation.courseCode}","${evaluation.evaluationType}","${evaluation.dueDate}"\n`;
   fs.appendFileSync(filePath, row);
 }
 
-// Supports User Story 2.1 by extracting and normalizing evaluations from uploaded CSV outline files.
+// Read all evaluations from the CSV file
 export function loadEvaluations(): Evaluation[] {
   if (!fs.existsSync(filePath)) return [];
   const data = fs.readFileSync(filePath, 'utf8');
@@ -21,9 +20,10 @@ export function loadEvaluations(): Evaluation[] {
   });
 }
 
-// Supports User Story 2.2 by saving the full consolidated evaluation list back to the CSV for display and monitoring.
-// Also used in User Story 1.2 when edits or deletions are performed.
+// Overwrite CSV file with a new set of evaluations
 export function updateEvaluations(evaluations: Evaluation[]): void {
-  const rows = evaluations.map(e => `"${e.id}","${e.courseCode}","${e.evaluationType}","${e.dueDate}"`).join('\n');
+  const rows = evaluations
+    .map(e => `"${e.id}","${e.courseCode}","${e.evaluationType}","${e.dueDate}"`)
+    .join('\n');
   fs.writeFileSync(filePath, rows + '\n');
 }

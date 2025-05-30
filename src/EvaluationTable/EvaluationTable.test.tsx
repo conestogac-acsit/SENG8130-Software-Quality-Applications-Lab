@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import EvaluationTable from '../src/components/EvaluationTable';
+import EvaluationTable from './EvaluationTable';
+
 
 jest.mock('../src/utils/csvHandler', () => ({
   loadEvaluations: () => [
