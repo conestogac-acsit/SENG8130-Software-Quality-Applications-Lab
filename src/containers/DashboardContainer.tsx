@@ -1,8 +1,8 @@
 // src/containers/DashboardContainer.tsx
 import React, { useState, useCallback } from 'react';
-import MainDashboard from '../components/MainDashboard';
-import PlatformDashboard from '../components/PlatformDashboard';
-import type { Student, EnrollmentStatus } from '../components/MainDashboard';
+import MainDashboard from '../components/StudentInfoDashboard/StudentInfoDashboard';
+import PlatformDashboard from '../components/EnrolledPlatformDashboard/EnrolledPlatformDashboard';
+import type { Student, EnrollmentStatus } from '../components/StudentInfoDashboard/StudentInfoDashboard';
 import { studentService, type StudentService } from '../services/studentService';
 
 const mockStudents: Student[] = [

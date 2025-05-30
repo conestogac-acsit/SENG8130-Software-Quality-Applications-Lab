@@ -1,5 +1,5 @@
 // src/services/studentService.ts
-import type { Student, EnrollmentStatus } from '../components/MainDashboard';
+import type { Student, EnrollmentStatus } from '../components/StudentInfoDashboard/StudentInfoDashboard';
 
 export interface StudentService {
   updateStatus: (
