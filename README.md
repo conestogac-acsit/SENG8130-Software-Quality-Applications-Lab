@@ -1,71 +1,26 @@
-# Student Enrollment Dashboard - Desktop App
+# Software Quality Applications Lab
 
-## Overview
+The Software Quality Applications Lab is intended to create a working environment for students to gain experience.
 
-This desktop application feature is built using **React**, **TypeScript**, **Vite**, and **Electron**. It provides an intuitive interface for managing student information and enrollment statuses across different platforms like Loop and GitHub. Student data can be viewed, updated, or deleted through a main dashboard, with platform-specific views reflecting enrollment statuses.
+## Essential Links
 
-## Features
+### Documentation
 
-- **Student Dashboard:** View, update, and delete student details such as name, email, and group.
-- **Enrolled Platform Dashboard:** Separate views for Loop and GitHub platforms displaying updated student info with enrollment status.
-- **Editable Status:** Students’ enrollment statuses can be updated only if they are currently unenrolled.
-- **CSV Integration:** Student data is parsed from CSV files and enriched with platform-specific enrollment statuses.
-- **Built with modern tools:** React, TypeScript, Vite for fast development and Electron for cross-platform desktop deployment.
+The documentation for the project is in [Microsoft Loop](https://stuconestogacon.sharepoint.com/:fl:/g/contentstorage/CSP_b962f780-af09-442b-aad9-5bfca98e6e35/EaBZj2i9JqxCqmICZIh42kgBLrf0mtydOh94-W6v2RrB9Q?e=5kURPx&nav=cz0lMkZjb250ZW50c3RvcmFnZSUyRkNTUF9iOTYyZjc4MC1hZjA5LTQ0MmItYWFkOS01YmZjYTk4ZTZlMzUmZD1iJTIxZ1BkaXVRbXZLMFNxMlZ2OHFZNXVOWDdyXzFEWU5TSlBqQjUxcHFHUWoyQ1VMZ2l1cVNKdVRLYmdXRWkwWU9mSCZmPTAxM1hWSzM2RkFMR0hXUlBKR1ZSQktVWVFDTVNFSFJXU0kmYz0lMkYmYT1Mb29wQXBwJnA9JTQwZmx1aWR4JTJGbG9vcC1wYWdlLWNvbnRhaW5lciZ4PSU3QiUyMnclMjIlM0ElMjJUMFJUVUh4emRIVmpiMjVsYzNSdloyRmpiMjR1YzJoaGNtVndiMmx1ZEM1amIyMThZaUZuVUdScGRWRnRka3N3VTNFeVZuWTRjVmsxZFU1WU4zSmZNVVJaVGxOS1VHcENOVEZ3Y1VkUmFqSkRWVXhuYVhWeFUwcDFWRXRpWjFkRmFUQlpUMlpJZkRBeE0xaFdTek0yUlU1VFYwSldSMFZVVFVOQ1IweE9XbEZUUVU5WFZVMUpURWslM0QlMjIlMkMlMjJpJTIyJTNBJTIyMmNjNjk4ZmEtNzZhOC00ZmMxLTliMzAtYmY1MGMwOGUyOTNlJTIyJTdE).
 
-## Installation
+With the above link, you will be able to see the Home page.
+To gain access, you must ask one of the Admins for access.
 
-### Clone the Repository
-```
-git clone git clone git@github.com:conestogac-acsit/SENG8130-Software-Quality-Applications-Lab.git
-cd SENG8130-Software-Quality-Applications-Lab
-git checkout objective3_WA4_dashboard
-```
+Please contact [Andy Chow](mailto:achow@conestogac.on.ca) or [Priya Manimaran](mailto:pmanimaran@conestogac.on.ca)
 
-### Install Dependencies
-```
-npm install
-```
+### Objective, Key Results (OKR)
 
-### Build the Application
-```
-npm run build
-```
+This is worth a mention as it is one of the main ways that we will be tracking outcomes and evaluation.
+The OKRs are located in Microsoft Loop as well.
+As soon as you gain access to the Documentation, you will be able to see this under the subpage called OKR.
 
-### Launch the Application
-```
-electron .
-```
+### Product Roadmap
 
-
-## Testing
-
-This project uses Jest and React Testing Library for unit and component testing.
-
-### Run All Tests
-```
-npm test
-```
-
-### Test Coverage Includes:
-
-- Student dashboard update and delete functionality
-- Platform-specific dashboard status rendering and editing behavior
-
-## Project Structure
-- ```/src``` — Source code for React components and TypeScript logic.
-
-- ```/src/components``` — React components like MainDashboard and PlatformDashboard.
-
-- ```/src/test``` — Unit and component tests.
-
-- ```/electron.js``` — Electron main process entry point.
-
-- ```/vite.config.ts``` — Vite build configuration.
-
-## Technologies Used
-- React + TypeScript
-- Vite (fast build and dev server)
-- Electron (desktop app framework)
-- Tailwind CSS (styling)
-- Jest + React Testing Library (testing)
-
+This is worth a mention as it is one of the main ways that we will be tracking outcomes and evaluation.
+The Product Roadmap is located in Microsoft Loop as well.
+As soon as you gain access to the Documentation, you will be able to see this under the subpage called Product Roadmap.
