@@ -1,0 +1,4 @@
+email,name,group,studentId,role,loop,github
+alice@example.com,Alice,Group A,1001,student,yes,no
+bob@example.com,Bob,Group B,1002,student,no,yes
+carol@example.com,Carol,Group C,1003,professor,no,yes
