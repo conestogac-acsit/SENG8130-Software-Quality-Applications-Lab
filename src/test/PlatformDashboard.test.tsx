@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import PlatformDashboard from "../components/PlatformDashboard";
-import type { Student } from "../components/types";
 import '@testing-library/jest-dom';
+import { Student } from "../components/MainDashboard";
 
 describe("PlatformDashboard", () => {
   const mockStudents: Student[] = [
@@ -40,8 +40,6 @@ describe("PlatformDashboard", () => {
       />
     );
     const enrolledElements = screen.getAllByText("enrolled");
-
-    // Filter to get the one that is an <i> tag (non-editable)
     const aliceStatus = enrolledElements.find(
       (el) => el.tagName.toLowerCase() === "i"
     );
@@ -73,13 +71,8 @@ describe("PlatformDashboard", () => {
         onUpdateStatus={onUpdateStatus}
       />
     );
-    // Find select for Alice's githubStatus (unenrolled)
     const select = screen.getAllByDisplayValue("unenrolled")[0];
-
-    // Change status to 'enrolled'
     fireEvent.change(select, { target: { value: "enrolled" } });
-
-    // onUpdateStatus should be called with (index, platform, newStatus)
     expect(onUpdateStatus).toHaveBeenCalledWith(0, "github", "enrolled");
   });
 });
