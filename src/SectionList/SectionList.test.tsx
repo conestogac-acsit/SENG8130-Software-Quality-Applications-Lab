@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import SectionList from '../components/SectionList';
+import SectionList from "./SectionList";
 
 const mockSections = [
   {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import StudentList from '../components/StudentList';
+import StudentList from "./StudentList";
 
 const mockStudents = [
   {

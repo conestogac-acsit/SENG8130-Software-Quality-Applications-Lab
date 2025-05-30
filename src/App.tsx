@@ -1,12 +1,13 @@
 import React from "react";
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
-import Layout from "./components/Layout";
-import Dashboard from "./components/dashboard";
-import SectionList from "./components/SectionList";
-import StudentList from "./components/StudentList";
-import StudentProfile from "./components/StudentProfile";
-import StudentEmail from "./components/StudentEmail";
-import StudentEdit from "./components/StudentEdit";
+
+// ✅ Updated imports based on your new directory layout
+import Layout from "./Layout/Layout";
+import SectionList from "./SectionList/SectionList";
+import StudentList from "./StudentList/StudentList";
+import StudentProfile from "./StudentProfile/StudentProfile";
+import StudentEmail from "./StudentEmail/StudentEmail";
+import StudentEdit from "./StudentEdit/StudentEdit";
 
 // Shared student data
 const studentData = [
@@ -40,7 +41,7 @@ const studentData = [
   },
 ];
 
-// Profile wrapper
+// Wrapper for student profile page
 function StudentProfileWrapper() {
   const { id } = useParams();
   const student = studentData.find((s) => s.id === parseInt(id || "0"));
@@ -60,7 +61,7 @@ function StudentProfileWrapper() {
   );
 }
 
-// Email wrapper
+// Wrapper for student email page
 function StudentEmailWrapper() {
   const { id } = useParams();
   const student = studentData.find((s) => s.id === parseInt(id || "0"));
@@ -95,7 +96,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<div className="p-6">Welcome to the Dashboard</div>} />
         <Route path="/sections" element={<SectionList sections={sectionData} />} />
         <Route path="/students" element={<StudentList students={studentData} />} />
         <Route path="/profile/:id" element={<StudentProfileWrapper />} />

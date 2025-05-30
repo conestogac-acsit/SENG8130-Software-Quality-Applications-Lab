@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import StudentProfile from "../components/StudentProfile";
+import StudentProfile from "./StudentProfile";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 // ✅ MOCK <Link>

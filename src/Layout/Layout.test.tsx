@@ -3,7 +3,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "./Layout";
 
 describe("Layout Component", () => {
   test("renders sidebar and header correctly", () => {

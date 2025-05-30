@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ProfilePage from '../components/ProfilePage';
+import ProfilePage from "./ProfilePage";
 
 const mockUser = {
   name: 'Yash Ketanbhai Shah',
