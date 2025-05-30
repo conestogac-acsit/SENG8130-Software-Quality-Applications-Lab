@@ -10,7 +10,7 @@ type Evaluation = {
   Type: string;
   Weight: string;
   Date: string;
-  Time: string
+  Time: string;
 };
 
 type Student = {
