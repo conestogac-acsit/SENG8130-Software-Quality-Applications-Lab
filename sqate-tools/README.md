@@ -13,15 +13,32 @@ npm  install
 ```
 ---
 ## 🚀 Development
-Start the React development server:
+Start React + Electron (Dev Mode):
+
 ```bash
 npm  start
 ```
----
+Start React Only:
 
-## 🖥️ Launch Desktop App (Electron)
-Start the Electron app in development mode:
 ```bash
-npm  run  desktop
+npm run start:react
+```
+Start Electron Only:
+
+```bash
+npm run start:electron
 ```
 ---
+## 📦 Build:
+Build React App: 
+
+```bash
+npm run build
+```
+---
+## 🖥️ Launch Producation
+Launch Electron App with Production Build:
+
+```bash
+npm run start:desktop
+```

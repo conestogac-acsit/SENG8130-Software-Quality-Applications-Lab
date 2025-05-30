@@ -1,12 +1,11 @@
 import React from 'react';
 import logo from './assets/logo.png';
-import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+    <div className="text-center">
+      <header className="bg-[#282c34] min-h-screen flex flex-col items-center justify-center text-white text-[calc(10px+2vmin)]">
+        <img src={logo} className="h-[40vmin] pointer-events-none" alt="logo" />
         <div>
           <h1 className="text-4xl font-bold text-blue-600">
             SQATE Desktop Tool
