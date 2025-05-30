@@ -58,8 +58,6 @@ describe("PlatformDashboard", () => {
         onUpdateStatus={jest.fn()}
       />
     );
-
-    
     const select = screen.getByDisplayValue("unenrolled");
     expect(select).toBeInTheDocument();
     expect(select.tagName.toLowerCase()).toBe("select");
