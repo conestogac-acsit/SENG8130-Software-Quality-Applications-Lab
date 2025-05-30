@@ -2,7 +2,7 @@
 
 ## Overview
 
-This desktop application feature is built using **React**, **TypeScript**, **Vite**, and **Electron**. It provides an intuitive interface for managing student information and enrollment statuses across different platforms like Loop and GitHub. Student data is imported from CSV files and can be viewed, updated, or deleted through a main dashboard, with platform-specific views reflecting enrollment statuses.
+This desktop application feature is built using **React**, **TypeScript**, **Vite**, and **Electron**. It provides an intuitive interface for managing student information and enrollment statuses across different platforms like Loop and GitHub. Student data can be viewed, updated, or deleted through a main dashboard, with platform-specific views reflecting enrollment statuses.
 
 ## Features
 
@@ -48,7 +48,6 @@ npm test
 
 ### Test Coverage Includes:
 
-- CSV data parsing correctness
 - Student dashboard update and delete functionality
 - Platform-specific dashboard status rendering and editing behavior
 
@@ -61,8 +60,6 @@ npm test
 
 - ```/electron.js``` — Electron main process entry point.
 
-- ```/students.csv``` — Sample CSV data file.
-
 - ```/vite.config.ts``` — Vite build configuration.
 
 ## Technologies Used
@@ -71,5 +68,4 @@ npm test
 - Electron (desktop app framework)
 - Tailwind CSS (styling)
 - Jest + React Testing Library (testing)
-- PapaParse (CSV parsing)
 
