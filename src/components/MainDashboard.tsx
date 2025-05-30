@@ -1,5 +1,19 @@
 import React from "react";
-import type { Student } from "./types";
+
+export type EnrollmentStatus = "enrolled" | "unenrolled";
+
+export interface Student {
+  studentId: string;
+  name: string;
+  email: string;
+  group: string;
+  role: string;
+  loop: string;
+  github: string;
+  status: EnrollmentStatus;
+  loopStatus: EnrollmentStatus;
+  githubStatus: EnrollmentStatus;
+}
 
 interface Props {
   data: Student[];
@@ -26,9 +40,7 @@ const MainDashboard: React.FC<Props> = ({ data, onUpdate, onDelete }) => {
                 <input
                   type="text"
                   value={student.name}
-                  onChange={(e) =>
-                    onUpdate(index, { name: e.target.value })
-                  }
+                  onChange={(e) => onUpdate(index, { name: e.target.value })}
                   className="w-full"
                 />
               </td>
@@ -36,9 +48,7 @@ const MainDashboard: React.FC<Props> = ({ data, onUpdate, onDelete }) => {
                 <input
                   type="text"
                   value={student.email}
-                  onChange={(e) =>
-                    onUpdate(index, { email: e.target.value })
-                  }
+                  onChange={(e) => onUpdate(index, { email: e.target.value })}
                   className="w-full"
                 />
               </td>
@@ -46,9 +56,7 @@ const MainDashboard: React.FC<Props> = ({ data, onUpdate, onDelete }) => {
                 <input
                   type="text"
                   value={student.group}
-                  onChange={(e) =>
-                    onUpdate(index, { group: e.target.value })
-                  }
+                  onChange={(e) => onUpdate(index, { group: e.target.value })}
                   className="w-full"
                 />
               </td>
