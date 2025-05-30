@@ -1,5 +1,5 @@
 import React from "react";
-import type { EnrollmentStatus, Student } from "./MainDashboard";
+import type { EnrollmentStatus, Student } from "../StudentInfoDashboard/StudentInfoDashboard";
 
 interface Props {
   platform: "loop" | "github";
