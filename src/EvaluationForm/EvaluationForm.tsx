@@ -3,12 +3,12 @@ import { saveEvaluation, updateEvaluations, loadEvaluations } from '../csvHandle
 import { validateEvaluation, Evaluation } from './EvaluationFormValidation';
 import { v4 as uuidv4 } from 'uuid';
 
-interface Props {
+interface ConfirmationMessageProps {
   selectedEval?: Evaluation;
   onSave: () => void;
 }
 
-const EvaluationForm: React.FC<Props> = ({ selectedEval, onSave }) => {
+const EvaluationForm: React.FC<ConfirmationMessageProps> = ({ selectedEval, onSave }) => {
   const [form, setForm] = useState<Evaluation>({
     id: '',
     courseCode: '',
