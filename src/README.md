@@ -1,0 +1,45 @@
+# Software Quality Applications Lab
+
+This project provides a desktop app environment for student enrollment management, built with React, TypeScript, Vite, and Electron.
+
+## Documentation
+
+Complete project documentation, including features, installation, OKRs, and roadmap, is available on Microsoft Loop:
+
+[Access Documentation](https://loop.cloud.microsoft.mcas.ms/p/eyJ3Ijp7InUiOiJodHRwczovL3N0dWNvbmVzdG9nYWNvbi5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlXZFFaR2wxVVcxMlN6QlRjVEpXZGpoeFdUVjFUbGczY2w4eFJGbE9VMHBRYWtJMU1YQnhSMUZxTWtOVlRHZHBkWEZUU25WVVMySm5WMFZwTUZsUFprZ21aajB3TVROWVZrc3pOa1ZPVTFkQ1ZrZEZWRTFEUWtkTVRscFJVMEZQVjFWTlNVeEpKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vc3R1Y29uZXN0b2dhY29uLnNoYXJlcG9pbnQuY29tLzpmbDovci9jb250ZW50c3RvcmFnZS9DU1BfYjk2MmY3ODAtYWYwOS00NDJiLWFhZDktNWJmY2E5OGU2ZTM1L0RvY3VtZW50JTIwTGlicmFyeS9Mb29wQXBwRGF0YS9VbnRpdGxlZCUyMDEubG9vcD9kPXdlY2ZhM2Q0ZjkwZGY0Y2NjOWJmNGVlY2RlNjdmMGFmNiZjc2Y9MSZ3ZWI9MSZuYXY9Y3owbE1rWmpiMjUwWlc1MGMzUnZjbUZuWlNVeVJrTlRVRjlpT1RZeVpqYzRNQzFoWmpBNUxUUTBNbUl0WVdGa09TMDFZbVpqWVRrNFpUWmxNelVtWkQxaUlXZFFaR2wxVVcxMlN6QlRjVEpXZGpoeFdUVjFUbGczY2w4eFJGbE9VMHBRYWtJMU1YQnhSMUZxTWtOVlRHZHBkWEZUU25WVVMySm5WMFZwTUZsUFprZ21aajB3TVROWVZrc3pOa05RU0ZnMVQxcFlORkZhVWtkS1dEVklUMXBZVkVnMlExaFhKbU05SlRKR0ptWnNkV2xrUFRFbVlUMU1iMjl3UVhCd0puQTlKVFF3Wm14MWFXUjRKVEpHYkc5dmNDMXdZV2RsTFdOdmJuUmhhVzVsY2laNFBTVTNRaVV5TW5jbE1qSWxNMEVsTWpKVU1GSlVWVWg0ZW1SSVZtcGlNalZzWXpOU2Rsb3lSbXBpTWpSMVl6Sm9hR050Vm5kaU1teDFaRU0xYW1JeU1UaFphVVp1VlVkU2NHUldSblJrYTNOM1ZUTkZlVlp1V1RSalZtc3haRlUxV1U0elNtWk5WVkphVkd4T1MxVkhjRU5PVkVaM1kxVmtVbUZxU2tSV1ZYaHVZVmhXZUZVd2NERldSWFJwV2pGa1JtRlVRbHBVTWxwSlprUkJlRTB4YUZkVGVrMHlVbFUxVkZZd1NsZFNNRlpWVkZWT1ExSXdlRTlYYkVaVVVWVTVXRlpWTVVwVVJXc2xNMFFsTWpJbE1rTWxNakpwSlRJeUpUTkJKVEl5WTJVeE5qbGhPVEl0TVdZNFlTMDBOekl4TFdJNU5tRXRZelJtWmpWak1HWTROalZsSlRJeUpUZEUiLCJyIjpmYWxzZX0sImkiOnsiaSI6ImNlMTY5YTkyLTFmOGEtNDcyMS1iOTZhLWM0ZmY1YzBmODY1ZSJ9fQ%3D%3D)
+
+## Getting Started
+
+To clone the repository, run:
+
+```
+git clone git@github.com:conestogac-acsit/SENG8130-Software-Quality-Applications-Lab.git
+```
+
+### Install Dependencies
+
+```
+npm install
+```
+
+### Build the Application
+
+```
+npm run build
+```
+
+### Launch the Application
+
+```
+npm run build && electron .
+```
+
+## Testing
+
+This project uses Jest and React Testing Library for unit and component testing.
+
+### Run All Tests
+
+```
+npm test
+```
