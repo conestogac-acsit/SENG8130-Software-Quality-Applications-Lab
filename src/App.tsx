@@ -1,41 +1,52 @@
-// tailwind.config.js must have your paths set properly.
-
-import { useEffect, useState } from "react";
-import Papa from "papaparse";
+import { useState } from "react";
 import MainDashboard from "./components/MainDashboard";
 import PlatformDashboard from "./components/PlatformDashboard";
 import type { Student } from "./components/types";
 import './index.css';
 
+// Mock data (replace this with your desired test data)
+const mockStudents: Student[] = [
+  {
+    studentId: "1001",
+    name: "Alice",
+    email: "alice@example.com",
+    group: "G1",
+    role: "student",
+    loop: "yes",
+    github: "no",
+    status: "active",
+    loopStatus: "enrolled",
+    githubStatus: "unenrolled",
+  },
+  {
+    studentId: "1002",
+    name: "Bob",
+    email: "bob@example.com",
+    group: "G2",
+    role: "student",
+    loop: "no",
+    github: "yes",
+    status: "active",
+    loopStatus: "unenrolled",
+    githubStatus: "enrolled",
+  },
+  {
+    studentId: "1003",
+    name: "Bob",
+    email: "harry@example.com",
+    group: "G2",
+    role: "student",
+    loop: "no",
+    github: "yes",
+    status: "active",
+    loopStatus: "unenrolled",
+    githubStatus: "enrolled",
+  },
+];
+
 function App() {
-  const [students, setStudents] = useState<Student[]>([]);
-  const [activeView, setActiveView] = useState<'main' | 'platform' | 'loop' | 'github'>('main');
-
-  const fetchCSV = async () => {
-    try {
-      const text = await (window as any).api.getCSVData();
-      Papa.parse(text, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (result) => {
-          const enriched = result.data
-            .filter((row: any) => row.role === "student")
-            .map((row: any) => ({
-              ...row,
-              loopStatus: row.loop === "yes" ? "enrolled" : "unenrolled",
-              githubStatus: row.github === "yes" ? "enrolled" : "unenrolled",
-            }));
-          setStudents(enriched);
-        },
-      });
-    } catch (error) {
-      console.error("Failed to load CSV data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCSV();
-  }, []);
+  const [students, setStudents] = useState<Student[]>(mockStudents);
+  const [activeView, setActiveView] = useState<'main' | 'loop' | 'github'>('main');
 
   const handleUpdateStatus = (index: number, platform: 'loop' | 'github', newStatus: string) => {
     const updated = [...students];
