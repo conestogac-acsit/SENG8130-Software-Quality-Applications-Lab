@@ -1,10 +1,10 @@
 import React from "react";
-import type { Student } from "./types";
+import type { EnrollmentStatus, Student } from "./MainDashboard";
 
 interface Props {
   platform: "loop" | "github";
   data: Student[];
-  onUpdateStatus: (index: number, platform: "loop" | "github", newStatus: string) => void;
+  onUpdateStatus: (index: number, platform: "loop" | "github", newStatus: EnrollmentStatus) => void;
 }
 
 const PlatformDashboard: React.FC<Props> = ({ platform, data, onUpdateStatus }) => {
@@ -32,7 +32,9 @@ const PlatformDashboard: React.FC<Props> = ({ platform, data, onUpdateStatus }) 
                 {isEditable ? (
                   <select
                     value={status}
-                    onChange={(e) => onUpdateStatus(index, platform, e.target.value)}
+                    onChange={(e) =>
+                      onUpdateStatus(index, platform, e.target.value as EnrollmentStatus)
+                    }
                     className="border rounded px-2 py-1"
                   >
                     <option value="enrolled">enrolled</option>
