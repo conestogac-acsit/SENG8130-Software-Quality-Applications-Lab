@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import UploadCsv from './components/UploadCsv';
 import EvaluationCalendar from './components/EvaluationCalendar';
 import UploadStudentCsv from './components/UploadStudentsCsv';
+import StudentCsvBugFixWrapper from './components/StudentCsvBugFixWrapper';
 
 type Evaluation = {
   Course: string;
