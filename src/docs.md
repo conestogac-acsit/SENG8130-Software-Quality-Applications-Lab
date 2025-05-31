@@ -1,10 +1,10 @@
-#  EnrollmentDashboard Interface Documentation
+#  ChartDashboard Interface Documentation
 
-This document outlines the props, data types, component behavior, and structure for the `EnrollmentDashboard` component.
+This document outlines the props, data types, component behavior, and structure for the `ChartDashboard` component.
 
 ---
 
-##  Objective3_KeyResultX: Visualize Enrollment Data  
+##  Objective3_Keyresult1: Visualize Enrollment Data  
 > Build an interactive dashboard to compare student enrollment statuses from GitHub and Microsoft Loop.  
 
 **Features:**
@@ -19,7 +19,7 @@ This document outlines the props, data types, component behavior, and structure 
 
 ##  Type Definitions
 
-### `Student`
+### `Student.ts`
 
 ```ts
 export interface Student {
@@ -36,10 +36,10 @@ export interface Student {
 
 ##  Component Props
 
-### `EnrollmentDashboardProps`
+### `ChartDashboardProps`
 
 ```ts
-interface EnrollmentDashboardProps {
+interface Props {
   github: Student[];
   loop: Student[];
   onBack: () => void;
@@ -85,7 +85,7 @@ Both `github` and `loop` props are arrays of `Student` with these rules:
 
 ##  Testing Coverage
 
-Test file: `EnrollmentDashboard.test.tsx`
+Test file: `ChartDashboard.test.tsx`
 
 | Test Scenario                     | Description                                     |
 |----------------------------------|-------------------------------------------------|
@@ -96,7 +96,7 @@ Test file: `EnrollmentDashboard.test.tsx`
 ---
 
 
-### `EnrollmentDashboard.tsx`
+### `ChartDashboard.tsx`
 
 - Uses `recharts` for all visualizations
 - Uses `html-to-image` and `file-saver` for PNG export
@@ -168,9 +168,9 @@ npm test
 ```
 | Status        | GitHub | Loop | Total |
 |---------------|--------|------|-------|
-| Enrolled      | 10     | 12   | 22    |
-| Unenrolled    | 4      | 3    | 7     |
-| Need Removal  | 3      | 5    | 8     |
+| Enrolled      | 3      | 6    | 9     |
+| Unenrolled    | 7      | 4    | 11    |
+| Need Removal  | 4      | 7    | 11    |
 ```
 
 ---
