@@ -1,13 +1,15 @@
 import React from 'react';
 import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
-import { format } from 'date-fns/format';
-import { parse } from 'date-fns/parse';
-import { startOfWeek } from 'date-fns/startOfWeek';
-import { getDay } from 'date-fns/getDay';
+import { format } from 'date-fns';
+import { parse } from 'date-fns';
+import { startOfWeek } from 'date-fns';
+import { getDay } from 'date-fns';
+import { enUS } from 'date-fns/locale';
+
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const locales = {
-  'en-US': require('date-fns/locale/en-US'),
+  'en-US': enUS,
 };
 
 const localizer = dateFnsLocalizer({
@@ -29,13 +31,19 @@ interface Props {
   date: Date;
   onNavigate: (newDate: Date) => void;
   view: View;
-  onView: (view: string) => void;
+  onView: (view: View) => void;
 }
 
-const EvaluationCalendar: React.FC<Props> = ({ events, date, onNavigate, view, onView }) => {
+const EvaluationCalendar: React.FC<Props> = ({
+  events,
+  date,
+  onNavigate,
+  view,
+  onView,
+}) => {
   const getDayClass = (date: Date) => {
-    const count = events.filter(event =>
-      event.start.toDateString() === date.toDateString()
+    const count = events.filter(
+      (event) => event.start.toDateString() === date.toDateString()
     ).length;
 
     if (count >= 3) {
@@ -47,7 +55,7 @@ const EvaluationCalendar: React.FC<Props> = ({ events, date, onNavigate, view, o
   };
 
   return (
-    <div className="h-[600px] border rounded p-4">
+    <div className="h-[600px] border rounded p-4 shadow bg-white">
       <Calendar
         localizer={localizer}
         events={events}
@@ -55,10 +63,10 @@ const EvaluationCalendar: React.FC<Props> = ({ events, date, onNavigate, view, o
         endAccessor="end"
         date={date}
         onNavigate={onNavigate}
-        dayPropGetter={getDayClass}
         view={view}
         onView={onView}
         views={['week', 'month']}
+        dayPropGetter={getDayClass}
         style={{ height: '100%' }}
       />
     </div>

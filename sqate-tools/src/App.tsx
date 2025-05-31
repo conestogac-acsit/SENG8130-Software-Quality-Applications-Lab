@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import UploadCsv from './components/UploadCsv';
-import EvaluationCalendar from './components/EvaluationCalendar';
+import UploadCsv from './components/EvaluationCalendar/UploadCsv';
+import EvaluationCalendar from './components/EvaluationCalendar/EvaluationCalendar';
 
 type Evaluation = {
   Course: string;
