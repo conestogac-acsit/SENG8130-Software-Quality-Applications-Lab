@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import RatingComponent from './RatingComponent'
+import RatingComponent from './Components/RatingComponent/RatingComponent'
 
 function App() {
   return (
