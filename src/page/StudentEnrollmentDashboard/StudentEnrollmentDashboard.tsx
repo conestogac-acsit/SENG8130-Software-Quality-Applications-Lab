@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
-import MainDashboard from "./StudentInfoDashboard/StudentInfoDashboard";
-import PlatformDashboard from "./EnrolledPlatformDashboard/EnrolledPlatformDashboard";
+import MainDashboard from "./StudentInfo/StudentInfo";
+import PlatformDashboard from "./PlatformEnrollment/PlatformEnrollment";
 import SidebarMenu from "../../components/common/SidebarMenu/SidebarMenu";
 import Card from "../../components/common/Card/Card";
-import type { Student, EnrollmentStatus } from "./StudentInfoDashboard/StudentInfoDashboard";
-import { studentService, type StudentService } from "../../services/studentService";
+import type { Student, EnrollmentStatus } from "./StudentInfo/StudentInfo";
+import { studentService, type StudentService } from "./studentEnrollmentService";
 
 const mockStudents: Student[] = [
   {

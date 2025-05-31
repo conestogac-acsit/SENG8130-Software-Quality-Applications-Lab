@@ -1,5 +1,5 @@
-import { studentService } from "./studentService";
-import type { Student, EnrollmentStatus } from "../page/DashboardContainer/StudentInfoDashboard/StudentInfoDashboard";
+import { studentService } from "./studentEnrollmentService";
+import type { Student, EnrollmentStatus } from "./StudentInfo/StudentInfo";
 
 const sampleStudents: Student[] = [
   {

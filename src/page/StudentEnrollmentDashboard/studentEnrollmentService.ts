@@ -1,4 +1,4 @@
-import type { Student, EnrollmentStatus } from "../page/DashboardContainer/StudentInfoDashboard/StudentInfoDashboard";
+import type { Student, EnrollmentStatus } from "./StudentInfo/StudentInfo";
 
 export interface StudentService {
   updateStatus(

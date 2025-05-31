@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import MainDashboard, { Student } from './StudentInfoDashboard';
+import MainDashboard, { Student } from './StudentInfo';
 
 describe('MainDashboard', () => {
   const mockData: Student[] = [

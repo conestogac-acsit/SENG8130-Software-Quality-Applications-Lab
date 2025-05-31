@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import PlatformDashboard from "./EnrolledPlatformDashboard";
+import PlatformDashboard from "./PlatformEnrollment";
 import '@testing-library/jest-dom';
-import { Student } from "../StudentInfoDashboard/StudentInfoDashboard";
+import { Student } from "../StudentInfo/StudentInfo";
 
 describe("PlatformDashboard", () => {
   const mockStudents: Student[] = [
