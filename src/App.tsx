@@ -1,8 +1,8 @@
 import React from 'react';
-import EnrollmentDashboardLauncher from './ChartDashboardLauncher';
+import ChartDashboardLauncher from './ChartDashboardLauncher';
 
 function App() {
-  return <EnrollmentDashboardLauncher />;
+  return <ChartDashboardLauncher />;
 }
 
 export default App;
