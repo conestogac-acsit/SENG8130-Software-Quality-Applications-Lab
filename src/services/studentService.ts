@@ -1,36 +1,35 @@
-// src/services/studentService.ts
-import type { Student, EnrollmentStatus } from '../components/StudentInfoDashboard/StudentInfoDashboard';
+import type { Student, EnrollmentStatus } from "../page/DashboardContainer/StudentInfoDashboard/StudentInfoDashboard";
 
 export interface StudentService {
-  updateStatus: (
+  updateStatus(
     students: Student[],
     index: number,
-    platform: 'loop' | 'github',
+    platform: "loop" | "github",
     newStatus: EnrollmentStatus
-  ) => Student[];
+  ): Student[];
 
-  updateStudent: (students: Student[], index: number, updated: Partial<Student>) => Student[];
+  updateStudent(students: Student[], index: number, updated: Partial<Student>): Student[];
 
-  deleteStudent: (students: Student[], index: number) => Student[];
+  deleteStudent(students: Student[], index: number): Student[];
 }
 
 export const studentService: StudentService = {
-  updateStatus: (students, index, platform, newStatus) => {
-    const updated = [...students];
-    if (platform === 'loop') updated[index].loopStatus = newStatus;
-    if (platform === 'github') updated[index].githubStatus = newStatus;
-    return updated;
+  updateStatus(students, index, platform, newStatus) {
+    return students.map((student, i) => {
+      if (i !== index) return student;
+      if (platform === "loop") {
+        return { ...student, loopStatus: newStatus };
+      } else {
+        return { ...student, githubStatus: newStatus };
+      }
+    });
   },
 
-  updateStudent: (students, index, updated) => {
-    const updatedList = [...students];
-    updatedList[index] = { ...updatedList[index], ...updated };
-    return updatedList;
+  updateStudent(students, index, updated) {
+    return students.map((student, i) => (i === index ? { ...student, ...updated } : student));
   },
 
-  deleteStudent: (students, index) => {
-    const updated = [...students];
-    updated.splice(index, 1);
-    return updated;
-  }
+  deleteStudent(students, index) {
+    return students.filter((_, i) => i !== index);
+  },
 };

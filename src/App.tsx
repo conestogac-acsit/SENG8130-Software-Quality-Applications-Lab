@@ -1,4 +1,4 @@
-import DashboardContainer from "./containers/DashboardContainer";
+import DashboardContainer from "./page/DashboardContainer/DashboardContainer";
 
 function App() {
   return <DashboardContainer />;
