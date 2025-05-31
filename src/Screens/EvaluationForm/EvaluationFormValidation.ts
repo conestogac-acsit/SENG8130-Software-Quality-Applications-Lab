@@ -2,10 +2,10 @@
 // Provides input validation for Evaluation form entries.
 
 export interface Evaluation {
-  id: string;
-  courseCode: string;
-  evaluationType: string;
-  dueDate: string;
+  id: string;     // Unique identifier (UUID)
+  courseCode: string; // to keep course unique, formatted as: course name + semester + section number (e.g., SENG8071-25S-2)
+  evaluationType: string;// Type of evaluation (e.g., quiz, exam)
+  dueDate: string;// Due date in YYYY-MM-DD format
 }
 
 export function validateEvaluation(evaluation: Partial<Evaluation>): string[] {

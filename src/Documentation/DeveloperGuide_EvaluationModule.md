@@ -12,7 +12,7 @@ This document describes the available interfaces and methods in the `Evaluation`
 //camel case naming convention followed for best practice.
 export interface Evaluation {
   id: string;            // Unique identifier (UUID)
-  courseCode: string;    // Code of the course (e.g., INFO8171)
+  courseCode: string;    // to keep course unique, formatted as: course name + semester + section number (e.g., SENG8071-25S-2)
   evaluationType: string; // Type of evaluation (e.g., quiz, exam)
   dueDate: string;       // Due date in YYYY-MM-DD format
 }
