@@ -1,6 +1,6 @@
 export const handleFileNotFound = (): void => {
   console.error("Error: No file selected.");
-  alert("🚫 No file chosen. Please select a CSV file to upload.");
+  alert(" No file chosen. Please select a CSV file to upload.");
 };
 
 export const handleGenericError = (message: string): void => {
