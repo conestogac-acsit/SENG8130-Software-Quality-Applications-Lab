@@ -1,5 +1,5 @@
 import React from 'react';
-import EnrollmentDashboardLauncher from './EnrollmentDashboardLauncher';
+import EnrollmentDashboardLauncher from './ChartDashboardLauncher';
 
 function App() {
   return <EnrollmentDashboardLauncher />;
