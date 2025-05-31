@@ -46,25 +46,15 @@ const mockLoopData = [
   { Email: "lp19@example.com", "First Name": "Mason", "Last Name": "Foster", "Student ID": "2019", Role: "student", Status: "unenrolled" },
   { Email: "lp20@example.com", "First Name": "Nina", "Last Name": "Harrison", "Student ID": "2020", Role: "student", Status: "need removal" }
 ];
-export default function EnrollmentDashboardLauncher() {
-  const [showDashboard, setShowDashboard] = useState(false);
-
+export default function App() {
   return (
-    <div className="p-6 text-center">
-      {!showDashboard ? (
-        <button
-          className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700"
-          onClick={() => setShowDashboard(true)}
-        >
-          Enrollment Dashboard
-        </button>
-      ) : (
-        <EnrollmentDashboard
-          github={mockGithubData}
-          loop={mockLoopData}
-          onBack={() => setShowDashboard(false)}
-        />
-      )}
+    <div className="p-6">
+      <EnrollmentDashboard
+        github={mockGithubData}
+        loop={mockLoopData}
+        onBack={() => {}} // Empty handler since back button is unused
+      />
     </div>
   );
 }
+
