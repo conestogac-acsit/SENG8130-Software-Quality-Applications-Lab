@@ -9,17 +9,20 @@
     "build": "vite build",
     "start": "electron electron/public/main.cjs",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "package": "electron-packager . SQATE-Tools --platform=win32 --arch=x64 --out=out --overwrite",
+    "package:mac": "electron-packager . SQATE-Tools --platform=darwin --arch=x64 --out=out --overwrite",
+    "package:linux": "electron-packager . SQATE-Tools --platform=linux --arch=x64 --out=out --overwrite",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0"
   },
   "dependencies": {
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "electron": "^36.3.2",
-    "react": "^19.1.0"
-    
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "react-dom": "^19.1.0",
     "@eslint/js": "^9.25.0",
     "@tailwindcss/postcss": "^4.1.8",
     "@testing-library/jest-dom": "^6.6.3",
@@ -33,6 +36,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^30.0.0-beta.3",
     "postcss": "^8.5.4",

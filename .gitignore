@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
+# Dependency directories
+node_modules/
+
+# Vite cache
+.vite/
+
+# Jest cache
+coverage/
+
+# OS files
+.DS_Store
+
+# Editor settings
+.vscode/
+!.vscode/extensions.json
+.idea/
+
+# Miscellaneous
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Optional: If you're using Electron packager
+/out/

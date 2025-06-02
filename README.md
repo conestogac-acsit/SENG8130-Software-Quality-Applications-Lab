@@ -1,26 +1,57 @@
-# Software Quality Applications Lab
+# 🧾 SQATE Tools – Desktop App
+A cross-platform desktop application designed to support SQATE tooling modules.
+It provides an interactive interface for various testing and automation tasks.
 
-The Software Quality Applications Lab is intended to create a working environment for students to gain experience.
+---
+## ✅ Requirements
+- Node.js @ LTS
+---
+## 📦 Installation
+```bash
+npm  install
+```
 
-## Essential Links
+---
+## 🚀 Development
+Start both React (Vite) and Electron in development mode:
 
-### Documentation
+```bash
+npm run dev
+```
+Start only Electron Dev with live reload (after Vite is running):
 
-The documentation for the project is in [Microsoft Loop](https://stuconestogacon.sharepoint.com/:fl:/g/contentstorage/CSP_b962f780-af09-442b-aad9-5bfca98e6e35/EaBZj2i9JqxCqmICZIh42kgBLrf0mtydOh94-W6v2RrB9Q?e=5kURPx&nav=cz0lMkZjb250ZW50c3RvcmFnZSUyRkNTUF9iOTYyZjc4MC1hZjA5LTQ0MmItYWFkOS01YmZjYTk4ZTZlMzUmZD1iJTIxZ1BkaXVRbXZLMFNxMlZ2OHFZNXVOWDdyXzFEWU5TSlBqQjUxcHFHUWoyQ1VMZ2l1cVNKdVRLYmdXRWkwWU9mSCZmPTAxM1hWSzM2RkFMR0hXUlBKR1ZSQktVWVFDTVNFSFJXU0kmYz0lMkYmYT1Mb29wQXBwJnA9JTQwZmx1aWR4JTJGbG9vcC1wYWdlLWNvbnRhaW5lciZ4PSU3QiUyMnclMjIlM0ElMjJUMFJUVUh4emRIVmpiMjVsYzNSdloyRmpiMjR1YzJoaGNtVndiMmx1ZEM1amIyMThZaUZuVUdScGRWRnRka3N3VTNFeVZuWTRjVmsxZFU1WU4zSmZNVVJaVGxOS1VHcENOVEZ3Y1VkUmFqSkRWVXhuYVhWeFUwcDFWRXRpWjFkRmFUQlpUMlpJZkRBeE0xaFdTek0yUlU1VFYwSldSMFZVVFVOQ1IweE9XbEZUUVU5WFZVMUpURWslM0QlMjIlMkMlMjJpJTIyJTNBJTIyMmNjNjk4ZmEtNzZhOC00ZmMxLTliMzAtYmY1MGMwOGUyOTNlJTIyJTdE).
+```bash
+npm run electron:dev
+```
+---
+## 🧪 Run Tests
+```bash
+npm run test
+```
+---
+## 🧹 Code Linting
 
-With the above link, you will be able to see the Home page.
-To gain access, you must ask one of the Admins for access.
+To run lint checks across the project:
 
-Please contact [Andy Chow](mailto:achow@conestogac.on.ca) or [Priya Manimaran](mailto:pmanimaran@conestogac.on.ca)
+```bash
+npm run lint
+```
+---
+## 📦 Build & Package (Production):
+To prepare the app for production, first build and then package the Electron app into a standalone executable:
 
-### Objective, Key Results (OKR)
+For Windows:
+```bash
+npm run build
+npm run package
+```
+For Mac/iOS:
+```bash
+npm run build
+npm run package:mac
+```
+---
+## 🖥️ Launch Desktop App (Production Build)
+Once packaged, you can launch the app by running the generated executable directly from the out/ folder.
 
-This is worth a mention as it is one of the main ways that we will be tracking outcomes and evaluation.
-The OKRs are located in Microsoft Loop as well.
-As soon as you gain access to the Documentation, you will be able to see this under the subpage called OKR.
-
-### Product Roadmap
-
-This is worth a mention as it is one of the main ways that we will be tracking outcomes and evaluation.
-The Product Roadmap is located in Microsoft Loop as well.
-As soon as you gain access to the Documentation, you will be able to see this under the subpage called Product Roadmap.
+⚠️ This assumes Vite’s dist/ folder is correctly built.
