@@ -42,8 +42,7 @@ To prepare the app for production, first build and then package the Electron app
 
 For Windows:
 ```bash
-npm run build
-npm run package
+npm run build && npm run package
 ```
 For Mac/iOS:
 ```bash
