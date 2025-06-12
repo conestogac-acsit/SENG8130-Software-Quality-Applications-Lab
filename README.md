@@ -75,8 +75,7 @@ For macOS:
 ```bash
 ⚠️ Note: These commands must be run on macOS. They are not supported on iOS devices (iPhone/iPad).
 
-npm run build
-npm run package:mac
+npm run build && npm run package:mac
 ```
 
 ---
