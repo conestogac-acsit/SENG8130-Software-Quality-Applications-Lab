@@ -71,10 +71,8 @@ For Windows:
 npm run build && npm run package
 ```
 For macOS:
-
-```bash
 ⚠️ Note: These commands must be run on macOS. They are not supported on iOS devices (iPhone/iPad).
-
+```bash
 npm run build && npm run package:mac
 ```
 
