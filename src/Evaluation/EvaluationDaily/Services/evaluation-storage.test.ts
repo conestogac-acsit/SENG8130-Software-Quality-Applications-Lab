@@ -20,3 +20,12 @@ import {
     });
   });
   
+  describe('saveEvaluationsFromStorage', () => {
+    it('stores JSON string in localStorage', () => {
+      saveEvaluationsFromStorage(mockData);
+      const stored = localStorage.getItem('uploaded-eval-data');
+
+      expect(stored).not.toBeNull();
+      expect(JSON.parse(stored!)).toEqual(mockData);
+    });
+  });
