@@ -1,3 +1,7 @@
+import {
+    loadEvaluationsFromStorage,
+    saveEvaluationsFromStorage
+  } from './evaluation-storage';
   import type { EvaluationRow } from '../Types/EvaluationTypes';
   
   describe('evaluation-storage', () => {
@@ -14,4 +18,14 @@
       localStorage.clear();
       jest.clearAllMocks();
     });
+    describe('saveEvaluationsFromStorage', () => {
+        it('stores JSON string in localStorage', () => {
+          saveEvaluationsFromStorage(mockData);
+          const stored = localStorage.getItem('uploaded-eval-data');
+    
+          expect(stored).not.toBeNull();
+          expect(JSON.parse(stored!)).toEqual(mockData);
+        });
+      });
+    
 });
