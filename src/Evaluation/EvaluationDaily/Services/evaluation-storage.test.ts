@@ -37,4 +37,8 @@ import {
 
       expect(loaded).toEqual(mockData);
     });
-
+    it('returns empty array if nothing in localStorage', () => {
+        const result = loadEvaluationsFromStorage();
+        expect(result).toEqual([]);
+      });
+  
