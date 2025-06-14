@@ -19,7 +19,7 @@ import {
       jest.clearAllMocks();
     });
   });
-  
+
   describe('saveEvaluationsFromStorage', () => {
     it('stores JSON string in localStorage', () => {
       saveEvaluationsFromStorage(mockData);
@@ -29,3 +29,12 @@ import {
       expect(JSON.parse(stored!)).toEqual(mockData);
     });
   });
+
+  describe('loadEvaluationsFromStorage', () => {
+    it('loads evaluations from localStorage', () => {
+      localStorage.setItem('uploaded-eval-data', JSON.stringify(mockData));
+      const loaded = loadEvaluationsFromStorage();
+
+      expect(loaded).toEqual(mockData);
+    });
+
