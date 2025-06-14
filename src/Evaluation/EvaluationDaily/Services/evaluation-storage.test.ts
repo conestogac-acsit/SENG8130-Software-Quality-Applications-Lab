@@ -41,4 +41,19 @@ import {
         const result = loadEvaluationsFromStorage();
         expect(result).toEqual([]);
       });
+      it('returns empty array and logs error if JSON is invalid', () => {
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        localStorage.setItem('uploaded-eval-data', 'invalid_json');
   
+        const result = loadEvaluationsFromStorage();
+  
+        expect(result).toEqual([]);
+        expect(spy).toHaveBeenCalledWith(
+          '[loadEvaluationsFromStorage] Failed to parse:',
+          expect.any(SyntaxError)
+        );
+  
+        spy.mockRestore();
+      });
+    });
+    
