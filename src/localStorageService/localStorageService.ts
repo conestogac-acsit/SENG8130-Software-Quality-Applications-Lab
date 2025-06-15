@@ -1,6 +1,6 @@
 // evaluation-storage.ts
 
-import type { EvaluationRow } from '../Types/EvaluationTypes';
+import type { EvaluationRow } from '../Evaluation/EvaluationDaily/Types/EvaluationTypes';
 
 export function loadEvaluationsFromStorage(): EvaluationRow[] {
     const raw = localStorage.getItem('uploaded-eval-data');

@@ -1,8 +1,8 @@
 import {
     loadEvaluationsFromStorage,
     saveEvaluationsFromStorage
-  } from './evaluation-storage';
-  import type { EvaluationRow } from '../Types/EvaluationTypes';
+  } from './localStorageService';
+  import type { EvaluationRow } from '../Evaluation/EvaluationDaily/Types/EvaluationTypes';
   
   describe('evaluation-storage', () => {
     const mockData: EvaluationRow[] = [
