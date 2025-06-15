@@ -1,26 +1,19 @@
-// src/localStorageService/localStorageService.ts
-
-import type { LocalStorageHandler } from './localStorageHandler';
-
-export function saveToStorage<T>(
-  storage: LocalStorageHandler,
-  key: string,
-  data: T
-): void {
-  storage.setItem(key, JSON.stringify(data));
+// This service provides methods to save and load data from localStorage with error handling.
+export function saveToStorage<T>(key: string, data: T): void {
+  try {
+    const serialized = JSON.stringify(data);
+    localStorage.setItem(key, serialized);
+  } catch (error) {
+    console.error(`Error saving data to localStorage with key: ${key}`, error);
+  }
 }
 
-export function loadFromStorage<T>(
-  storage: LocalStorageHandler,
-  key: string
-): T[] {
-  const raw = storage.getItem(key);
-  if (!raw) return [];
-
+export function loadFromStorage<T>(key: string): T | null {
   try {
-    return JSON.parse(raw) as T[];
-  } catch (err) {
-    console.error('[loadFromStorage] Failed to parse:', err);
-    return [];
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) as T : null;
+  } catch (error) {
+    console.error(`Error loading data from localStorage with key: ${key}`, error);
+    return null;
   }
 }

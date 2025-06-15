@@ -1,4 +1,3 @@
-// evaluationStorageService.types.ts
 export interface EvaluationRow {
     evaluationId: string;
     courseCode: string;
