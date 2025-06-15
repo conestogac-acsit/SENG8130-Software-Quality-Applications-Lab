@@ -1,19 +1,26 @@
-// evaluation-storage.ts
+// src/localStorageService/localStorageService.ts
 
-import type { EvaluationRow } from '../Evaluation/EvaluationDaily/Types/EvaluationTypes';
+import type { LocalStorageHandler } from './localStorageHandler';
 
-export function loadEvaluationsFromStorage(): EvaluationRow[] {
-    const raw = localStorage.getItem('uploaded-eval-data');
-    if (!raw) return [];
-  
-    try {
-      return JSON.parse(raw) as EvaluationRow[];
-    } catch (err) {
-      console.error('[loadEvaluationsFromStorage] Failed to parse:', err);
-      return [];
-    }
+export function saveToStorage<T>(
+  storage: LocalStorageHandler,
+  key: string,
+  data: T
+): void {
+  storage.setItem(key, JSON.stringify(data));
+}
+
+export function loadFromStorage<T>(
+  storage: LocalStorageHandler,
+  key: string
+): T[] {
+  const raw = storage.getItem(key);
+  if (!raw) return [];
+
+  try {
+    return JSON.parse(raw) as T[];
+  } catch (err) {
+    console.error('[loadFromStorage] Failed to parse:', err);
+    return [];
   }
-  
-  export function saveEvaluationsFromStorage(data: EvaluationRow[]): void {
-    localStorage.setItem('uploaded-eval-data', JSON.stringify(data)); // Save parsed data
-  }
+}
