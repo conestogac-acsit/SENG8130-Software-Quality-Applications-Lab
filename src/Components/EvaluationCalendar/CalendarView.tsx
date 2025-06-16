@@ -8,7 +8,13 @@ interface CalendarViewProps {
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     const groupedByDate = evaluations.reduce<Record<string, Evaluation[]>>((acc, ev) => {
-        const key = ev.dueDate.toDateString();
+        const key = new Intl.DateTimeFormat("en-US", {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "America/Toronto",
+        }).format(ev.dueDate);
         if (!acc[key]) acc[key] = [];
         acc[key].push(ev);
         return acc;
