@@ -1,4 +1,3 @@
-// This service provides methods to save and load data from localStorage with error handling.
 export function saveToStorage<T>(key: string, data: T): void {
   try {
     const serialized = JSON.stringify(data);
