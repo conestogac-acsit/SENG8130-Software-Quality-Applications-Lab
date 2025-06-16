@@ -52,8 +52,9 @@ describe("CalendarView", () => {
         expect(screen.getByText("Midterm (Exam)")).toBeInTheDocument();
     });
 
-    it("renders nothing if no evaluations are provided", () => {
+    it("shows a message when no evaluations are provided", () => {
         render(<CalendarView evaluations={[]} />);
-        expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+        expect(screen.getByText(/no evaluations scheduled/i)).toBeInTheDocument();
     });
+
 });

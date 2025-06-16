@@ -26,13 +26,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
 
     return (
         <div className="space-y-4">
-            {sortedDates.map((date) => (
-                <CalendarDayCard
-                    key={date}
-                    date={date}
-                    evaluations={groupedByDate[date]}
-                />
-            ))}
+            {sortedDates.length === 0 ? (
+                <p className="text-gray-500 italic">No evaluations scheduled.</p>
+            ) : (
+                sortedDates.map((date) => (
+                    <CalendarDayCard
+                        key={date}
+                        date={date}
+                        evaluations={groupedByDate[date]}
+                    />
+                ))
+            )}
         </div>
     );
 };
