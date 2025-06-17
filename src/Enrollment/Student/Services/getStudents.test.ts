@@ -49,4 +49,8 @@ describe('getStudents', () => {
     const result = getStudents(3, 10);
     expect(result.data[0].id).toBe("21");
   });
+  it('should return total as 25 on page 3', () => {
+    const result = getStudents(3, 10);
+    expect(result.total).toBe(25);
+  });
 });
