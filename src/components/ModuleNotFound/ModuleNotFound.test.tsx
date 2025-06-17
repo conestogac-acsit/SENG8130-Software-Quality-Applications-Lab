@@ -1,13 +1,16 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ModuleNotFound from './ModuleNotFound';
- 
-describe('ModuleNotFound Component', () => {
-  test('renders fallback UI with proper message', () => {
-    const testModuleName = "TestModule";
-    render(<ModuleNotFound moduleName={testModuleName}/>);
+import '@testing-library/jest-dom';
 
-    expect(screen.getByText(/Module Not Found/i)).toBeInTheDocument();
-    expect(screen.getByText(/TestModule/i)).toBeInTheDocument();
-    expect(screen.getByText(/The module you are trying to access is not available yet/i)).toBeInTheDocument();
+describe('ModuleNotFound Component', () => {
+  it('renders the 404 error message and key content', () => {
+    render(<ModuleNotFound />);
+    expect(screen.getByLabelText('404 - Page not found')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Module Not Found/i })).toBeInTheDocument();
+    expect(screen.getByText(/we couldn’t find the module/i)).toBeInTheDocument();
+    const homeLink = screen.getByRole('link', { name: /Go Back Home/i });
+    expect(homeLink).toBeInTheDocument();
+    expect(homeLink).toHaveAttribute('href', '/');
   });
 });
