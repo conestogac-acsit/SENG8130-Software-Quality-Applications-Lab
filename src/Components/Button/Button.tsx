@@ -1,4 +1,3 @@
-// src/components/Button.tsx
 import React, { useEffect } from 'react';
 
 interface ButtonProps {
