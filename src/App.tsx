@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './assets/logo.png';
+import BroadcastMessage from './components/broadcast/MailBroadcast';
 
 function App() {
   return (

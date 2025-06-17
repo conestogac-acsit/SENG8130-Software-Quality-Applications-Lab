@@ -1,5 +1,7 @@
 const { app, BrowserWindow, Menu, dialog } = require('electron');
+const ipcMain = require('electron').ipcMain;
 const path = require('path');
+const { sendEmail } = require('./broadcast.cjs');
 
 const isDev = !app.isPackaged;
 const menuTemplate = [
@@ -65,6 +67,11 @@ const menuTemplate = [
     ],
   },
 ];
+ipcMain.handle('sendBroadcast', async (event, payload) => {
+  const { subject, message } = payload;
+  response = await sendEmail(subject, message);
+  return response;
+});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -75,7 +82,8 @@ function createWindow() {
     title: 'SQATE Tools',
     icon: path.join(__dirname, 'assets', 'logo.ico'),
     webPreferences: {
-      contextIsolation: true,
+      contextIsolation: false,
+      nodeIntegration: true,
     },
   });
   if (isDev) {
