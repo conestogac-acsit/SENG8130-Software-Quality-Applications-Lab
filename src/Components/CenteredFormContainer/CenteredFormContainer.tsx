@@ -1,4 +1,3 @@
-// src/components/CenteredFormContainer.tsx
 import React, { useEffect } from 'react';
 
 interface CenteredFormContainerProps {
@@ -8,24 +7,11 @@ interface CenteredFormContainerProps {
 
 const CenteredFormContainer: React.FC<CenteredFormContainerProps> = ({ children, onMount }) => {
   useEffect(() => {
-    if (onMount) onMount(); // automation via useEffect
+    if (onMount) onMount();
   }, [onMount]);
-
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundColor: '#f9f9f9'
-    }}>
-      <div style={{
-        padding: '24px',
-        borderRadius: '8px',
-        backgroundColor: '#fff',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-        minWidth: '320px'
-      }}>
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="p-6 rounded-lg bg-white shadow-md min-w-[320px]">
         {children}
       </div>
     </div>
