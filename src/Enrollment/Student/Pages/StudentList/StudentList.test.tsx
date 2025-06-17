@@ -19,4 +19,7 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
     it('renders the "Role" column', () => {
     expect(screen.getByText('Role')).toBeInTheDocument();
   });
+    it('renders the "Section" column', () => {
+    expect(screen.getByText('Section')).toBeInTheDocument();
+  });
 });
