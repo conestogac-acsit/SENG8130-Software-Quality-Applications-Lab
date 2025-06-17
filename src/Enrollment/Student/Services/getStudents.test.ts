@@ -41,4 +41,8 @@ describe('getStudents', () => {
     const result = getStudents(2, 10);
     expect(result.totalPages).toBe(3);
   });
+   it('should return 5 students for page 3', () => {
+    const result = getStudents(3, 10);
+    expect(result.data.length).toBe(5);
+  });
 });
