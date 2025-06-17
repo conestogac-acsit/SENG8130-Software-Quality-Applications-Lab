@@ -65,4 +65,8 @@ describe('getStudents', () => {
     const result = getStudents(1, 10);
     expect(result.data[0].id).toBe("1");
   });
+  it('should return total as 25 on page 1', () => {
+    const result = getStudents(1, 10);
+    expect(result.total).toBe(25);
+  });
 });
