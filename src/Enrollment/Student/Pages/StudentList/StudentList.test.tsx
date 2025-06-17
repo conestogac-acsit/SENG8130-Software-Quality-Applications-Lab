@@ -25,4 +25,7 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
    it('renders the "Group" column', () => {
     expect(screen.getByText('Group')).toBeInTheDocument();
   });
+   it('renders the "Actions" column', () => {
+    expect(screen.getByText('Actions')).toBeInTheDocument();
+  });
 });
