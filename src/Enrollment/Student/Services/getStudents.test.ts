@@ -37,4 +37,8 @@ describe('getStudents', () => {
     const result = getStudents(2, 10);
     expect(result.total).toBe(25);
   });
+   it('should return totalPages as 3 on page 2', () => {
+    const result = getStudents(2, 10);
+    expect(result.totalPages).toBe(3);
+  });
 });
