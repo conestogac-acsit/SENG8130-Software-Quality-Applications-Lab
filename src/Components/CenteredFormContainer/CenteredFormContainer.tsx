@@ -9,7 +9,6 @@ const CenteredFormContainer: React.FC<CenteredFormContainerProps> = ({ children,
   useEffect(() => {
     if (onMount) onMount();
   }, [onMount]);
-
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="p-6 rounded-lg bg-white shadow-md min-w-[320px]">
