@@ -33,4 +33,8 @@ describe('getStudents', () => {
     const result = getStudents(2, 10);
     expect(result.data[0].id).toBe("11");
   });
+   it('should return total as 25 on page 2', () => {
+    const result = getStudents(2, 10);
+    expect(result.total).toBe(25);
+  });
 });
