@@ -45,4 +45,8 @@ describe('getStudents', () => {
     const result = getStudents(3, 10);
     expect(result.data.length).toBe(5);
   });
+  it('should return correct first student ID on page 3', () => {
+    const result = getStudents(3, 10);
+    expect(result.data[0].id).toBe("21");
+  });
 });
