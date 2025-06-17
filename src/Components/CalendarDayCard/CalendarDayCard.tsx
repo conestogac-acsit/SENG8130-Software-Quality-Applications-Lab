@@ -1,12 +1,15 @@
 import React from "react";
-import { Evaluation } from "./Evaluation";
 
-interface CalendarDayCardProps {
+const CalendarDayCard: React.FC<{
     date: string;
-    evaluations: Evaluation[];
-}
-
-const CalendarDayCard: React.FC<CalendarDayCardProps> = ({ date, evaluations }) => {
+    evaluations: {
+        course: string;
+        title: string;
+        type: "Assignment" | "Mid Exam" | "Quiz" | "Project" | "Practical Lab" | "Final Exam";
+        weight: number;
+        dueDate: Date;
+    }[];
+}> = ({ date, evaluations }) => {
     return (
         <div className="bg-white shadow rounded p-4">
             <h2 className="text-xl font-bold mb-2">{date}</h2>
