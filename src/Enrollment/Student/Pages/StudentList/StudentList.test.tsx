@@ -22,4 +22,7 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
     it('renders the "Section" column', () => {
     expect(screen.getByText('Section')).toBeInTheDocument();
   });
+   it('renders the "Group" column', () => {
+    expect(screen.getByText('Group')).toBeInTheDocument();
+  });
 });
