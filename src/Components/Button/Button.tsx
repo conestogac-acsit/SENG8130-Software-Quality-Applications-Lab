@@ -1,13 +1,14 @@
+// src/components/Button.tsx
 import React, { useEffect } from 'react';
 
-interface EnrollButtonProps {
+interface ButtonProps {
   onClick?: () => void;
   onMount?: () => void;
   disabled?: boolean;
   label?: string;
 }
 
-const EnrollButton: React.FC<EnrollButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   onClick,
   onMount,
   disabled = false,
@@ -24,4 +25,4 @@ const EnrollButton: React.FC<EnrollButtonProps> = ({
   );
 };
 
-export default EnrollButton;
+export default Button;
