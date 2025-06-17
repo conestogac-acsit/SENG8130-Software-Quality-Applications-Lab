@@ -28,4 +28,7 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
    it('renders the "Actions" column', () => {
     expect(screen.getByText('Actions')).toBeInTheDocument();
   });
+  it('renders the "Prev" button', () => {
+    expect(screen.getByText('Prev')).toBeInTheDocument();
+  });
 });
