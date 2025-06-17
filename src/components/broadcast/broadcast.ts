@@ -6,13 +6,13 @@ let transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: '****',
-    pass: "****"  // App Password if 2FA is enabled
+    pass: "****"
   }
 });
 
-async function sendEmail( subject, message) {
+export async function sendEmail( subject:string, message:string) {
     const from = '';
-    const recipients = ''; // to be read from CSV
+    const recipients = '';
 
   try {
     await transporter.sendMail(
@@ -22,9 +22,9 @@ async function sendEmail( subject, message) {
         subject: subject, 
         text: message });
     return { success: true };
-  } catch (err) {
+  } catch (err:any) {
     console.error('Error sending mail', err);
     return { success: false, error: err.message };
   }
 }
-module.exports = { sendEmail };
+// module.exports = { sendEmail };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import {sendEmail} from './broadcast'
 export default function BroadcastMessage() {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
@@ -8,10 +8,7 @@ export default function BroadcastMessage() {
   const sendBroadcast = async () => {
     setStatus('Sending...');
     try {
-      const res = await window.require('electron').ipcRenderer.invoke(
-        'sendBroadcast',
-        { subject, message }
-      );
+    const res:any = await sendEmail(subject,message)
       setStatus(res.success ? 'Sent!' : `Error: ${res.error}`);
     } catch (err) {
       setStatus(`Unexpected error: ${err}`);
