@@ -1,2 +1,1 @@
-
-export { default as ModuleNotFound } from "./ModuleNotFound/index";
+export { default } from "./ModuleNotFound/ModuleNotFound";

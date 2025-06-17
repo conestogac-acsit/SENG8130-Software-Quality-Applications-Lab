@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ModuleNotFound from './index';
+import ModuleNotFound from './ModuleNotFound';
  
 describe('ModuleNotFound Component', () => {
   test('renders fallback UI with proper message', () => {
