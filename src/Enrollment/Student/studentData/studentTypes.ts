@@ -1,7 +1,9 @@
+type Email = string;
+
 export interface Student {
   id: string;
   name: string;
-  email: string;
+  email: Email;
   group: string;
   role: string;
   section: string;
