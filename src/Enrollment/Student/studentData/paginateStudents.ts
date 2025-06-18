@@ -1,5 +1,4 @@
-import { getAllStudents } from "./loadAllStudents";
-import { Student } from "./studentTypes";
+import { getAllStudents, Student } from ".";
 
 export function getStudents(
   page: number = 1,

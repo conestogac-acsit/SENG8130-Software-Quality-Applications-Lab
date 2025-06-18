@@ -1,5 +1,4 @@
-import { getStudents } from './paginateStudents';
-
+import { getStudents } from ".";
 describe('getStudents with empty dataset', () => {
   it('should return an empty array for page 1', () => {
     const result = getStudents(1, 10);
