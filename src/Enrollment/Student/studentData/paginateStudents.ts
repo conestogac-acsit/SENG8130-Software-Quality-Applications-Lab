@@ -1,4 +1,4 @@
-import { getAllStudents } from "./getAllStudents";
+import { getAllStudents } from "./loadAllStudents";
 import { Student } from "./studentTypes";
 
 export function getStudents(
