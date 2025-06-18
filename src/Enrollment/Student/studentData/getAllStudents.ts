@@ -1,5 +1,6 @@
 import { Student } from "./studentTypes";
 
-export interface StudentDataSource {
-  getAllStudents(): Student[];
-}
+// TEMP: placeholder implementation — will update once CSV integration is done
+export const getAllStudents = (): Student[] => {
+  return [];
+};
