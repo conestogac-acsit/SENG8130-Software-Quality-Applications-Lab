@@ -1,19 +1,35 @@
-export interface Koo {
+export interface FakeEvaluation {
   evaluationId: string;
   courseCode: string;
   evaluationType: string;
-  dueDay: string;
+  dueDay: Date; 
+}
+
+export class CsvHandler {
+  static lastSavedPath: string | null = null;
+  static lastSavedData: FakeEvaluation[] = [];
+
+  static saveDataToFile(filePath: string, data: FakeEvaluation[]) {
+    this.lastSavedPath = filePath;
+    this.lastSavedData = data;
+  }
+}
+
+export let savedEvaluations: FakeEvaluation[] = [];
+
+export function saveEvaluations(data: FakeEvaluation[]) {
+  savedEvaluations = data;
 }
 
 export function deleteEvaluation(
-  data: Koo[],
+  data: FakeEvaluation[],
   evaluationId: string,
   filePath: string | null
-): Koo[] {
+): FakeEvaluation[] {
   const updated = data.filter(ev => ev.evaluationId !== evaluationId);
 
-  if (filePath) (globalThis as any).CsvHandler.saveDataToFile(filePath, updated);
-  (globalThis as any).saveEvaluations(updated);
+  if (filePath) CsvHandler.saveDataToFile(filePath, updated);
+  saveEvaluations(updated);
 
   return updated;
 }

@@ -1,34 +1,37 @@
-import { deleteEvaluation, Koo } from './deleteEvaluationService';
-
-let capturedCsvSave: { path: string | null; data: Koo[] } = {
-  path: null,
-  data: [],
-};
-
-let capturedSavedEvaluations: Koo[] = [];
-
-(globalThis as any).CsvHandler = class {
-  static saveDataToFile(filePath: string, data: Koo[]) {
-    capturedCsvSave.path = filePath;
-    capturedCsvSave.data = data;
-  }
-};
-
-(globalThis as any).saveEvaluations = function (data: Koo[]) {
-  capturedSavedEvaluations = data;
-};
+import {
+  deleteEvaluation,
+  CsvHandler,
+  savedEvaluations,
+  FakeEvaluation
+} from './deleteEvaluationService';
 
 describe('deleteEvaluation', () => {
-  let originalData: Koo[];
+  let originalData: FakeEvaluation[];
 
   beforeEach(() => {
     originalData = [
-      { evaluationId: '101', courseCode: 'MATH101', evaluationType: 'Quiz', dueDay: '2025-07-01' },
-      { evaluationId: '102', courseCode: 'ENG102', evaluationType: 'Midterm', dueDay: '2025-07-10' },
-      { evaluationId: '103', courseCode: 'SCI103', evaluationType: 'Final', dueDay: '2025-07-20' }
+      {
+        evaluationId: '101',
+        courseCode: 'MATH101',
+        evaluationType: 'Quiz',
+        dueDay: new Date('2025-07-01')
+      },
+      {
+        evaluationId: '102',
+        courseCode: 'ENG102',
+        evaluationType: 'Midterm',
+        dueDay: new Date('2025-07-10')
+      },
+      {
+        evaluationId: '103',
+        courseCode: 'SCI103',
+        evaluationType: 'Final',
+        dueDay: new Date('2025-07-20')
+      }
     ];
-    capturedCsvSave = { path: null, data: [] };
-    capturedSavedEvaluations = [];
+
+    CsvHandler.lastSavedPath = null;
+    CsvHandler.lastSavedData = [];
   });
 
   it('should remove the evaluation with the specified ID', () => {
@@ -37,26 +40,26 @@ describe('deleteEvaluation', () => {
     expect(result.find(row => row.evaluationId === '102')).toBeUndefined();
   });
 
-  it('should call CsvHandler.saveDataToFile with correct data and path', () => {
+  it('should save the updated data to the given file path', () => {
     const result = deleteEvaluation(originalData, '102', 'file.csv');
-    expect(capturedCsvSave.path).toBe('file.csv');
-    expect(capturedCsvSave.data).toEqual(result);
+    expect(CsvHandler.lastSavedPath).toBe('file.csv');
+    expect(CsvHandler.lastSavedData).toEqual(result);
   });
 
-  it('should call saveEvaluations with the correct updated list', () => {
+  it('should update the saved evaluations list', () => {
     const result = deleteEvaluation(originalData, '102', 'file.csv');
-    expect(capturedSavedEvaluations).toEqual(result);
+    expect(savedEvaluations).toEqual(result);
   });
 
-  it('should return the same list if ID is not found', () => {
+  it('should return the original data if no evaluation ID matches', () => {
     const result = deleteEvaluation(originalData, '999', 'file.csv');
     expect(result).toEqual(originalData);
   });
 
-  it('should not call CsvHandler.saveDataToFile if filePath is null', () => {
+  it('should not save to file if filePath is null', () => {
     const result = deleteEvaluation(originalData, '102', null);
-    expect(capturedCsvSave.path).toBeNull();
-    expect(capturedCsvSave.data).toEqual([]);
-    expect(capturedSavedEvaluations).toEqual(result);
+    expect(CsvHandler.lastSavedPath).toBeNull();
+    expect(CsvHandler.lastSavedData).toEqual([]);
+    expect(savedEvaluations).toEqual(result);
   });
 });
