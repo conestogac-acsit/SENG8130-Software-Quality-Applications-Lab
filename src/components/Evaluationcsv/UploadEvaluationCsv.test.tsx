@@ -4,7 +4,7 @@ import UploadEvaluationCsv from './UploadEvaluationCsv';
 describe('UploadEvaluationCsv Component', () => {
   it('should render the label for uploading', () => {
     render(<UploadEvaluationCsv onUpload={() => {}} />);
-    const label = screen.getByText(/Upload Evaluation CSV/i);
+    const label = screen.getByText(/Upload Evaluation CSV/u);
     expect(label).toBeInTheDocument();
   });
 
