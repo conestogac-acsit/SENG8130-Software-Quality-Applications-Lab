@@ -1,26 +1,11 @@
-import { parseStudentCsv } from '../ParseStudentCsv/ParseStudentCsv'
-type EnrollmentStatus = "enrolled" | "unenrolled" | "Active" | "Deactive";
-
-interface Student {
-  studentId: string;
-  name: string;
-  email: string;
-  section: string;
-  group: string;
-  role: string;
-  imageUrl?: string;
-  notes?: string;
-  loopStatus: EnrollmentStatus;
-  githubStatus: EnrollmentStatus;
-}
-
+import { parseCsv, Student } from './ParseCsv';
 
 const createFile = (content: string): File => {
   return new File([content], 'test.csv', { type: 'text/csv' });
 };
 
-describe('parseStudentCsv', () => {
-  it('calls callback when all required fields are present', (done) => {
+describe('parseCsv', () => {
+  it('calls callback when all required fields are present for Student', (done) => {
     const headers = [
       'studentId', 'name', 'email', 'section', 'group', 'role',
       'imageUrl', 'notes', 'loopStatus', 'githubStatus'
@@ -34,8 +19,9 @@ describe('parseStudentCsv', () => {
     const csv = `${headers}\n${row}`;
     const file = createFile(csv);
 
-    parseStudentCsv(
+    parseCsv(
       file,
+      "Student",
       (data: Student[]) => {
         try {
           expect(Array.isArray(data)).toBe(true);
@@ -48,17 +34,16 @@ describe('parseStudentCsv', () => {
           done(error);
         }
       },
-      (err) => {
-        done(err || 'Unexpected error');
-      }
+      (err) => done(err || 'Unexpected error')
     );
   });
 
   it('calls onError for missing fields', (done) => {
     const file = createFile('name,email\nTest,test@example.com');
 
-    parseStudentCsv(
+    parseCsv(
       file,
+      "Student",
       () => {},
       (msg) => {
         try {
@@ -75,8 +60,9 @@ describe('parseStudentCsv', () => {
   it('calls onError for empty file', (done) => {
     const file = createFile('');
 
-    parseStudentCsv(
+    parseCsv(
       file,
+      "Student",
       () => {},
       (msg) => {
         try {
