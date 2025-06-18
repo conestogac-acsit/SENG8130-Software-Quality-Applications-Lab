@@ -1,19 +1,54 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import BroadcastForm from './BroadcastForm';
 
-test('calls onSend with correct values', () => {
-const onSendMock = jest.fn();
-render(<BroadcastForm onSend={onSendMock} />);
+describe('BroadcastForm', () => {
+  test('calls onSend with correct values', async () => {
+    const user = userEvent.setup();
+    const onSendMock = jest.fn();
+    render(<BroadcastForm onSend={onSendMock} />);
 
-fireEvent.change(screen.getByPlaceholderText(/Subject/i), {
-target: { value: 'Test Subject' },
-});
-fireEvent.change(screen.getByPlaceholderText(/Type your broadcast message/i), {
-target: { value: 'Test Message' },
-});
+    await user.click(screen.getByPlaceholderText(/Subject/i));
+    await user.type(screen.getByPlaceholderText(/Subject/i), 'Test Subject');
 
-fireEvent.click(screen.getByText(/Send Broadcast/i));
+    await user.click(screen.getByPlaceholderText(/Type your broadcast message/i));
+    await user.type(screen.getByPlaceholderText(/Type your broadcast message/i), 'Test Message');
 
-expect(onSendMock).toHaveBeenCalledWith('Test Subject', 'Test Message');
+    await user.click(screen.getByText(/Send Broadcast/i));
+
+    expect(onSendMock).toHaveBeenCalledWith('Test Subject', 'Test Message');
+  });
+
+  test('does not call onSend if subject is missing', async () => {
+    const user = userEvent.setup();
+    const onSendMock = jest.fn();
+    render(<BroadcastForm onSend={onSendMock} />);
+
+    await user.type(screen.getByPlaceholderText(/Type your broadcast message/i), 'Only message');
+    await user.click(screen.getByText(/Send Broadcast/i));
+
+    expect(onSendMock).not.toHaveBeenCalled();
+  });
+
+  test('does not call onSend if message is missing', async () => {
+    const user = userEvent.setup();
+    const onSendMock = jest.fn();
+    render(<BroadcastForm onSend={onSendMock} />);
+
+    await user.type(screen.getByPlaceholderText(/Subject/i), 'Only subject');
+    await user.click(screen.getByText(/Send Broadcast/i));
+
+    expect(onSendMock).not.toHaveBeenCalled();
+  });
+
+  test('does not call onSend if both subject and message are missing', async () => {
+    const user = userEvent.setup();
+    const onSendMock = jest.fn();
+    render(<BroadcastForm onSend={onSendMock} />);
+
+    await user.click(screen.getByText(/Send Broadcast/i));
+
+    expect(onSendMock).not.toHaveBeenCalled();
+  });
 });
