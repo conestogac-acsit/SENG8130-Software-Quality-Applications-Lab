@@ -1,10 +1,14 @@
-export interface Moo {
+export interface EvaluationRow {
   evaluationId: string;
   courseCode: string;
   evaluationType: string;
-  dueDay?: string;
+  dueDay?: Date;
 }
 
-export function getEvaluationsForDate(data: Moo[], date: string): Moo[] {
-  return data.filter(ev => ev.dueDay?.trim().slice(0, 10) === date);
+export function getEvaluationsForDate(data: EvaluationRow[], date: Date): EvaluationRow[] {
+  if (!(date instanceof Date) || isNaN(date.getTime())) {
+    throw new Error('Invalid date object');
+  }
+
+  return data.filter(ev => ev.dueDay?.toDateString() === date.toDateString());
 }

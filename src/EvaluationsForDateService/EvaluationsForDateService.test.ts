@@ -1,54 +1,73 @@
-import { getEvaluationsForDate } from './EvaluationsForDateService';
-
-interface Moo {
-  evaluationId: string;
-  courseCode: string;
-  evaluationType: string;
-  dueDay?: string;
-}
+import { getEvaluationsForDate, EvaluationRow } from './EvaluationsForDateService';
 
 describe('getEvaluationsForDate', () => {
-  const data: Moo[] = [
-    {
-      evaluationId: 'eval-001',
-      courseCode: 'MATH101',
-      evaluationType: 'Midterm',
-      dueDay: '2025-06-17T10:30:00Z',
-    },
-    {
-      evaluationId: 'eval-002',
-      courseCode: 'ENG102',
-      evaluationType: 'Essay',
-      dueDay: '2025-06-18T00:00:00Z',
-    },
-    {
-      evaluationId: 'eval-003',
-      courseCode: 'SCI103',
-      evaluationType: 'Lab',
-      dueDay: '2025-06-17T23:59:59Z',
-    },
-    {
-      evaluationId: 'eval-004',
-      courseCode: 'HIS104',
-      evaluationType: 'Presentation',
-      dueDay: undefined, 
-    },
-  ];
+  it('should return matching evaluations for given date', () => {
+    const input: EvaluationRow[] = [
+      {
+        evaluationId: '1',
+        courseCode: 'PROG8020',
+        evaluationType: 'Assignment',
+        dueDay: new Date('2025-06-18')
+      },
+      {
+        evaluationId: '2',
+        courseCode: 'PROG8020',
+        evaluationType: 'Quiz',
+        dueDay: new Date('2025-06-19')
+      }
+    ];
 
-  it('should return evaluations matching the given date (YYYY-MM-DD)', () => {
-    const result = getEvaluationsForDate(data, '2025-06-17');
-    expect(result.length).toBe(2);
-    expect(result.map(e => e.evaluationId)).toEqual(['eval-001', 'eval-003']);
+    const result = getEvaluationsForDate(input, new Date('2025-06-18'));
+    expect(result.length).toBe(1);
+    expect(result[0].evaluationId).toBe('1');
   });
 
-  it('should return an empty array when no evaluations match the date', () => {
-    const result = getEvaluationsForDate(data, '2025-06-19');
+  it('should return empty array when no dates match', () => {
+    const input: EvaluationRow[] = [
+      {
+        evaluationId: '1',
+        courseCode: 'PROG8020',
+        evaluationType: 'Assignment',
+        dueDay: new Date('2025-06-19')
+      }
+    ];
+
+    const result = getEvaluationsForDate(input, new Date('2025-06-18'));
     expect(result).toEqual([]);
   });
 
-  it('should skip evaluations with undefined dueDay', () => {
-    const result = getEvaluationsForDate(data, '2025-06-18');
+  it('should skip entries with undefined dueDay', () => {
+    const input: EvaluationRow[] = [
+      {
+        evaluationId: '1',
+        courseCode: 'PROG8020',
+        evaluationType: 'Assignment',
+        dueDay: undefined
+      },
+      {
+        evaluationId: '2',
+        courseCode: 'PROG8020',
+        evaluationType: 'Quiz',
+        dueDay: new Date('2025-06-18')
+      }
+    ];
+
+    const result = getEvaluationsForDate(input, new Date('2025-06-18'));
     expect(result.length).toBe(1);
-    expect(result[0].evaluationId).toBe('eval-002');
+    expect(result[0].evaluationId).toBe('2');
+  });
+
+  it('should throw error when an invalid Date object is passed', () => {
+    const input: EvaluationRow[] = [
+      {
+        evaluationId: '1',
+        courseCode: 'PROG8020',
+        evaluationType: 'Assignment',
+        dueDay: new Date('2025-06-18')
+      }
+    ];
+
+    const invalidDate = new Date('invalid-date'); 
+    expect(() => getEvaluationsForDate(input, invalidDate)).toThrow('Invalid date object');
   });
 });
