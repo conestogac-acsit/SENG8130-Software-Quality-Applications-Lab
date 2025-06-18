@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getStudents } from "../../studentData/getStudents";
+import { getStudents } from "../../studentData/paginateStudents";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
