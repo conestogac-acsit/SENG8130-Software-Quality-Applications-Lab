@@ -1,5 +1,3 @@
-export type EnrollmentStatus = "enrolled" | "unenrolled";
-
 export interface Student {
   id: string;
   name: string;
@@ -9,6 +7,6 @@ export interface Student {
   section: string;
   imageUrl: string;
   notes: string;
-  loopStatus: string;
-  githubStatus: string;
+  isLoopEnrolled: boolean;
+  isGithubEnrolled: boolean;
 }
