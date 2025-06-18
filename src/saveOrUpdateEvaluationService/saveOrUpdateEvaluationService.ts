@@ -1,22 +1,22 @@
-export interface uno {
+export interface EvalEntry {
   evaluationId: string;
   courseCode: string;
   evaluationType: string;
   dueDay: string;
 }
 
-export function saveEvaluations(data: uno[]): void {
+export function saveEvaluations(data: EvalEntry[]): void {
   console.log('Saving evaluations:', data);
 }
 
 export function saveOrUpdateEvaluation(
-  data: uno[],
-  form: Partial<uno>,
+  data: EvalEntry[],
+  form: Partial<EvalEntry>,
   date: string,
   filePath: string | null,
-  saveFn: (data: uno[]) => void = saveEvaluations
-): uno[] {
-  const updatedForm: uno = {
+  saveFn: (data: EvalEntry[]) => void = saveEvaluations
+): EvalEntry[] {
+  const updatedForm: EvalEntry = {
     evaluationId: form.evaluationId || crypto.randomUUID(),
     courseCode: form.courseCode || '',
     evaluationType: form.evaluationType || '',

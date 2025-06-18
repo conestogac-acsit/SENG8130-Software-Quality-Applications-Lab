@@ -1,8 +1,8 @@
 import { saveOrUpdateEvaluation } from './saveOrUpdateEvaluationService';
-import type { uno } from './saveOrUpdateEvaluationService';
+import type { EvalEntry } from './saveOrUpdateEvaluationService';
 
 // Simulated in-memory storage for testing
-let storedData: uno[] = [];
+let storedData: EvalEntry[] = [];
 
 describe('saveOrUpdateEvaluation', () => {
   beforeEach(() => {
@@ -10,8 +10,8 @@ describe('saveOrUpdateEvaluation', () => {
   });
 
   it('should add a new evaluation if it does not exist', () => {
-    const inputData: uno[] = [];
-    const form: Partial<uno> = {
+    const inputData: EvalEntry[] = [];
+    const form: Partial<EvalEntry> = {
       courseCode: 'PROG8051',
       evaluationType: 'Test'
     };
@@ -27,7 +27,7 @@ describe('saveOrUpdateEvaluation', () => {
   });
 
   it('should update an existing evaluation if evaluationId matches', () => {
-    const inputData: uno[] = [
+    const inputData: EvalEntry[] = [
       {
         evaluationId: 'abc123',
         courseCode: 'OLD',
@@ -36,7 +36,7 @@ describe('saveOrUpdateEvaluation', () => {
       }
     ];
 
-    const form: Partial<uno> = {
+    const form: Partial<EvalEntry> = {
       evaluationId: 'abc123',
       courseCode: 'NEW',
       evaluationType: 'Quiz'
@@ -54,8 +54,8 @@ describe('saveOrUpdateEvaluation', () => {
   });
 
   it('should save updated data to storage using saveEvaluations', () => {
-    const inputData: uno[] = [];
-    const form: Partial<uno> = {
+    const inputData: EvalEntry[] = [];
+    const form: Partial<EvalEntry> = {
       courseCode: 'TEST101',
       evaluationType: 'Midterm'
     };
