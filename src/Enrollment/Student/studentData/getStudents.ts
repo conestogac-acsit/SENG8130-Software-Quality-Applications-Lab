@@ -1,5 +1,5 @@
 import { getAllStudents } from "./getAllStudents";
-import { Student } from "./StudentInfo";
+import { Student } from "./studentTypes";
 
 export function getStudents(
   page: number = 1,
