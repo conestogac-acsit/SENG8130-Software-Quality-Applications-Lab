@@ -5,4 +5,9 @@ describe('getStudents with empty dataset', () => {
     const result = getStudents(1, 10);
     expect(result.data).toEqual([]);
   });
+  it('should return total = 0 for page 1', () => {
+    const result = getStudents(1, 10);
+    expect(result.total).toBe(0);
+  });
+
 });
