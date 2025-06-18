@@ -24,7 +24,6 @@ function App() {
             </div>
           }
         />
-        {/* Fallback Route */}
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
     </Router>
