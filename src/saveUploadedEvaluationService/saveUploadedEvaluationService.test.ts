@@ -1,30 +1,30 @@
-import type { Doo } from './saveUploadedEvaluationService'; 
+import type { CourseEval } from './saveUploadedEvaluationService'; 
 
 const EVALUATION_DATA_STORAGE_KEY = 'evaluationData';
 const EVALUATION_FILENAME_STORAGE_KEY = 'evaluationFilename';
 
 let storage: Record<string, any> = {};
-let csvOutput: { fileName: string; data: Doo[] } | null = null;
+let csvOutput: { fileName: string; data: CourseEval[] } | null = null;
 
 function saveToStorage(key: string, value: any) {
   storage[key] = value;
 }
 
 const CsvHandler = {
-  saveDataToFile(fileName: string, data: Doo[]) {
+  saveDataToFile(fileName: string, data: CourseEval[]) {
     csvOutput = { fileName, data };
   }
 };
 
 
-function saveUploadedEvaluationData(data: Doo[], fileName: string) {
+function saveUploadedEvaluationData(data: CourseEval[], fileName: string) {
   saveToStorage(EVALUATION_DATA_STORAGE_KEY, data);
   saveToStorage(EVALUATION_FILENAME_STORAGE_KEY, fileName);
   CsvHandler.saveDataToFile(fileName, data);
 }
 
 describe('saveUploadedEvaluationData', () => {
-  const testData: Doo[] = [
+  const testData: CourseEval[] = [
     {
       evaluationId: '001',
       courseCode: 'ENG101',
