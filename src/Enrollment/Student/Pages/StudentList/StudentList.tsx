@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getStudents } from "../../Services/getStudents";
+import { getStudents } from "../../studentData/getStudents";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -15,25 +15,25 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents( page, pageSize);
+  const { data: students, total, totalPages } = getStudents(page, pageSize);
 
-  const updatePageInUrl = (newPage: number) => {
+  const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
     params.set("page", newPage.toString());
-    navigate(${location.pathname}?${params.toString()}, { replace: false });
-  };
+    navigate(`${location.pathname}?${params.toString()}`, { replace: false });
+  }, [location, navigate]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     const newPage = Math.max(page - 1, 1);
     setPage(newPage);
     updatePageInUrl(newPage);
-  };
+  }, [page, updatePageInUrl]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     const newPage = Math.min(page + 1, totalPages);
     setPage(newPage);
     updatePageInUrl(newPage);
-  };
+  }, [page, totalPages, updatePageInUrl]);
 
   return (
     <div className="p-6">
