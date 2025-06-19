@@ -1,5 +1,5 @@
-import { getAllStudents, StudentDataGetter } from './loadAllStudents'; 
-import { Student } from './studentTypes'; 
+import { getAllStudents, StudentDataGetter } from '.'; 
+import { Student } from '.'; 
 
 describe('getAllStudents', () => {
      const student: Student = {id: '1', name: 'Alice Johnson',  email: 'alice@example.com',group: 'Group A',role: 'Student',section: 'Section 1',imageUrl: 'https://example.com/alice.jpg',notes: 'Good participation',isLoopEnrolled: true,isGithubEnrolled: false};

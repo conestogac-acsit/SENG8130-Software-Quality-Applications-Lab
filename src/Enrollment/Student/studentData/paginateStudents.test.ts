@@ -1,5 +1,5 @@
-import { getStudents } from './paginateStudents'; // Adjust the path
-import type { StudentDataGetter } from './loadAllStudents';
+import { getStudents } from '.';
+import type { StudentDataGetter } from '.';
 
 describe('getStudents', () => {
 
