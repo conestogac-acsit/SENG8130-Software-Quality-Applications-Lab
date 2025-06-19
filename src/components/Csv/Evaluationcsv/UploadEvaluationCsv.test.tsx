@@ -1,18 +1,21 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen,} from '@testing-library/react';
 import UploadEvaluationCsv from './UploadEvaluationCsv';
 
 describe('UploadEvaluationCsv Component', () => {
-  it('should render the label for uploading', () => {
+  it('should render the "Select CSV File" button', () => {
     render(<UploadEvaluationCsv onUpload={() => {}} />);
-    const label = screen.getByText(/Upload Evaluation CSV/u);
-    expect(label).toBeInTheDocument();
+    const selectButton = screen.getByText(/Select CSV File/u);
+    expect(selectButton).toBeInTheDocument();
   });
 
-  it('should render the file input element', () => {
+  it('should render the hidden file input with correct attributes', () => {
     render(<UploadEvaluationCsv onUpload={() => {}} />);
-    const fileInput = screen.getByLabelText(/Upload Evaluation CSV/u);
-    expect(fileInput).toBeInTheDocument();
-    expect(fileInput).toHaveAttribute('type', 'file');
-    expect(fileInput).toHaveAttribute('accept', '.csv');
+    const fileInput = screen.getByRole('textbox').previousSibling; 
+
+    const hiddenFileInput = document.querySelector('input[type="file"]');
+
+    expect(hiddenFileInput).toBeInTheDocument();
+    expect(hiddenFileInput).toHaveAttribute('type', 'file');
+    expect(hiddenFileInput).toHaveAttribute('accept', '.csv');
   });
 });
