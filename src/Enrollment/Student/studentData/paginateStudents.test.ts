@@ -13,5 +13,11 @@ describe('getStudents', () => {
       expect(result.total).toBe(4); 
       expect(result.totalPages).toBe(2);
     });
+     it('should return the second page with the correct data', () => {
+      const result = getStudents(studentGetter, 2, 2); 
+      expect(result.data).toEqual(students.slice(2, 4));
+      expect(result.total).toBe(4); 
+      expect(result.totalPages).toBe(2);
+    });
   });
 });
