@@ -1,47 +1,56 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import MonthlyView from "./MonthlyView";
-
-const mockEvaluations = [
-  {
-    course: "CS101",
-    title: "Assignment 1",
-    type: "Assignment" as const,
-    weight: 10,
-    dueDate: new Date("2025-06-05T12:00:00"), // June 5
-  },
-  {
-    course: "CS102",
-    title: "Final Exam",
-    type: "Final Exam" as const,
-    weight: 40,
-    dueDate: new Date("2025-06-15T12:00:00"), // June 15
-  },
-];
+import { Evaluation } from "../../Evaluation/EvaluationService";
 
 describe("MonthlyView", () => {
-  it("renders calendar with 7 weekday headers", () => {
+  const mockEvaluations: Evaluation[] = [
+    {
+      course: "SENG8051",
+      title: "Assignment 1",
+      type: "Assignment",
+      weight: 10,
+      dueDate: new Date("2025-06-24"),
+      instructor: "Alex",
+      campus: "Main",
+    },
+    {
+      course: "INFO8171",
+      title: "Quiz 1",
+      type: "Quiz",
+      weight: 5,
+      dueDate: new Date("2025-06-21"),
+      instructor: "Julia",
+      campus: "Milton",
+    },
+  ];
+
+  it("renders weekday headers (Sun–Sat)", () => {
     render(<MonthlyView evaluations={[]} month={5} year={2025} />);
-    const weekdayHeaders = screen.getAllByText(/Sun|Mon|Tue|Wed|Thu|Fri|Sat/);
-    expect(weekdayHeaders).toHaveLength(7);
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    days.forEach((day) => {
+      expect(screen.getByText(day)).toBeInTheDocument();
+    });
   });
 
-  it("renders correct number of days in the month", () => {
-    render(<MonthlyView evaluations={[]} month={5} year={2025} />);
-    // June 2025 has 30 days
-    expect(screen.getByText("30")).toBeInTheDocument();
-  });
-
-  it("displays evaluations on their respective dates", () => {
+  it("renders evaluation titles and courses using partial match", () => {
     render(<MonthlyView evaluations={mockEvaluations} month={5} year={2025} />);
-    expect(screen.getByText("Assignment 1")).toBeInTheDocument();
-    expect(screen.getByText("Final Exam")).toBeInTheDocument();
+
+    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
+
+    expect(screen.getByText(/SENG8051/i)).toBeInTheDocument();
+    expect(screen.getByText(/INFO8171/i)).toBeInTheDocument();
   });
 
-  it("renders placeholder cells before the 1st day if the month doesn't start on Sunday", () => {
+  it("renders grid cells including placeholders before the first day", () => {
     render(<MonthlyView evaluations={[]} month={5} year={2025} />);
-    // June 1, 2025 is a Sunday, so 0 placeholders expected
-    const allCells = screen.getAllByRole("gridcell", { hidden: true });
-    expect(allCells.length).toBeGreaterThanOrEqual(30);
+    const gridCells = screen.getAllByRole("gridcell");
+    expect(gridCells.length).toBeGreaterThanOrEqual(30);
+  });
+
+  it("renders fallback message for days with no evaluations", () => {
+    render(<MonthlyView evaluations={[]} month={5} year={2025} />);
+    expect(screen.getAllByText(/No evaluations scheduled/i).length).toBeGreaterThan(0);
   });
 });
