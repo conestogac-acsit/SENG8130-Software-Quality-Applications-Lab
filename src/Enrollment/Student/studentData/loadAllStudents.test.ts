@@ -21,4 +21,8 @@ describe('getAllStudents', () => {
     const result = getAllStudents(studentGetter);
     expect(result.length).toBe(1);
   });
+   it('should throw an error if studentGetter returns invalid data (null)', () => {
+    const studentGetter: StudentDataGetter = () => null as any;
+    expect(() => getAllStudents(studentGetter)).toThrow("Student data is not an array");
+  });
 });
