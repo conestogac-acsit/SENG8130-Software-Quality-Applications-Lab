@@ -1,4 +1,4 @@
-import { StorageService, LocalStorage } from '../../localStorageService';
+import { StorageService } from '../../localStorageService';
 
 export interface IEvaluationService {
   saveEvaluations(data: Evaluation[]): void;
