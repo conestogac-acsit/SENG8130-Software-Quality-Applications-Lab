@@ -1,30 +1,38 @@
-import type { CourseEval } from './saveUploadedEvaluationService'; 
+import type { Evaluation } from '../Evaluation/Service/EvaluationService';
 
 const EVALUATION_DATA_STORAGE_KEY = 'evaluationData';
 const EVALUATION_FILENAME_STORAGE_KEY = 'evaluationFilename';
 
-let storage: Record<string, any> = {};
-let csvOutput: { fileName: string; data: CourseEval[] } | null = null;
+type StorageMap = {
+  [EVALUATION_DATA_STORAGE_KEY]: Evaluation [];
+  [EVALUATION_FILENAME_STORAGE_KEY]: string;
+};
 
-function saveToStorage(key: string, value: any) {
+let storage: StorageMap = {
+  [EVALUATION_DATA_STORAGE_KEY]: [],
+  [EVALUATION_FILENAME_STORAGE_KEY]: ''
+};
+
+let csvOutput: { fileName: string; data: Evaluation [] } | null = null;
+
+function saveToStorage<T extends keyof StorageMap>(key: T, value: StorageMap[T]) {
   storage[key] = value;
 }
 
 const CsvHandler = {
-  saveDataToFile(fileName: string, data: CourseEval[]) {
+  saveDataToFile(fileName: string, data: Evaluation []) {
     csvOutput = { fileName, data };
   }
 };
 
-
-function saveUploadedEvaluationData(data: CourseEval[], fileName: string) {
+function saveUploadedEvaluationData(data: Evaluation [], fileName: string) {
   saveToStorage(EVALUATION_DATA_STORAGE_KEY, data);
   saveToStorage(EVALUATION_FILENAME_STORAGE_KEY, fileName);
   CsvHandler.saveDataToFile(fileName, data);
 }
 
 describe('saveUploadedEvaluationData', () => {
-  const testData: CourseEval[] = [
+  const testData: Evaluation [] = [
     {
       evaluationId: '001',
       courseCode: 'ENG101',
@@ -32,11 +40,11 @@ describe('saveUploadedEvaluationData', () => {
       dueDay: 'Wednesday',
     },
   ];
-  
   const fileName = 'eng101-assignments.csv';
 
   beforeEach(() => {
-    storage = {};
+    storage[EVALUATION_DATA_STORAGE_KEY] = [];
+    storage[EVALUATION_FILENAME_STORAGE_KEY] = '';
     csvOutput = null;
   });
 
