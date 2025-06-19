@@ -17,7 +17,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
         month: "short",
         day: "numeric",
         timeZone: "America/Toronto",
-      }).format(new Date(ev.dueDate)); // Ensure Date object
+      }).format(ev.dueDate); 
 
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
