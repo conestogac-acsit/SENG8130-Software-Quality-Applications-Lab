@@ -1,5 +1,10 @@
 import { StorageService, LocalStorage } from '../../localStorageService';
 
+export interface IEvaluationService {
+  saveEvaluations(data: Evaluation[]): void;
+  loadEvaluations(): Evaluation[];
+}
+
 export type EvaluationType =
   | "Assignment"
   | "Mid Exam"
@@ -20,7 +25,7 @@ export interface Evaluation {
 
 const EVALUATION_DATA_STORAGE_KEY = 'Evaluation_Data_Storage';
 
-export class EvaluationService {
+export class EvaluationService implements IEvaluationService {
   storageService: StorageService;
   
   constructor(storageService: StorageService) {
