@@ -1,10 +1,6 @@
 import React, { useRef, useState } from "react";
 
-interface UploadEvaluationCsvProps {
-  onUpload: (file: File) => void;
-}
-
-const UploadEvaluationCsv: React.FC<UploadEvaluationCsvProps> = ({ onUpload }) => {
+const UploadEvaluationCsv: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -29,14 +25,16 @@ const UploadEvaluationCsv: React.FC<UploadEvaluationCsvProps> = ({ onUpload }) =
 
   const handleUpload = () => {
     if (selectedFile) {
-      onUpload(selectedFile);
+      console.log("Uploading file:", selectedFile);
       setErrorMessage(null);
+      
+    } else {
+      setErrorMessage("Please select a CSV file first.");
     }
   };
 
   return (
     <div className="csv-upload-container">
-
       <button type="button" onClick={handleSelectFile}>
         Select CSV File
       </button>
