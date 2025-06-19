@@ -1,10 +1,11 @@
-import { getAllStudents, Student } from ".";
+import { getAllStudents, Student, StudentDataGetter} from ".";
 
 export function getStudents(
+  studentGetter: StudentDataGetter,
   page: number = 1,
   pageSize: number = 10
 ): { data: Student[]; total: number; totalPages: number } {
-  const students = getAllStudents();
+  const students = getAllStudents(studentGetter);
   if (!students || !Array.isArray(students)) return { data: [], total: 0, totalPages: 0 };
 
   const total = students.length;
