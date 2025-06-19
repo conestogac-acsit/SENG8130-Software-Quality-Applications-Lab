@@ -1,7 +1,27 @@
 import React from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import EnrollStatus from '../EnrollStatus';
+import { within } from '@testing-library/react';
 
+const mockStudents = [
+  { githubStatus: 'enrolled', loopStatus: 'unenrolled' },
+  { githubStatus: 'unenrolled', loopStatus: 'enrolled' },
+  { githubStatus: 'enrolled', loopStatus: 'enrolled' },
+  { githubStatus: 'enrolled', loopStatus: 'unenrolled' },
+];
+
+// Override the service method
+StudentLoadService.createDefault = () => ({
+  loadStudents: async () => mockStudents
+}) as any;
+
+beforeAll(() => {
+  global.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+});
 
 
 describe('EnrollStatus Dashboard', () => {
