@@ -1,13 +1,6 @@
 import React, { useMemo } from "react";
 import { CalendarDayCard } from "../../Components";
-
-type Evaluation = {
-  course: string;
-  title: string;
-  type: "Assignment" | "Mid Exam" | "Quiz" | "Project" | "Practical Lab" | "Final Exam";
-  weight: number;
-  dueDate: Date;
-};
+import { Evaluation } from "../../Evaluation/EvaluationService";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -24,7 +17,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
         month: "short",
         day: "numeric",
         timeZone: "America/Toronto",
-      }).format(ev.dueDate);
+      }).format(new Date(ev.dueDate)); // Ensure Date object
 
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
