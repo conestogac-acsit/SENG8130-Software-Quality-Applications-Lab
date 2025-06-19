@@ -19,5 +19,11 @@ describe('getStudents', () => {
       expect(result.total).toBe(4); 
       expect(result.totalPages).toBe(2);
     });
+    it('should return an empty result for a page beyond the available data', () => {
+      const result = getStudents(studentGetter, 3, 2);
+      expect(result.data).toEqual([]); 
+      expect(result.total).toBe(4);
+      expect(result.totalPages).toBe(2);
+    });
   });
 });
