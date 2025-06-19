@@ -26,4 +26,15 @@ describe('getStudents', () => {
       expect(result.totalPages).toBe(2);
     });
   });
+  describe('Defaults to page 1 and pageSize 10', () => {
+    const students = Array.from({ length: 15 }, (_, i) => i + 1);
+    const studentGetter: StudentDataGetter = () => students as any;
+
+    it('should return the first 10 students by default', () => {
+      const result = getStudents(studentGetter); 
+      expect(result.data.length).toBe(10); 
+      expect(result.total).toBe(15); 
+      expect(result.totalPages).toBe(2); 
+    });
+  })
 });
