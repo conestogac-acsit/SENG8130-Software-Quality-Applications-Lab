@@ -22,4 +22,9 @@ describe('getAllStudents', () => {
     const result = getAllStudents(studentGetter);
     expect(result).toEqual([student]);
   });
+  it('should return an empty array if studentGetter returns empty array', () => {
+    const studentGetter: StudentDataGetter = () => [];
+    const result = getAllStudents(studentGetter);
+    expect(result).toEqual([]);
+  });
 });
