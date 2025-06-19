@@ -25,4 +25,8 @@ describe('getAllStudents', () => {
     const studentGetter: StudentDataGetter = () => null as any;
     expect(() => getAllStudents(studentGetter)).toThrow("Student data is not an array");
   });
+   it('should throw an error if studentGetter returns invalid data (not an array)', () => {
+    const studentGetter: StudentDataGetter = () => ({ name: 'Invalid Data' } as any);
+    expect(() => getAllStudents(studentGetter)).toThrow("Student data is not an array");
+  });
 });
