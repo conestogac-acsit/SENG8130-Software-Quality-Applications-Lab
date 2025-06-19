@@ -1,36 +1,129 @@
-
 import { getEvaluationsByDayMap } from './getEvaluationsByDayMap';
-import type { EvaluationRow } from './evaluation';
+import type { Evaluation } from '../../EvaluationService';
 
 describe('getEvaluationsByDayMap', () => {
-  const sampleData: EvaluationRow[] = [
-    { evaluationId: '1', courseCode: 'CS101', evaluationType: 'Quiz', dueDay: '2024-04-10' },
-    { evaluationId: '2', courseCode: 'CS102', evaluationType: 'Midterm', dueDay: '2024-04-10' },
-    { evaluationId: '3', courseCode: 'CS103', evaluationType: 'Final', dueDay: '2024-04-11' },
-    { evaluationId: '4', courseCode: 'CS104', evaluationType: 'Assignment', dueDay: '2024-04-12' },
-    { evaluationId: '5', courseCode: 'CS105', evaluationType: 'Lab', dueDay: '2024-04-15' },
-    { evaluationId: '6', courseCode: 'CS106', evaluationType: 'Test', dueDay: '2024-03-31' },
+  const evaluations: Evaluation[] = [
+    {
+      course: 'SENG8130',
+      title: 'Software Quality Applications Lab',
+      type: 'Assignment',
+      weight: 10,
+      dueDate: new Date('2025-06-17'),
+      instructor: 'Dr. Lee',
+      campus: 'Waterloo',
+    },
+    {
+      course: 'SENG8130',
+      title: 'Software Quality Applications Lab',
+      type: 'Quiz',
+      weight: 5,
+      dueDate: new Date('2025-06-18'),
+      instructor: 'Dr. Lee',
+      campus: 'Doon',
+    },
+    {
+      course: 'SENG8130',
+      title: 'Software Quality Applications Lab',
+      type: 'Mid Exam',
+      weight: 30,
+      dueDate: new Date('2025-06-17'),
+      instructor: 'Dr. Lee',
+      campus: 'Waterloo',
+    },
+    {
+      course: 'SENG8130',
+      title: 'Software Quality Applications Lab',
+      type: 'Project',
+      weight: 40,
+      dueDate: new Date('2025-06-20'),
+      instructor: 'Dr. Lee',
+      campus: 'Cambridge',
+    },
+    {
+      course: 'SENG8071',
+      title: 'Database Testing',
+      type: 'Assignment',
+      weight: 10,
+      dueDate: new Date('2025-07-01'),
+      instructor: 'Dr. Edwards',
+      campus: 'Waterloo',
+    },
   ];
 
-  const startDate = new Date('2024-04-10');
-  const endDate = new Date('2024-04-15');
+  it('groups evaluations correctly by date string', () => {
+    const start = new Date('2025-06-17');
+    const end = new Date('2025-06-20');
 
-  it('should group evaluations by dueDay date string', () => {
-    const map = getEvaluationsByDayMap(sampleData, startDate, endDate);
-    expect(Object.keys(map)).toEqual(['2024-04-10', '2024-04-11', '2024-04-12', '2024-04-15']);
-    expect(map['2024-04-10'].length).toBe(2);
-    expect(map['2024-04-11'][0].evaluationId).toBe('3');
+    const result = getEvaluationsByDayMap(evaluations, start, end);
+
+    expect(Object.keys(result)).toEqual([
+      '2025-06-17',
+      '2025-06-18',
+      '2025-06-20',
+    ]);
+
+    expect(result['2025-06-17']).toHaveLength(2);
+    expect(result['2025-06-18']).toHaveLength(1);
+    expect(result['2025-06-20']).toHaveLength(1);
   });
 
-  it('should not include evaluations outside date range', () => {
-    const map = getEvaluationsByDayMap(sampleData, startDate, endDate);
-    expect(map['2024-03-31']).toBeUndefined();
-    expect(map['2024-04-16']).toBeUndefined();
-  });
+  it('returns empty object if no evaluations are in range', () => {
+    const start = new Date('2025-06-01');
+    const end = new Date('2025-06-05');
 
-  it('should return empty object if no evaluations in range', () => {
-    const result = getEvaluationsByDayMap(sampleData, new Date('2024-01-01'), new Date('2024-01-31'));
+    const result = getEvaluationsByDayMap(evaluations, start, end);
+
     expect(result).toEqual({});
   });
 
+  it('ignores evaluations before startDate', () => {
+    const start = new Date('2025-06-18');
+    const end = new Date('2025-06-20');
+
+    const result = getEvaluationsByDayMap(evaluations, start, end);
+
+    expect(result['2025-06-17']).toBeUndefined();
+    expect(result['2025-06-18']).toHaveLength(1);
+    expect(result['2025-06-20']).toHaveLength(1);
+  });
+
+  it('ignores evaluations after endDate', () => {
+    const start = new Date('2025-06-17');
+    const end = new Date('2025-06-18');
+
+    const result = getEvaluationsByDayMap(evaluations, start, end);
+
+    expect(result['2025-06-20']).toBeUndefined();
+    expect(result['2025-07-01']).toBeUndefined();
+  });
+
+  it('returns empty object if evaluation list is empty', () => {
+    const start = new Date('2025-06-17');
+    const end = new Date('2025-06-20');
+
+    const result = getEvaluationsByDayMap([], start, end);
+    expect(result).toEqual({});
+  });
+
+  it('works for a single day range', () => {
+    const start = new Date('2025-06-18');
+    const end = new Date('2025-06-18');
+
+    const result = getEvaluationsByDayMap(evaluations, start, end);
+    expect(Object.keys(result)).toEqual(['2025-06-18']);
+    expect(result['2025-06-18']).toHaveLength(1);
+  });
+
+  it('formats dates consistently as YYYY-MM-DD keys', () => {
+    const start = new Date('2025-06-17');
+    const end = new Date('2025-06-20');
+
+    const result = getEvaluationsByDayMap(evaluations, start, end);
+    expect(Object.keys(result)).toEqual(
+      expect.arrayContaining(['2025-06-17', '2025-06-18', '2025-06-20'])
+    );
+    for (const key of Object.keys(result)) {
+      expect(key).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+  });
 });

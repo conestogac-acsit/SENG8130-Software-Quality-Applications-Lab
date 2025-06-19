@@ -1,13 +1,16 @@
-import type { EvaluationRow } from './evaluation';
+import type { Evaluation } from '../../EvaluationService';
 
 export function getEvaluationsByDayMap(
-  data: EvaluationRow[],
+  data: Evaluation[],
   startDate: Date,
   endDate: Date
-): Record<string, EvaluationRow[]> {
-  const result: Record<string, EvaluationRow[]> = {};
+): Record<string, Evaluation[]> {
+  const result: Record<string, Evaluation[]> = {};
+
   for (const row of data) {
-    const rowDate = new Date(row.dueDay);
+    const rowDate = row.dueDate;
+    if (!(rowDate instanceof Date) || isNaN(rowDate.getTime())) continue;
+
     if (rowDate >= startDate && rowDate <= endDate) {
       const key = rowDate.toISOString().split('T')[0];
       if (!result[key]) {
@@ -16,5 +19,6 @@ export function getEvaluationsByDayMap(
       result[key].push(row);
     }
   }
+
   return result;
 }
