@@ -28,10 +28,8 @@ export const parseCsv = async (
   file: File,
   type: ParseType
 ): Promise<Student[]> => {
-  const text = await file.text();
-
   return new Promise((resolve, reject) => {
-    Papa.parse(text, {
+    Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
@@ -40,31 +38,37 @@ export const parseCsv = async (
         const missingFields = requiredFields.filter(f => !csvFields.includes(f));
 
         if (missingFields.length > 0) {
-          return reject(`Missing required fields for ${type}. Please upload a valid CSV file.`);
+          return reject(
+            new Error(`Missing required fields for ${type}. Please upload a valid CSV file.`)
+          );
         }
 
         const toStatus = (val: string): EnrollmentStatus =>
           val?.toLowerCase() === 'yes' ? 'Active' : 'Deactive';
 
-        const data = (results.data as any[]).map(row => {
-          return {
-            studentId: row.studentId || '',
-            name: row.name || '',
-            email: row.email || '',
-            section: row.section || '',
-            group: row.group || '',
-            role: row.role || '',
-            imageUrl: row.imageUrl || '',
-            notes: row.notes || '',
-            loopStatus: toStatus(row.loopStatus),
-            githubStatus: toStatus(row.githubStatus),
-          };
+        const data = (results.data as Record<string, string>[]).map((row) => {
+          if (type === "Student") {
+            const student: Student = {
+              studentId: row.studentId || '',
+              name: row.name || '',
+              email: row.email || '',
+              section: row.section || '',
+              group: row.group || '',
+              role: row.role || '',
+              imageUrl: row.imageUrl || '',
+              notes: row.notes || '',
+              loopStatus: toStatus(row.loopStatus),
+              githubStatus: toStatus(row.githubStatus),
+            };
+            return student;
+          }
+          throw new Error(`Unsupported type: ${type}`);
         });
 
         resolve(data);
       },
-      error: () => {
-        reject('CSV parse error');
+      error: (err) => {
+        reject(new Error('CSV parse error: ' + err.message));
       }
     });
   });

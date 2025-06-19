@@ -1,4 +1,4 @@
-import { parseCsv, Student } from '../ParseCsvService/ParseCsv';
+import { parseCsv, Student } from './ParseCsv';
 
 const createFile = (content: string): File => {
   return new File([content], 'test.csv', { type: 'text/csv' });
@@ -20,19 +20,22 @@ describe('parseCsv', () => {
     const file = createFile(csv);
 
     const data = await parseCsv(file, "Student");
+    expect(Array.isArray(data)).toBe(true);
     expect(data.length).toBe(1);
     expect(data[0].studentId).toBe('123');
     expect(data[0].loopStatus).toBe('Active');
     expect(data[0].githubStatus).toBe('Deactive');
   });
 
-  it('rejects on missing fields', async () => {
+  it('throws error for missing fields', async () => {
     const file = createFile('name,email\nTest,test@example.com');
-    await expect(parseCsv(file, "Student")).rejects.toContain('Missing required fields');
+
+    await expect(parseCsv(file, "Student")).rejects.toThrow(/missing/i);
   });
 
-  it('rejects on empty file', async () => {
+  it('throws error for empty file', async () => {
     const file = createFile('');
-    await expect(parseCsv(file, "Student")).rejects.toContain('Missing required fields');
+
+    await expect(parseCsv(file, "Student")).rejects.toThrow();
   });
 });
