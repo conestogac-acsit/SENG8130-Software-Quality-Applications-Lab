@@ -11,4 +11,9 @@ describe('getAllStudents', () => {
     const result = getAllStudents(studentGetter);
     expect(result).toEqual(mockStudentData);
   });
+  it('should return an array', () => {
+    const studentGetter: StudentDataGetter = () => mockStudentData;
+    const result = getAllStudents(studentGetter);
+    expect(result).toBeInstanceOf(Array);
+  });
 });
