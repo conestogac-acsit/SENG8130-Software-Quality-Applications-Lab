@@ -5,6 +5,34 @@ import {
   LineChart, Line, CartesianGrid, ResponsiveContainer
 } from 'recharts';
 
+import { toPng } from 'html-to-image';
+import download from 'downloadjs';
+
+const downloadCSV = (filename: string, data: any[], headers: string[]) => {
+  const csvRows = [
+    headers.join(','),
+    ...data.map(row => headers.map(h => row[h]).join(','))
+  ];
+  const csvString = csvRows.join('\n');
+  const blob = new Blob([csvString], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+const exportAsImage = (id: string, filename: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    toPng(element)
+      .then(dataUrl => download(dataUrl, filename))
+      .catch(err => console.error('Export failed:', err));
+  }
+};
+
 
 const EnrollStatus: React.FC = () => {
 
@@ -54,6 +82,34 @@ const barData = [
         <div className="p-6 space-y-10">
         <h1 className="text-2xl font-bold text-center">Enrollment Status Overview</h1>
         </div>
+        {/* Export Buttons */}
+      <div className="flex flex-wrap justify-center gap-4 mb-6">
+        <button
+          onClick={() => downloadCSV('enrollment-bar.csv', barData, ['platform', 'Enrolled', 'Unenrolled', 'Total'])}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Export CSV
+        </button>
+        <button
+          onClick={() => exportAsImage('barChart', 'bar-chart.png')}
+          className="bg-green-500 text-white px-4 py-2 rounded"
+        >
+          Export Bar Chart PNG
+        </button>
+        <button
+          onClick={() => exportAsImage('githubPieChart', 'github-pie-chart.png')}
+          className="bg-purple-500 text-white px-4 py-2 rounded"
+        >
+          Export GitHub Pie PNG
+        </button>
+        <button
+          onClick={() => exportAsImage('loopPieChart', 'loop-pie-chart.png')}
+          className="bg-orange-500 text-white px-4 py-2 rounded"
+        >
+          Export Loop Pie PNG
+        </button>
+      </div>
+
         {/* Pie Charts */}
       <div className="flex flex-col lg:flex-row justify-around items-center gap-8">
         <div id="githubPieChart">
