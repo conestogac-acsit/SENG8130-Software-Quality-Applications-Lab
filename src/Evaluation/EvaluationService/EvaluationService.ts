@@ -21,35 +21,33 @@ export interface Evaluation {
 const EVALUATION_DATA_STORAGE_KEY = 'Evaluation_Data_Storage';
 
 export class EvaluationService {
-  constructor(
-    private storageService: StorageService
-  ) {}
-
-  static createDefault(): EvaluationService {
-    const storage = new LocalStorage();
-    return new EvaluationService(storage);
+  storageService: StorageService;
+  
+  constructor(storageService: StorageService) {
+    this.storageService = storageService;
   }
 
-  saveEvaluations(data: Evaluation[]): boolean {
+  saveEvaluations(data: Evaluation[]): void {
     try {
       this.storageService.save(EVALUATION_DATA_STORAGE_KEY, data);
     } catch (error) {
       console.error('Error saving student data:', error);
-      return false;
+      throw new Error('Failed to save evaluations');
     }
-    return true;
   }
   
-  async loadEvaluations(): Promise<Evaluation[]> {
+  loadEvaluations(): Evaluation[] {
     try {
       const data = this.storageService.load<Evaluation[]>(EVALUATION_DATA_STORAGE_KEY);
       if (data) {
         return data;
+      } else {
+        console.warn('No evaluations found in storage');
+        return [];
       }
     } catch (error) {
       console.error('Failed to load evaluations:', error);
+      throw new Error('Failed to load evaluations');
     }
-
-    return [];
   }
 }
