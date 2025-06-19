@@ -1,27 +1,17 @@
-import { getStudents } from ".";
-describe('getStudents with empty dataset', () => {
-  it('should return an empty array for page 1', () => {
-    const result = getStudents(1, 10);
-    expect(result.data).toEqual([]);
+import { getStudents } from './paginateStudents'; // Adjust the path
+import type { StudentDataGetter } from './loadAllStudents';
+
+describe('getStudents', () => {
+
+  describe('Pagination with small array', () => {
+    const students = [1, 2, 3, 4];
+    const studentGetter: StudentDataGetter = () => students as any;
+
+    it('should return the first page with the correct data', () => {
+      const result = getStudents(studentGetter, 1, 2); 
+      expect(result.data).toEqual(students.slice(0, 2)); 
+      expect(result.total).toBe(4); 
+      expect(result.totalPages).toBe(2);
+    });
   });
-  it('should return total = 0 for page 1', () => {
-    const result = getStudents(1, 10);
-    expect(result.total).toBe(0);
-  });
-   it('should return totalPages = 0 for page 1', () => {
-    const result = getStudents(1, 10);
-    expect(result.totalPages).toBe(0);
-  });
-  it('should return an empty array for page 3', () => {
-    const result = getStudents(3, 10);
-    expect(result.data).toEqual([]);
-  });
-  it('should return total = 0 for page 3', () => {
-    const result = getStudents(3, 10);
-    expect(result.total).toBe(0);
-  });
-   it('should return totalPages = 0 for page 3', () => {
-    const result = getStudents(3, 10);
-    expect(result.totalPages).toBe(0);
-  });
 });
