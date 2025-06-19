@@ -4,9 +4,10 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
   LineChart, Line, CartesianGrid, ResponsiveContainer
 } from 'recharts';
-
 import { toPng } from 'html-to-image';
-import download from 'downloadjs';
+import download  from 'downloadjs';
+
+const COLORS = ['#00C49F', '#FF8042', '#8884d8'];
 
 const downloadCSV = (filename: string, data: any[], headers: string[]) => {
   const csvRows = [
@@ -33,56 +34,55 @@ const exportAsImage = (id: string, filename: string) => {
   }
 };
 
-
 const EnrollStatus: React.FC = () => {
+  const githubCounts = { enrolled: 17, unenrolled: 22, total: 39 };
+  const loopCounts = { enrolled: 10, unenrolled: 29, total: 39 };
 
-    const githubCounts = { enrolled: 17, unenrolled: 22, total: 39 };
-const loopCounts = { enrolled: 10, unenrolled: 29, total: 39 };
+  const pieDataGitHub = [
+    { name: 'Enrolled', value: githubCounts.enrolled },
+    { name: 'Unenrolled', value: githubCounts.unenrolled },
+  ];
 
-const pieDataGitHub = [
-  { name: 'Enrolled', value: githubCounts.enrolled },
-  { name: 'Unenrolled', value: githubCounts.unenrolled },
-];
+  const pieDataLoop = [
+    { name: 'Enrolled', value: loopCounts.enrolled },
+    { name: 'Unenrolled', value: loopCounts.unenrolled },
+  ];
 
-const pieDataLoop = [
-  { name: 'Enrolled', value: loopCounts.enrolled },
-  { name: 'Unenrolled', value: loopCounts.unenrolled },
-];
+  const trendData = [
+    {
+      status: 'Enrolled',
+      GitHub: githubCounts.enrolled,
+      Loop: loopCounts.enrolled,
+      total: githubCounts.enrolled + loopCounts.enrolled,
+    },
+    {
+      status: 'Unenrolled',
+      GitHub: githubCounts.unenrolled,
+      Loop: loopCounts.unenrolled,
+      total: githubCounts.unenrolled + loopCounts.unenrolled,
+    }
+  ];
 
-const trendData = [
-  {
-    status: 'Enrolled',
-    GitHub: githubCounts.enrolled,
-    Loop: loopCounts.enrolled,
-    total: githubCounts.enrolled + loopCounts.enrolled,
-  },
-  {
-    status: 'Unenrolled',
-    GitHub: githubCounts.unenrolled,
-    Loop: loopCounts.unenrolled,
-    total: githubCounts.unenrolled + loopCounts.unenrolled,
-  }
-];
+  const barData = [
+    {
+      platform: 'GitHub',
+      Enrolled: githubCounts.enrolled,
+      Unenrolled: githubCounts.unenrolled,
+      Total: githubCounts.total,
+    },
+    {
+      platform: 'Loop',
+      Enrolled: loopCounts.enrolled,
+      Unenrolled: loopCounts.unenrolled,
+      Total: loopCounts.total,
+    },
+  ];
 
-const barData = [
-  {
-    platform: 'GitHub',
-    Enrolled: githubCounts.enrolled,
-    Unenrolled: githubCounts.unenrolled,
-    Total: githubCounts.total,
-  },
-  {
-    platform: 'Loop',
-    Enrolled: loopCounts.enrolled,
-    Unenrolled: loopCounts.unenrolled,
-    Total: loopCounts.total,
-  },
-];
   return (
-        <div className="p-6 space-y-10">
-        <h1 className="text-2xl font-bold text-center">Enrollment Status Overview</h1>
-        </div>
-        {/* Export Buttons */}
+    <div className="p-6 space-y-10">
+      <h1 className="text-2xl font-bold text-center">Enrollment Status Overview</h1>
+
+      {/* Export Buttons */}
       <div className="flex flex-wrap justify-center gap-4 mb-6">
         <button
           onClick={() => downloadCSV('enrollment-bar.csv', barData, ['platform', 'Enrolled', 'Unenrolled', 'Total'])}
@@ -110,7 +110,7 @@ const barData = [
         </button>
       </div>
 
-        {/* Pie Charts */}
+      {/* Pie Charts */}
       <div className="flex flex-col lg:flex-row justify-around items-center gap-8">
         <div id="githubPieChart">
           <h2 className="text-lg font-semibold text-center mb-2">GitHub Enrollment</h2>
