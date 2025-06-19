@@ -11,11 +11,9 @@ describe("Layout Component", () => {
       </MemoryRouter>
     );
 
-    // Sidebar content
     expect(screen.getByText("Student Portal")).toBeInTheDocument();
     expect(screen.getByText("Dashboard")).toBeInTheDocument();
 
-    // Optional: Check if icon is rendered (SVG element from lucide-react)
     const svgIcons = screen.getAllByRole("img", { hidden: true });
     expect(svgIcons.length).toBeGreaterThan(0);
   });
