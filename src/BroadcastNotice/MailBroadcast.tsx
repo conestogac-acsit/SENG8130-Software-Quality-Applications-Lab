@@ -1,34 +1,33 @@
-
-import React, { useState } from 'react';
-
-// Simulated components
-function BroadcastForm({ onSend }: { onSend: (s: string, m: string) => void }) {
-  return (
-    <div>
-      <button onClick={() => onSend('Default Subject', 'Default Message')}>
-        Send Broadcast
-      </button>
-    </div>
-  );
-}
-
-function StatusMessage({ message }: { message: string }) {
-  return <p>{message}</p>;
-}
+import React, { useState, useCallback } from 'react';
+import BroadcastForm from '../Components/BroadcastForm/BroadcastForm';
 
 export default function MailBroadcast() {
   const [status, setStatus] = useState('');
 
-  const send = async (subject: string, message: string) => {
+  const handleSend = useCallback(async (subject: string, message: string) => {
+    const trimmedSubject = subject.trim();
+    const trimmedMessage = message.trim();
+
+    if (!trimmedSubject || !trimmedMessage) {
+      setStatus('Error: Subject and message cannot be empty');
+      return;
+    }
+
     setStatus('Sending...');
-    await new Promise((res) => setTimeout(res, 500));
-    setStatus('Sent!');
-  };
+
+    try {
+      // Simulate asynchronous send
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setStatus('Sent!');
+    } catch (err: any) {
+      setStatus(`Error: ${err.message}`);
+    }
+  }, []);
 
   return (
     <div>
-      <BroadcastForm onSend={send} />
-      <StatusMessage message={status} />
+      <BroadcastForm onSend={handleSend} />
+      {status && <p>{status}</p>}
     </div>
   );
 }
