@@ -1,14 +1,8 @@
-export interface EvaluationRow {
-  evaluationId: string;
-  courseCode: string;
-  evaluationType: string;
-  dueDay?: Date;
-}
-
-export function getEvaluationsForDate(data: EvaluationRow[], date: Date): EvaluationRow[] {
+import type { Evaluation } from '../Evaluation/Service/EvaluationService';
+export function getEvaluationsForDate(data: Evaluation[], date: Date): Evaluation[] {
   if (!(date instanceof Date) || isNaN(date.getTime())) {
     throw new Error('Invalid date object');
   }
 
-  return data.filter(ev => ev.dueDay?.toDateString() === date.toDateString());
+  return data.filter(ev => ev.dueDate?.toDateString() === date.toDateString());
 }

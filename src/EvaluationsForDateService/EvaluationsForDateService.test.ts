@@ -1,19 +1,19 @@
-import { getEvaluationsForDate, EvaluationRow } from './EvaluationsForDateService';
+import type { Evaluation } from '../Evaluation/Service/EvaluationService';
 
 describe('getEvaluationsForDate', () => {
   it('should return matching evaluations for given date', () => {
-    const input: EvaluationRow[] = [
+    const input: Evaluation[] = [
       {
         evaluationId: '1',
         courseCode: 'PROG8020',
         evaluationType: 'Assignment',
-        dueDay: new Date('2025-06-18')
+        dueDate: new Date('2025-06-18')
       },
       {
         evaluationId: '2',
         courseCode: 'PROG8020',
         evaluationType: 'Quiz',
-        dueDay: new Date('2025-06-19')
+        dueDate: new Date('2025-06-19')
       }
     ];
 
@@ -23,12 +23,12 @@ describe('getEvaluationsForDate', () => {
   });
 
   it('should return empty array when no dates match', () => {
-    const input: EvaluationRow[] = [
+    const input: Evaluation[] = [
       {
         evaluationId: '1',
         courseCode: 'PROG8020',
         evaluationType: 'Assignment',
-        dueDay: new Date('2025-06-19')
+        dueDate: new Date('2025-06-19')
       }
     ];
 
@@ -37,18 +37,18 @@ describe('getEvaluationsForDate', () => {
   });
 
   it('should skip entries with undefined dueDay', () => {
-    const input: EvaluationRow[] = [
+    const input: Evaluation[] = [
       {
         evaluationId: '1',
         courseCode: 'PROG8020',
         evaluationType: 'Assignment',
-        dueDay: undefined
+        dueDate: undefined
       },
       {
         evaluationId: '2',
         courseCode: 'PROG8020',
         evaluationType: 'Quiz',
-        dueDay: new Date('2025-06-18')
+        dueDate: new Date('2025-06-18')
       }
     ];
 
@@ -58,12 +58,12 @@ describe('getEvaluationsForDate', () => {
   });
 
   it('should throw error when an invalid Date object is passed', () => {
-    const input: EvaluationRow[] = [
+    const input: Evaluation[] = [
       {
         evaluationId: '1',
         courseCode: 'PROG8020',
         evaluationType: 'Assignment',
-        dueDay: new Date('2025-06-18')
+        dueDate: new Date('2025-06-18')
       }
     ];
 
