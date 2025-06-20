@@ -18,4 +18,10 @@ test('renders enrollment dashboard title', async () => {
   const title = await screen.findByText(/Enrollment Status Overview/i);
   expect(title).toBeInTheDocument();
 });
+test('shows total students count', async () => {
+  render(<EnrollStatus />);
+  
+  const studentCount = await screen.findByText(/Total Students:/i);
+  expect(studentCount).toBeInTheDocument();
+});
   });
