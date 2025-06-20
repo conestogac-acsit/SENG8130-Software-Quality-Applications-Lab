@@ -9,21 +9,7 @@ import download  from 'downloadjs';
 
 const COLORS = ['#00C49F', '#FF8042', '#8884d8'];
 
-const downloadCSV = (filename: string, data: any[], headers: string[]) => {
-  const csvRows = [
-    headers.join(','),
-    ...data.map(row => headers.map(h => row[h]).join(','))
-  ];
-  const csvString = csvRows.join('\n');
-  const blob = new Blob([csvString], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-};
 
 const exportAsImage = (id: string, filename: string) => {
   const element = document.getElementById(id);
@@ -84,12 +70,7 @@ const EnrollStatus: React.FC = () => {
 
       {/* Export Buttons */}
       <div className="flex flex-wrap justify-center gap-4 mb-6">
-        <button
-          onClick={() => downloadCSV('enrollment-bar.csv', barData, ['platform', 'Enrolled', 'Unenrolled', 'Total'])}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Export CSV
-        </button>
+      
         <button
           onClick={() => exportAsImage('barChart', 'bar-chart.png')}
           className="bg-green-500 text-white px-4 py-2 rounded"
