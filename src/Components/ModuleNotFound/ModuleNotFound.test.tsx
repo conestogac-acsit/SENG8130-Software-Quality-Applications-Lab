@@ -14,7 +14,7 @@ describe('ModuleNotFound Component', () => {
 
     expect(screen.getByLabelText('404 - Page not found')).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /Page Not Found/i })
+      screen.getByRole('heading', { name: /Page Not Found/u })
     ).toBeInTheDocument();
     expect(
       screen.getByText(/we couldn’t find the page/i)
