@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ModuleNotFound from './Components/components/ModuleNotFound'; // adjust path if needed
+import ModuleNotFound from './Components/ModuleNotFound'; // adjust path if needed
 
 function App() {
   return (
