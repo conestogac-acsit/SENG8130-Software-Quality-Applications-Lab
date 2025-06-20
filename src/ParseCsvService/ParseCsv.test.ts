@@ -1,6 +1,4 @@
 import { parseCsv, Student } from './ParseCsv';
-
-
 const createFile = (content: string): File => {
   return new File([content], 'test.csv', { type: 'text/csv' });
 };
