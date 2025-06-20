@@ -21,6 +21,7 @@ export interface Evaluation {
   dueDate: Date;
   instructor: string;
   campus: string;
+  evaluationId: string;
 }
 
 const EVALUATION_DATA_STORAGE_KEY = 'Evaluation_Data_Storage';
