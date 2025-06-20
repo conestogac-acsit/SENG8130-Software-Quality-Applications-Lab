@@ -12,5 +12,10 @@ global.ResizeObserver = class {
 };
 
 describe('EnrollStatus Dashboard - Basic Tests', () => {
-
+test('renders enrollment dashboard title', async () => {
+  render(<EnrollStatus />);
+  
+  const title = await screen.findByText(/Enrollment Status Overview/i);
+  expect(title).toBeInTheDocument();
+});
   });
