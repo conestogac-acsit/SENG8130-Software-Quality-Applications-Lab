@@ -1,18 +1,9 @@
 import { saveOrUpdateEvaluation } from './saveOrUpdateEvaluationService';
 import type { Evaluation, IEvaluationService } from '.';
 
-let storedData: Evaluation[] = [];
-
-const mockService: IEvaluationService = {
-  saveEvaluations: (data: Evaluation[]) => {
-    storedData = data;
-  },
-  loadEvaluations: () => {
-    return storedData;
-  }
-};
-
 describe('saveOrUpdateEvaluation', () => {
+  let storedData: Evaluation[];
+
   beforeEach(() => {
     storedData = [];
   });
@@ -30,7 +21,14 @@ describe('saveOrUpdateEvaluation', () => {
     };
     const date = '2025-06-18';
 
-    const result = saveOrUpdateEvaluation(inputData, form, date, null, mockService);
+    const service: IEvaluationService = {
+      saveEvaluations: (data: Evaluation[]) => {
+        storedData = data;
+      },
+      loadEvaluations: () => storedData,
+    };
+
+    const result = saveOrUpdateEvaluation(inputData, form, date, null, service);
 
     if (result.length !== 1) throw new Error('Evaluation was not added');
     if (result[0].course !== 'PROG8051') throw new Error('Course mismatch');
@@ -49,6 +47,7 @@ describe('saveOrUpdateEvaluation', () => {
         campus: 'Old Campus'
       }
     ];
+    storedData = [...inputData];
 
     const form: Partial<Evaluation> = {
       course: 'MATH101',
@@ -60,7 +59,14 @@ describe('saveOrUpdateEvaluation', () => {
     };
     const date = '2025-07-01';
 
-    const result = saveOrUpdateEvaluation(inputData, form, date, null, mockService);
+    const service: IEvaluationService = {
+      saveEvaluations: (data: Evaluation[]) => {
+        storedData = data;
+      },
+      loadEvaluations: () => storedData,
+    };
+
+    const result = saveOrUpdateEvaluation(inputData, form, date, null, service);
 
     if (result.length !== 1) throw new Error('Evaluation count incorrect');
     if (result[0].weight !== 25) throw new Error('Weight not updated');
@@ -82,7 +88,14 @@ describe('saveOrUpdateEvaluation', () => {
     };
     const date = '2025-09-01';
 
-    saveOrUpdateEvaluation(inputData, form, date, null, mockService);
+    const service: IEvaluationService = {
+      saveEvaluations: (data: Evaluation[]) => {
+        storedData = data;
+      },
+      loadEvaluations: () => storedData,
+    };
+
+    saveOrUpdateEvaluation(inputData, form, date, null, service);
 
     if (storedData.length !== 1) throw new Error('Data was not saved to storage');
     if (storedData[0].course !== 'ENG2020') throw new Error('Stored course incorrect');
