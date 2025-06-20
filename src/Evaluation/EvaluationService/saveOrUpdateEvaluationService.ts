@@ -7,33 +7,40 @@ export function saveOrUpdateEvaluation(
   filePath: string | null,
   service: IEvaluationService
 ): Evaluation[] {
-  const updatedForm: Evaluation = {
-    course: form.course || '',
-    title: form.title || '',
-    type: form.type || 'Assignment',
-    weight: form.weight ?? 0,
-    dueDate: new Date(date),
-    instructor: form.instructor || '',
-    campus: form.campus || ''
-  };
+  let evaluations = data;
+  if (evaluations.length === 0) {
+    evaluations = service.loadEvaluations();
+  }
 
-  const exists = data.some(ev =>
-    ev.course === updatedForm.course &&
-    ev.title === updatedForm.title &&
-    ev.type === updatedForm.type
+  const existingIndex = evaluations.findIndex(
+    (ev) =>
+      ev.course === form.course &&
+      ev.title === form.title &&
+      ev.type === form.type
   );
 
-  const updatedData = exists
-    ? data.map(ev =>
-        ev.course === updatedForm.course &&
-        ev.title === updatedForm.title &&
-        ev.type === updatedForm.type
-          ? updatedForm
-          : ev
-      )
-    : [...data, updatedForm];
+  const dueDate = new Date(date);
 
-service.saveEvaluations(updatedData);
+  if (existingIndex !== -1) {
+    evaluations[existingIndex] = {
+      ...evaluations[existingIndex],
+      ...form,
+      dueDate,
+    } as Evaluation;
+  } else {
+    const newEvaluation: Evaluation = {
+      course: form.course || '',
+      title: form.title || '',
+      type: form.type || 'Assignment',
+      weight: form.weight || 0,
+      dueDate,
+      instructor: form.instructor || '',
+      campus: form.campus || '',
+    };
+    evaluations.push(newEvaluation);
+  }
 
-  return updatedData;
+  service.saveEvaluations(evaluations);
+
+  return evaluations;
 }

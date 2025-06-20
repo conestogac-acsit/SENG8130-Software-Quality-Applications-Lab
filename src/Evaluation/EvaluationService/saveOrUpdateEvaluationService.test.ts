@@ -87,4 +87,62 @@ describe('saveOrUpdateEvaluation', () => {
     if (storedData.length !== 1) throw new Error('Data was not saved to storage');
     if (storedData[0].course !== 'ENG2020') throw new Error('Stored course incorrect');
   });
+
+  it('throws an error when saving evaluations fails', () => {
+    const errorService: IEvaluationService = {
+      saveEvaluations: () => {
+        throw new Error('Simulated save error');
+      },
+      loadEvaluations: () => []
+    };
+
+    const form: Partial<Evaluation> = {
+      course: 'ERROR101',
+      title: 'Failure',
+      type: 'Quiz',
+      weight: 0,
+      instructor: 'Nobody',
+      campus: 'Nowhere'
+    };
+    const date = '2025-10-10';
+
+    try {
+      saveOrUpdateEvaluation([], form, date, null, errorService);
+      throw new Error('Expected error not thrown');
+    } catch (err: any) {
+      if (err.message !== 'Simulated save error') {
+        throw new Error('Unexpected error message: ' + err.message);
+      }
+    }
+  });
+
+  it('throws an error when load evaluations fails', () => {
+    const errorService: IEvaluationService = {
+      saveEvaluations: (data: Evaluation[]) => {
+        storedData = data;
+      },
+      loadEvaluations: () => {
+        throw new Error('Simulated load error');
+      }
+    };
+
+    const form: Partial<Evaluation> = {
+      course: 'LOADERR',
+      title: 'Should Fail',
+      type: 'Quiz',
+      weight: 10,
+      instructor: 'No one',
+      campus: 'Nowhere'
+    };
+    const date = '2025-10-11';
+
+    try {
+      saveOrUpdateEvaluation([], form, date, null, errorService);
+      throw new Error('Expected load error not thrown');
+    } catch (err: any) {
+      if (err.message !== 'Simulated load error') {
+        throw new Error('Unexpected error message: ' + err.message);
+      }
+    }
+  });
 });
