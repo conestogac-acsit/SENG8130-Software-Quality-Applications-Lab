@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const COLORS = ['#00C49F', '#FF8042', '#8884d8'];
 
@@ -61,6 +61,26 @@ const EnrollStatusCharts: React.FC<EnrollStatusChartsProps> = ({
             </Pie>
             <Tooltip formatter={(value) => [value, 'Students']} />
           </PieChart>
+        </div>
+      </div>
+      {/* Bar Chart */}
+      <div id="barChart" className="flex justify-center">
+        <div>
+          <h2 className="text-lg font-semibold text-center mb-4">Platform Enrollment Comparison</h2>
+          <ResponsiveContainer width={600} height={300}>
+            <BarChart data={barData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <XAxis dataKey="platform" />
+              <YAxis />
+              <Tooltip 
+                formatter={(value, name) => [value, ${name} Students]}
+                labelFormatter={(label) => Platform: ${label}}
+              />
+              <Legend />
+              <Bar dataKey="Enrolled" fill="#00C49F" name="Enrolled" />
+              <Bar dataKey="Unenrolled" fill="#FF8042" name="Unenrolled" />
+              <Bar dataKey="Total" fill="#8884d8" name="Total" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </>
