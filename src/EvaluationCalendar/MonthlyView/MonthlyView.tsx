@@ -18,12 +18,10 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) =
   const calendarCells = useMemo(() => {
     const cells: { date: Date; evaluations: Evaluation[] }[] = [];
 
-    // Add placeholders before the first day
     for (let i = 0; i < firstWeekday; i++) {
       cells.push({ date: new Date(NaN), evaluations: [] });
     }
 
-    // Populate actual days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(year, month, day);
       const dateKey = currentDate.toDateString();
