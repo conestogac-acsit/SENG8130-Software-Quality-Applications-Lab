@@ -4,7 +4,7 @@ import WeeklyView from "./WeeklyView";
 import { Evaluation } from "../../Evaluation/EvaluationService";
 
 describe("WeeklyView", () => {
-  const baseDate = new Date("2025-06-15"); // Sunday
+  const baseDate = new Date("2025-06-15"); 
 
   const mockEvaluations: Evaluation[] = [
     {
@@ -12,7 +12,7 @@ describe("WeeklyView", () => {
       title: "Assignment 1",
       type: "Assignment",
       weight: 10,
-      dueDate: new Date("2025-06-15T12:00:00"), // Sunday
+      dueDate: new Date("2025-06-15T12:00:00"), 
       instructor: "Dr. Smith",
       campus: "Main Campus",
     },
@@ -21,7 +21,7 @@ describe("WeeklyView", () => {
       title: "Quiz 1",
       type: "Quiz",
       weight: 5,
-      dueDate: new Date("2025-06-17T12:00:00"), // Tuesday
+      dueDate: new Date("2025-06-17T12:00:00"), 
       instructor: "Dr. Allen",
       campus: "Science Campus",
     },
@@ -48,5 +48,5 @@ describe("WeeklyView", () => {
   const fallbackMessages = screen.getAllByText("No evaluations scheduled for this day.");
   expect(fallbackMessages.length).toBeGreaterThan(0); 
   });
-  
+
 });
