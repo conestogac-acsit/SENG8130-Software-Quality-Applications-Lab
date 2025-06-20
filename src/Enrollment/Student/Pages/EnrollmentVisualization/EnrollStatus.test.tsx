@@ -36,4 +36,10 @@ test('displays Loop enrollment section', async () => {
   const loopSection = await screen.findByText(/Loop Enrollment/i);
   expect(loopSection).toBeInTheDocument();
 });
+test('shows platform comparison', async () => {
+  render(<EnrollStatus />);
+  
+  const comparison = await screen.findByText(/Platform Enrollment Comparison/i);
+  expect(comparison).toBeInTheDocument();
+});
   });
