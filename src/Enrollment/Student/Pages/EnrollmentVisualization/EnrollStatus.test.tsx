@@ -42,4 +42,19 @@ test('shows platform comparison', async () => {
   const comparison = await screen.findByText(/Platform Enrollment Comparison/i);
   expect(comparison).toBeInTheDocument();
 });
+test('renders the export button after loading', async () => {
+  render(<EnrollStatus />);
+  await screen.findByText(/Enrollment Status Overview/i);
+  const exportButton = screen.getByText(/Export Entire Dashboard as PNG/i);
+  expect(exportButton).toBeInTheDocument();
+});
+
+test('has dashboard container', async () => {
+  const { container } = render(<EnrollStatus />);
+  
+  await screen.findByText(/Enrollment Status Overview/i);
+  
+  const dashboardContainer = container.querySelector('#enrollment-dashboard');
+  expect(dashboardContainer).toBeInTheDocument();
+});
   });
