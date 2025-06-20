@@ -13,9 +13,9 @@ const mockStudents = [
 ];
 
 // Override the service method
-StudentLoadService.createDefault = () => ({
-  loadStudents: async () => mockStudents
-}) as any;
+StudentLoadService.createDefault = (): StudentService => ({
+  loadStudents: async () => mockStudents,
+});
 
 beforeAll(() => {
   global.ResizeObserver = class {
