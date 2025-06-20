@@ -30,4 +30,10 @@ test('displays GitHub enrollment section', async () => {
   const githubSection = await screen.findByText(/GitHub Enrollment/i);
   expect(githubSection).toBeInTheDocument();
 });
+test('displays Loop enrollment section', async () => {
+  render(<EnrollStatus />);
+  
+  const loopSection = await screen.findByText(/Loop Enrollment/i);
+  expect(loopSection).toBeInTheDocument();
+});
   });
