@@ -24,4 +24,10 @@ test('shows total students count', async () => {
   const studentCount = await screen.findByText(/Total Students:/i);
   expect(studentCount).toBeInTheDocument();
 });
+test('displays GitHub enrollment section', async () => {
+  render(<EnrollStatus />);
+  
+  const githubSection = await screen.findByText(/GitHub Enrollment/i);
+  expect(githubSection).toBeInTheDocument();
+});
   });
