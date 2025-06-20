@@ -30,7 +30,7 @@ describe('deleteEvaluation', () => {
         instructor: 'Prof. Jane',
         campus: 'City Campus'
       }
-    ] satisfies Evaluation[];
+    ];
 
     savedData = null;
 
@@ -138,5 +138,20 @@ describe('deleteEvaluation', () => {
     expect(result.updated.find(ev => ev.evaluationId === 'EVAL001')).toBeUndefined();
     expect(result.updated.find(ev => ev.evaluationId === 'EVAL999')).toBeDefined();
     expect(savedData).toEqual(result.updated);
+  });
+
+  it('should return false and include error message if saveEvaluations throws', () => {
+    testService = {
+      saveEvaluations: () => {
+        throw new Error('Simulated save failure');
+      },
+      loadEvaluations: () => sampleEvaluations
+    };
+
+    const result = deleteEvaluation(sampleEvaluations, targetEvaluation, testService);
+
+    expect(result.success).toBe(false);
+    expect(result.updated).toEqual(sampleEvaluations);
+    expect(result.error).toBe('Simulated save failure');
   });
 });

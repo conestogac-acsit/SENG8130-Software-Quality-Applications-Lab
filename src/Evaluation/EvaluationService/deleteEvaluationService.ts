@@ -4,10 +4,18 @@ export function deleteEvaluation(
   data: Evaluation[],
   target: Evaluation,
   service: IEvaluationService
-): { updated: Evaluation[]; success: boolean } {
+): { updated: Evaluation[]; success: boolean; error?: string } {
   const updated = data.filter(ev => ev.evaluationId !== target.evaluationId);
   const success = updated.length < data.length;
 
-  service.saveEvaluations(updated);
-  return { updated, success };
+  try {
+    service.saveEvaluations(updated);
+    return { updated, success };
+  } catch (err) {
+    return {
+      updated: data,
+      success: false,
+      error: (err instanceof Error ? err.message : 'Unknown error')
+    };
+  }
 }
