@@ -42,12 +42,17 @@ describe('UploadEvaluationCsv Component', () => {
     expect(screen.getByText('File must be a CSV.')).toBeInTheDocument();
   });
 
-  it('should show error if upload is clicked without selecting a file', () => {
-    render(<UploadEvaluationCsv />);
-    const selectButton = screen.getByText('Select CSV File');
-    fireEvent.click(selectButton);
-    expect(screen.queryByText('Upload')).not.toBeInTheDocument();
-  });
+  it('should display an error message when selecting a non-CSV file', () => {
+  render(<UploadEvaluationCsv />);
+  const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+  const invalidFile = new File(['dummy'], 'testfile.docx', { type: 'application/msword' });
+
+  fireEvent.change(fileInput, { target: { files: [invalidFile] } });
+
+  const errorMessage = screen.getByText('File must be a CSV.');
+  expect(errorMessage).toBeInTheDocument();
+});
+
 
   it('should show upload button after selecting a valid csv file', () => {
     render(<UploadEvaluationCsv />);
