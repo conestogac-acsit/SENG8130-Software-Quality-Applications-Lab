@@ -1,0 +1,1 @@
+export { default as WeeklyView } from "./WeeklyView/WeeklyView"

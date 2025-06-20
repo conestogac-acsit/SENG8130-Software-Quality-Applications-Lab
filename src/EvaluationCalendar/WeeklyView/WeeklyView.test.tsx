@@ -13,8 +13,8 @@ describe("WeeklyView", () => {
       type: "Assignment",
       weight: 10,
       dueDate: new Date("2025-06-16T12:00:00"), 
-      instructor: "Alex",
-      campus: "Main"
+      instructor: "Prof. Smith",
+      campus: "Main",
     },
     {
       course: "CS102",
@@ -22,8 +22,8 @@ describe("WeeklyView", () => {
       type: "Quiz",
       weight: 5,
       dueDate: new Date("2025-06-18T12:00:00"), 
-      instructor: "Allen",
-      campus: "West"
+      instructor: "Prof. Doe",
+      campus: "Science",
     },
     {
       course: "CS103",
@@ -31,28 +31,28 @@ describe("WeeklyView", () => {
       type: "Final Exam",
       weight: 40,
       dueDate: new Date("2025-06-20T12:00:00"), 
-      instructor: "Lee",
-      campus: "East"
-    }
+      instructor: "Prof. Jane",
+      campus: "West",
+    },
   ];
 
   it("renders 7 day columns for a full week", () => {
     render(<WeeklyView evaluations={mockEvaluations} startDate={baseDate} />);
-    const headings = screen.getAllByRole("heading", { level: 2 });
-    expect(headings.length).toBe(7);
+    const cards = screen.getAllByRole("gridcell");
+    expect(cards.length).toBe(7);
   });
 
-it("renders evaluations on correct days", () => {
-  render(<WeeklyView evaluations={mockEvaluations} startDate={baseDate} />);
-
-  expect(screen.getByText((content) => content.includes("Assignment 1"))).toBeInTheDocument();
-  expect(screen.getByText((content) => content.includes("Quiz 1"))).toBeInTheDocument();
-  expect(screen.getByText((content) => content.includes("Final Exam"))).toBeInTheDocument();
-});
-
-  it("shows fallback message on empty days", () => {
+  it("shows evaluation titles", () => {
     render(<WeeklyView evaluations={mockEvaluations} startDate={baseDate} />);
-    const fallbacks = screen.getAllByText("No evaluations scheduled for this day.");
-    expect(fallbacks.length).toBeGreaterThan(0);
+    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Final Exam/i)).toBeInTheDocument();
+  });
+
+  it("shows fallback message if no evaluations exist", () => {
+    render(<WeeklyView evaluations={[]} startDate={baseDate} />);
+    expect(
+      screen.getAllByText(/No evaluations scheduled for this day/i).length
+    ).toBeGreaterThan(0);
   });
 });
