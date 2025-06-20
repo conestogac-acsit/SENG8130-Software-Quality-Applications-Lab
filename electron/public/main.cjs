@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu, dialog } = require('electron');
 const path = require('path');
 
-const isDev = !app.isPackaged;
+const isDev = process.env.VITE_DEV_SERVER === 'true';
 const menuTemplate = [
   ...(process.platform === 'darwin'
     ? [
@@ -80,8 +80,9 @@ function createWindow() {
   });
   if (isDev) {
     win.loadURL('http://localhost:5173');
-  } else {
-     win.loadFile(path.join(__dirname, '../dist/index.html'));
+  } else 
+  {
+     win.loadFile(path.join(__dirname, '../../dist/index.html'));
   }
 
   const menu = Menu.buildFromTemplate(menuTemplate);

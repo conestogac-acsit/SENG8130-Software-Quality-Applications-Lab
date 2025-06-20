@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"npm run electron:dev\"",
+    "dev": "VITE_DEV_SERVER=true concurrently \"vite\" \"npm run electron:dev\"",
     "electron:dev": "wait-on http://localhost:5173 && electron electron/public/main.cjs",
     "build": "vite build",
     "start": "npm run dev",
