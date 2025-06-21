@@ -9,3 +9,7 @@ describe('ExportButton', () => {
     render(<ExportButton onClick={handleClick} label="Download Chart" />);
     const button = screen.getByRole('button', { name: /Download Chart/i });
     expect(button).toBeInTheDocument();
+    await userEvent.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
