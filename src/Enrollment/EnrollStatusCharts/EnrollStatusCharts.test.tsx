@@ -26,3 +26,18 @@ describe('EnrollStatusCharts', () => {
         barData={barData}
       />
     );
+
+    expect(screen.getByText(/GitHub Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loop Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/Platform Enrollment Comparison/i)).toBeInTheDocument();
+  });
+
+  test('renders safely with empty data arrays', () => {
+    render(
+      <EnrollStatusCharts pieDataGitHub={[]} pieDataLoop={[]} barData={[]} />
+    );
+    expect(screen.getByText(/GitHub Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loop Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/Platform Enrollment Comparison/i)).toBeInTheDocument();
+  });
+});
