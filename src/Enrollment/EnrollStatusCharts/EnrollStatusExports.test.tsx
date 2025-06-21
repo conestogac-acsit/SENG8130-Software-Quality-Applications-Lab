@@ -7,3 +7,8 @@ describe('EnrollStatusExports', () => {
   test('renders export dashboard section with button', async () => {
     render(<EnrollStatusExports />);
     expect(screen.getByText(/Export Dashboard/i)).toBeInTheDocument();
+     const button = screen.getByRole('button', { name: /Export Entire Dashboard as PNG/i });
+    expect(button).toBeInTheDocument();
+    await userEvent.click(button); 
+  });
+});
