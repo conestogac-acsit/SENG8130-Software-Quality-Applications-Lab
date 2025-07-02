@@ -1,6 +1,7 @@
 import React from 'react';
-import { Evaluation, EvaluationService } from '../../EvaluationService';
-import { LocalStorage } from '../../../localStorageService';
+import { EvaluationService, Evaluation } from '../EvaluationService';
+
+import { LocalStorage } from '../../localStorageService';
 
 type MonthViewProps = {
   service?: EvaluationService;

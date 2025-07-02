@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MonthView from './MonthView';
-import { EvaluationService, Evaluation } from '../../EvaluationService';
+import { EvaluationService, Evaluation } from '../EvaluationService';
+
 
 describe('MonthView', () => {
   const CURRENT_YEAR = new Date().getFullYear();
