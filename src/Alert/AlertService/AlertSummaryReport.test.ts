@@ -29,4 +29,36 @@ describe('getAlertSummary - Pure Tests', () => {
 
     expect(summary).toContain('No weeks exceed the evaluation threshold.');
   });
+
+  it('correctly identifies overloaded weeks', () => {
+    const evaluations: Evaluation[] = [];
+
+    for (let i = 0; i < 12; i++) {
+      evaluations.push({
+        course: `Course ${i}`,
+        title: `Test ${i}`,
+        type: 'Assignment',
+        weight: 5,
+        dueDate: new Date('2025-02-01'),
+        instructor: 'Prof',
+        campus: 'Main'
+      });
+    }
+
+    const threshold = 10;
+    const summary = getAlertSummary(evaluations, threshold);
+
+    expect(summary).toContain('Overloaded Weeks:');
+    expect(summary).toContain('Week 5: 12 evaluations');
+    expect(summary).toContain('(Threshold: 10)');
+  });
+
+  it('handles empty evaluation list', () => {
+    const evaluations: Evaluation[] = [];
+    const threshold = 3;
+
+    const summary = getAlertSummary(evaluations, threshold);
+
+    expect(summary).toContain('No weeks exceed the evaluation threshold.');
+  });
 });
