@@ -11,4 +11,9 @@ describe("Email", () => {
       new Email("invalid-email.com");
     }).toThrow("Invalid email format");
   });
+  it("should throw an error for an invalid email format (random sting)", () => {
+    expect(() => {
+      new Email("abcd123");
+    }).toThrow("Invalid email format");
+  });
 });
