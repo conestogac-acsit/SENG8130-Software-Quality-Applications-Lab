@@ -26,4 +26,9 @@ describe("Email", () => {
       new Email("");
     }).toThrow("Invalid email format");
   });
+  it("should throw an error for an invalid email format (no dot in domain)", () => {
+    expect(() => {
+      new Email("user@example");
+    }).toThrow("Invalid email format");
+  });
 });
