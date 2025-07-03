@@ -1,4 +1,4 @@
-import { getAlertSummary } from './AlertSummaryReport';
+import { getAlertSummary } from '././AlertSummaryReport';
 import { Evaluation } from '../../Evaluation/EvaluationService';
 
 describe('getAlertSummary - Pure Tests', () => {
@@ -60,5 +60,37 @@ describe('getAlertSummary - Pure Tests', () => {
     const summary = getAlertSummary(evaluations, threshold);
 
     expect(summary).toContain('No weeks exceed the evaluation threshold.');
+  });
+
+  it('throws error when threshold is negative', () => {
+    const evaluations: Evaluation[] = [
+      {
+        course: 'Course X',
+        title: 'Exam',
+        type: 'Final Exam',
+        weight: 50,
+        dueDate: new Date(),
+        instructor: 'Instructor X',
+        campus: 'Main'
+      }
+    ];
+
+    expect(() => getAlertSummary(evaluations, -5)).toThrow('Threshold cannot be negative');
+  });
+
+  it('throws error when evaluation has invalid date', () => {
+    const evaluations: Evaluation[] = [
+      {
+        course: 'Course Y',
+        title: 'Project',
+        type: 'Project',
+        weight: 20,
+        dueDate: new Date('invalid-date'),
+        instructor: 'Instructor Y',
+        campus: 'Main'
+      }
+    ];
+
+    expect(() => getAlertSummary(evaluations, 5)).toThrow('Invalid dueDate for evaluation: Project');
   });
 });
