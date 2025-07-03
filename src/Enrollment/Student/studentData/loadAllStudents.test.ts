@@ -1,8 +1,9 @@
-import { getAllStudents, StudentDataGetter } from '.'; 
-import { Student } from '.'; 
+import { getAllStudents, StudentDataGetter } from './loadAllStudents'; 
+import { Student } from './studentTypes'; 
+import { Email } from "./email";
 
 describe('getAllStudents', () => {
-     const student: Student = {id: '1', name: 'Alice Johnson',  email: 'alice@example.com',group: 'Group A',role: 'Student',section: 'Section 1',imageUrl: 'https://example.com/alice.jpg',notes: 'Good participation',isLoopEnrolled: true,isGithubEnrolled: false};
+     const student: Student = {id: '1', name: 'Alice Johnson',  email: new Email('alice@example.com'),group: 'Group A',role: 'Student',section: 'Section 1',imageUrl: 'https://example.com/alice.jpg',notes: 'Good participation',isLoopEnrolled: true,isGithubEnrolled: false};
    it('should throw an error if studentGetter returns invalid data (null)', () => {
     const studentGetter: StudentDataGetter = () => null as any;
     expect(() => getAllStudents(studentGetter)).toThrow("Student data is not an array");
