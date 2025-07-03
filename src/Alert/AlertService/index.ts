@@ -1,0 +1,2 @@
+
+export { shouldDisplayAlerts } from './autoHideLogic';
