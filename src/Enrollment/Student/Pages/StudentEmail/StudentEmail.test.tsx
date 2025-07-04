@@ -45,4 +45,24 @@ describe("StudentEmail Component", () => {
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("Test student for verifying email functionality.")).toBeInTheDocument();
   });
+  it("alerts if Compose Email clicked with no content", () => {
+    window.alert = jest.fn();
+
+    render(
+      <MemoryRouter initialEntries={["/email/1"]}>
+        <Routes>
+          <Route
+            path="/email/:id"
+            element={<StudentEmail getter={() => [testStudent]} />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByText("Compose Email"));
+
+    expect(window.alert).toHaveBeenCalledWith(
+      "Please enter email content before composing."
+    );
+  });
 });
