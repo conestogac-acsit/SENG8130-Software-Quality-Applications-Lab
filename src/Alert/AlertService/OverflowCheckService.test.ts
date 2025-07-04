@@ -27,4 +27,38 @@ describe('getOverflowWeeks - Pure Tests', () => {
     const [week] = Array.from(result.keys());
     expect(result.get(week)?.length).toBe(6);
   });
+
+  it('returns empty map when all weeks are under the threshold', () => {
+    const evaluations: Evaluation[] = [
+      createEvaluation({ dueDate: new Date('2025-01-06') }),
+      createEvaluation({ dueDate: new Date('2025-01-13') }),
+      createEvaluation({ dueDate: new Date('2025-01-20') }),
+    ];
+
+    const result = getOverflowWeeks(evaluations);
+    expect(result.size).toBe(0);
+  });
+
+  it('returns empty map when given an empty evaluation list', () => {
+    const evaluations: Evaluation[] = [];
+    const result = getOverflowWeeks(evaluations);
+
+    expect(result).toEqual(new Map());
+  });
+
+  it('throws error when evaluation has invalid dueDate', () => {
+    const evaluations: Evaluation[] = [
+      {
+        course: 'Test Course',
+        title: 'Project X',
+        type: 'Project',
+        weight: 20,
+        dueDate: new Date('invalid-date'),
+        instructor: 'Prof Y',
+        campus: 'Main',
+      }
+    ];
+
+    expect(() => getOverflowWeeks(evaluations)).toThrow('Invalid date in evaluation: Project X');
+  });
 });
