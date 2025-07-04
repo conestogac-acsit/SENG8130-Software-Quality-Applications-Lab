@@ -26,4 +26,8 @@ describe("findStudentById", () => {
     expect(result?.id).toBe("1");
     expect(result?.name).toBe("Alice");
   });
+  it("should returns undefined when ID does not exist", () => {
+    const result = findStudentById("999", validGetter);
+    expect(result).toBeUndefined();
+  });
 });
