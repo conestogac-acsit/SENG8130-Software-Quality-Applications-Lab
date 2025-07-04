@@ -30,4 +30,10 @@ describe("findStudentById", () => {
     const result = findStudentById("999", validGetter);
     expect(result).toBeUndefined();
   });
+  it("should throws an error when getter returns invalid data", () => {
+    const invalidGetter = () => (null as unknown as Student[]);
+    expect(() => findStudentById("1", invalidGetter)).toThrow(
+      "Failed to retrieve student data: Student data is not an array"
+    );
+  });
 });
