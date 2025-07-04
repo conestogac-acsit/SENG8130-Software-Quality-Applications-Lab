@@ -29,4 +29,20 @@ describe("StudentEmail Component", () => {
 
     expect(screen.getByText("Student not found.")).toBeInTheDocument();
   });
+  it("renders student details when student exists", () => {
+    render(
+      <MemoryRouter initialEntries={["/email/1"]}>
+        <Routes>
+          <Route
+            path="/email/:id"
+            element={<StudentEmail getter={() => [testStudent]} />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText("John Doe")).toBeInTheDocument();
+    expect(screen.getByText("john@example.com")).toBeInTheDocument();
+    expect(screen.getByText("Test student for verifying email functionality.")).toBeInTheDocument();
+  });
 });
