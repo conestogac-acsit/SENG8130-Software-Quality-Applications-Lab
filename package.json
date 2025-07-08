@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"npm run electron:dev\"",
+    "dev": "VITE_DEV_SERVER=true concurrently \"vite\" \"npm run electron:dev\"",
     "electron:dev": "wait-on http://localhost:5173 && electron electron/public/main.cjs",
     "build": "vite build",
-    "start": "electron electron/public/main.cjs",
+    "start": "npm run dev",
+    "start:prod": "npm run build && electron electron/public/main.cjs",
     "preview": "vite preview",
     "test": "jest",
     "package": "electron-packager . SQATE-Tools --platform=win32 --arch=x64 --out=out --overwrite",
