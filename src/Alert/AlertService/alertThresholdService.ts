@@ -1,3 +1,6 @@
+import { Evaluation } from '../../Evaluation/EvaluationService';
+import { getISOWeek } from 'date-fns';
+
 let weeklyThreshold = 10;
 
 export function setWeeklyThreshold(value: number): void {
@@ -7,4 +10,24 @@ export function setWeeklyThreshold(value: number): void {
 
 export function getWeeklyThreshold(): number {
   return weeklyThreshold;
+}
+
+export function shouldDisplayAlerts(evaluations: Evaluation[]): boolean {
+  const weekMap = new Map<number, Evaluation[]>();
+
+  evaluations.forEach(ev => {
+    const week = getISOWeek(ev.dueDate);
+    if (!weekMap.has(week)) {
+      weekMap.set(week, []);
+    }
+    weekMap.get(week)!.push(ev);
+  });
+
+  for (const [week, evals] of weekMap.entries()) {
+    if (evals.length > getWeeklyThreshold()) { 
+      return true;
+    }
+  }
+
+  return false;
 }
