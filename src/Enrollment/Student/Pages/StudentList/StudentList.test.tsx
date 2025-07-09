@@ -76,4 +76,12 @@ describe('StudentList Component - Empty State & Edge Cases', () => {
     const noStudentMessages = screen.getAllByText('No students found.');
     expect(noStudentMessages.length).toBeGreaterThanOrEqual(1);
   });
+it('shows correct pagination when empty', () => {
+    render(
+      <MemoryRouter>
+        <StudentList studentGetter={() => []} />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Showing 1-0 of 0 students/)).toBeInTheDocument();
+  });
 });
