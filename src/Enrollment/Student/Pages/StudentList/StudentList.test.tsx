@@ -1,12 +1,28 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import StudentList from './StudentList';
+import { Email } from '../../studentData/email';
+
+const testStudentGetter = () => [
+   {
+    id: '1',
+    name: 'Alice Johnson',
+    email: new Email('alice@example.com'),
+    role: 'Student',
+    section: 'B',
+    group: 'G2',
+    imageUrl: '', 
+    notes: '',
+    isLoopEnrolled: false,
+    isGithubEnrolled: false,
+  },
+];
 
 describe('StudentList Component (UI Test - Column Names and Pagination)', () => {
   beforeEach(() => {
     render(
       <MemoryRouter>
-        <StudentList />
+        <StudentList studentGetter={testStudentGetter} />
       </MemoryRouter>
     );
   });
@@ -34,4 +50,11 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
   it('renders the "Next" button', () => {
     expect(screen.getByText('Next')).toBeInTheDocument();
   });
+  it('renders a student row with data', () => {
+    expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
+    expect(screen.getByText('alice@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Student')).toBeInTheDocument();
+    expect(screen.getByText('B')).toBeInTheDocument();
+    expect(screen.getByText('G2')).toBeInTheDocument();
+  });
 });
