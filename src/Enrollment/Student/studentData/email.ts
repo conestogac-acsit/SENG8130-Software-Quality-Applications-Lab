@@ -8,11 +8,6 @@ export class Email {
     }
     this.value = email;
   }
-
-  getValue(): string {
-    return this.value;
-  }
-
   toString(): string {
     return this.value;
   }
