@@ -65,3 +65,15 @@ it('shows pagination summary', () => {
     expect(screen.getByText(/Showing 1–1 of 1 students/)).toBeInTheDocument();
   });
 });
+describe('StudentList Component - Empty State & Edge Cases', () => {
+  it('renders "No students found." when list is empty', () => {
+    render(
+      <MemoryRouter>
+        <StudentList studentGetter={() => []} />
+      </MemoryRouter>
+    );
+
+    const noStudentMessages = screen.getAllByText('No students found.');
+    expect(noStudentMessages.length).toBeGreaterThanOrEqual(1);
+  });
+});
