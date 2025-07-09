@@ -1,12 +1,17 @@
 import React, { useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getStudents } from '../../studentData';
+import { getStudents } from '../../studentData/paginateStudents';
+import { StudentDataGetter } from "../../studentData/loadAllStudents";
+
+type StudentListProps = {
+  studentGetter?: StudentDataGetter;
+};
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const StudentList: React.FC = () => {
+const StudentList: React.FC<StudentListProps> = ({ studentGetter = () => [] }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const query = useQuery();
@@ -15,7 +20,7 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(page, pageSize);
+  const { data: students, total, totalPages } = getStudents(studentGetter, page, pageSize);
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
@@ -54,8 +59,36 @@ const StudentList: React.FC = () => {
             <th className="px-4 py-3 text-right">Actions</th>
           </tr>
         </thead>
+        {students.length === 0 ? (
+          <tbody>
+            <tr>
+              <td colSpan={6} className="px-4 py-3 text-center text-gray-500">
+                No students found.
+              </td>
+            </tr>
+          </tbody>
+        ) : (
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.id} className="border-t">
+                <td className="px-4 py-3">{student.name}</td>
+                <td className="px-4 py-3">{student.email.toString()}</td>
+                <td className="px-4 py-3">{student.role}</td>
+                <td className="px-4 py-3">{student.section}</td>
+                <td className="px-4 py-3">{student.group}</td>
+                <td className="px-4 py-3 text-right">
+                  <Link
+                    to={'/email/${student.id}'}
+                    className="text-blue-600"
+                  >
+                    ✉
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
-
       <div className="flex items-center justify-between mt-6">
         <div className="text-sm text-gray-600">
           Showing {(page - 1) * pageSize + 1}–
