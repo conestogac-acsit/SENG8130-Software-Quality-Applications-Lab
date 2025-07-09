@@ -57,4 +57,8 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
     expect(screen.getByText('B')).toBeInTheDocument();
     expect(screen.getByText('G2')).toBeInTheDocument();
   });
+it('renders email link correctly', () => {
+    const emailLink = screen.getByRole('link', { name: '✉' });
+    expect(emailLink).toHaveAttribute('href', '/email/1');
+  });
 });
