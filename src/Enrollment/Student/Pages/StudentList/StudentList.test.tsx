@@ -61,4 +61,7 @@ it('renders email link correctly', () => {
     const emailLink = screen.getByRole('link', { name: '✉' });
     expect(emailLink).toHaveAttribute('href', '/email/1');
   });
+it('shows pagination summary', () => {
+    expect(screen.getByText(/Showing 1–1 of 1 students/)).toBeInTheDocument();
+  });
 });
