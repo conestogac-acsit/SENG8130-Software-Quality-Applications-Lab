@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Evaluation } from '../EvaluationService';
+
 type MonthViewProps = {
   year: number;
   evaluations: Evaluation[];
