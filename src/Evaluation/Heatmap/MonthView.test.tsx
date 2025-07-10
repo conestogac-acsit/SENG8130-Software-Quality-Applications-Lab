@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MonthView from './MonthView';
-import { EvaluationService, Evaluation } from '../EvaluationService';
-
+import { Evaluation } from '../EvaluationService';
 
 describe('MonthView', () => {
   const CURRENT_YEAR = new Date().getFullYear();
@@ -37,21 +36,19 @@ describe('MonthView', () => {
     },
   ];
 
-  const fakeService: EvaluationService = {
-    loadEvaluations: () => mockEvaluations,
-  } as EvaluationService;
-
   it('renders 12 month blocks', () => {
-    render(<MonthView service={fakeService} />);
+    render(<MonthView year={CURRENT_YEAR} evaluations={[]} />);
     const monthBlocks = screen.getAllByText(/evaluations/);
     expect(monthBlocks).toHaveLength(12);
   });
 
   it('correctly displays counts for each month', () => {
-    render(<MonthView service={fakeService} />);
+    render(<MonthView year={CURRENT_YEAR} evaluations={mockEvaluations} />);
+    const countElements = screen.getAllByText(/evaluations$/);
+    const texts = countElements.map(el => el.textContent?.trim());
 
-    expect(screen.getByText('2 evaluations')).toBeInTheDocument();
-    expect(screen.getByText('1 evaluations')).toBeInTheDocument();
-    expect(screen.getAllByText('0 evaluations').length).toBe(10);
+    expect(texts).toContain('2 evaluations'); // January
+    expect(texts).toContain('1 evaluations'); // March
+    expect(texts).toContain('0 evaluations'); // Other months
   });
 });

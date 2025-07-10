@@ -1,29 +1,28 @@
-import React from 'react';
-import { EvaluationService, Evaluation } from '../EvaluationService';
-
-import { LocalStorage } from '../../localStorageService';
+import React, { useMemo } from 'react';
+import { Evaluation } from '../EvaluationService';
 
 type MonthViewProps = {
-  service?: EvaluationService;
+  year: number;
+  evaluations: Evaluation[];
 };
 
-const MonthView: React.FC<MonthViewProps> = ({ service }) => {
-  const evaluationService = service || new EvaluationService(new LocalStorage());
-  const allEvaluations: Evaluation[] = evaluationService.loadEvaluations();
+const MonthView: React.FC<MonthViewProps> = ({ year, evaluations }) => {
+  const monthlyData = useMemo(() => {
+    const data = Array.from({ length: 12 }, (_, i) => ({
+      month: `${year}-${String(i + 1).padStart(2, '0')}`,
+      count: 0,
+    }));
 
-  const currentYear = new Date().getFullYear();
-  const monthlyData = Array.from({ length: 12 }, (_, i) => ({
-    month: `${currentYear}-${String(i + 1).padStart(2, '0')}`,
-    count: 0,
-  }));
-
-  for (const evaluation of allEvaluations) {
-    const d = evaluation.dueDate;
-    if (d.getFullYear() === currentYear) {
-      const index = d.getMonth();
-      monthlyData[index].count++;
+    for (const evaluation of evaluations) {
+      const d = evaluation.dueDate;
+      if (d.getFullYear() === year) {
+        const index = d.getMonth();
+        data[index].count++;
+      }
     }
-  }
+
+    return data;
+  }, [evaluations, year]);
 
   return (
     <div className="grid grid-cols-4 gap-4">
@@ -31,7 +30,7 @@ const MonthView: React.FC<MonthViewProps> = ({ service }) => {
         <div
           key={month}
           className={`rounded p-4 text-center shadow-sm ${
-            count ? 'text-white bg-blue-600' : 'text-gray-500 bg-gray-100'
+            count ? 'text-white' : 'text-gray-500'
           }`}
         >
           <div className="font-semibold">{month}</div>
@@ -41,5 +40,3 @@ const MonthView: React.FC<MonthViewProps> = ({ service }) => {
     </div>
   );
 };
-
-export default MonthView;
