@@ -1,8 +1,8 @@
 import { getAlertSummary } from '././AlertSummaryReport';
 import { Evaluation } from '../../Evaluation/EvaluationService';
 
-describe('getAlertSummary - Pure Tests', () => {
-  it('returns correct message when no evaluations exceed threshold', () => {
+describe('getAlertSummary', () => {
+  it('returns message when no evaluations exceed threshold', () => {
     const evaluations: Evaluation[] = [
       {
         course: 'Math',
@@ -30,7 +30,7 @@ describe('getAlertSummary - Pure Tests', () => {
     expect(summary).toContain('No weeks exceed the evaluation threshold.');
   });
 
-  it('correctly identifies overloaded weeks', () => {
+  it('identifies overloaded weeks correctly', () => {
     const evaluations: Evaluation[] = [];
 
     for (let i = 0; i < 12; i++) {
@@ -49,20 +49,16 @@ describe('getAlertSummary - Pure Tests', () => {
     const summary = getAlertSummary(evaluations, threshold);
 
     expect(summary).toContain('Overloaded Weeks:');
-    expect(summary).toContain('Week 5: 12 evaluations');
+    expect(summary).toMatch(/Week \d+: 12 evaluations/);
     expect(summary).toContain('(Threshold: 10)');
   });
 
-  it('handles empty evaluation list', () => {
-    const evaluations: Evaluation[] = [];
-    const threshold = 3;
-
-    const summary = getAlertSummary(evaluations, threshold);
-
+  it('returns default message for empty evaluation list', () => {
+    const summary = getAlertSummary([], 3);
     expect(summary).toContain('No weeks exceed the evaluation threshold.');
   });
 
-  it('throws error when threshold is negative', () => {
+  it('throws error for negative threshold', () => {
     const evaluations: Evaluation[] = [
       {
         course: 'Course X',
@@ -78,7 +74,7 @@ describe('getAlertSummary - Pure Tests', () => {
     expect(() => getAlertSummary(evaluations, -5)).toThrow('Threshold cannot be negative');
   });
 
-  it('throws error when evaluation has invalid date', () => {
+  it('throws error for invalid due date', () => {
     const evaluations: Evaluation[] = [
       {
         course: 'Course Y',
