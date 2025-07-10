@@ -40,3 +40,4 @@ const MonthView: React.FC<MonthViewProps> = ({ year, evaluations }) => {
     </div>
   );
 };
+export default MonthView;
