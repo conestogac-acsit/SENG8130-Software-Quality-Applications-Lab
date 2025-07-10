@@ -2,49 +2,55 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import FeedbackForm from './FeedbackForm';
 
-describe('FeedbackForm (No JSX)', () => {
+describe('FeedbackForm', () => {
   beforeEach(() => {
     localStorage.clear();
+    jest.clearAllMocks();
   });
 
-  it('renders heading and textarea', () => {
-    render(React.createElement(FeedbackForm));
-    expect(screen.getByText(/Give Feedback/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Leave a comment/i)).toBeInTheDocument();
+  test('renders heading and submit button', () => {
+    render(<FeedbackForm />);
+    expect(screen.getByText(/give feedback/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
   });
 
-  it('disables submit button when no emoji is selected', () => {
-    render(React.createElement(FeedbackForm));
-    const button = screen.getByRole('button', { name: /submit/i });
-    expect(button).toBeDisabled();
+  test('submit is disabled until a rating is selected', () => {
+    render(<FeedbackForm />);
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    expect(submitButton).toBeDisabled();
   });
 
-  it('enables submit button when emoji is selected', () => {
-    render(React.createElement(FeedbackForm));
-    fireEvent.click(screen.getByLabelText('Rate 2'));
-    const button = screen.getByRole('button', { name: /submit/i });
-    expect(button).not.toBeDisabled();
+  test('selecting a rating enables submit', () => {
+    render(<FeedbackForm />);
+    const emojiButton = screen.getByRole('button', { name: /rate 3/i });
+    fireEvent.click(emojiButton);
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    expect(submitButton).not.toBeDisabled();
   });
 
-  it('saves feedback in localStorage after submission', () => {
-    render(React.createElement(FeedbackForm));
-    fireEvent.click(screen.getByLabelText('Rate 5'));
-    fireEvent.change(screen.getByPlaceholderText(/Leave a comment/i), {
-      target: { value: 'Awesome feature!' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+  test('submitting feedback stores it in localStorage', () => {
+    render(<FeedbackForm />);
+    const emojiButton = screen.getByRole('button', { name: /rate 5/i });
+    fireEvent.click(emojiButton);
+
+    const textarea = screen.getByPlaceholderText(/leave a comment/i);
+    fireEvent.change(textarea, { target: { value: 'Great app!' } });
+
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitButton);
 
     const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
     expect(feedbacks.length).toBe(1);
-    expect(feedbacks[0].rating).toBe(5);
-    expect(feedbacks[0].comment).toBe('Awesome feature!');
+    expect(feedbacks[0]).toMatchObject({
+      rating: 5,
+      comment: 'Great app!',
+    });
   });
 
-  it('shows thank you message after submission', () => {
-    render(React.createElement(FeedbackForm));
-    fireEvent.click(screen.getByLabelText('Rate 1'));
+  test('shows thank-you message after submission', () => {
+    render(<FeedbackForm />);
+    fireEvent.click(screen.getByRole('button', { name: /rate 1/i }));
     fireEvent.click(screen.getByRole('button', { name: /submit/i }));
-
     expect(screen.getByText(/thank you for your feedback/i)).toBeInTheDocument();
   });
 });
