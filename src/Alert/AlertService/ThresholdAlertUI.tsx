@@ -17,7 +17,8 @@ const ThresholdAlertUI: React.FC<AlertProps > = ({ evaluations }) => {
   useEffect(() => {
     const alertNeeded = shouldDisplayAlerts(evaluations);
     setShowAlert(alertNeeded);
-    setSummary(alertNeeded ? getAlertSummary(evaluations) : '');
+    setSummary(alertNeeded ? getAlertSummary(evaluations, getWeeklyThreshold()) : '');
+
 
     const instructors = Array.from(new Set(evaluations.map(ev => ev.instructor)));
     const statuses = getInstructorSubmissionStatus(evaluations, instructors);
@@ -64,3 +65,5 @@ const ThresholdAlertUI: React.FC<AlertProps > = ({ evaluations }) => {
     </div>
   );
 };
+
+export default ThresholdAlertUI;
