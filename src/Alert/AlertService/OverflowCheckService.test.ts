@@ -1,5 +1,6 @@
 import { getOverflowWeeks } from './OverflowCheckService';
 import { Evaluation } from '../../Evaluation/EvaluationService';
+import { setWeeklyThreshold } from './alertThresholdService';
 
 function createEvaluation(overrides: Partial<Evaluation>): Evaluation {
   return {
@@ -16,6 +17,7 @@ function createEvaluation(overrides: Partial<Evaluation>): Evaluation {
 
 describe('getOverflowWeeks - Pure Tests', () => {
   it('returns correct overflow week when threshold is exceeded', () => {
+    setWeeklyThreshold(5);
     const baseDate = new Date('2025-03-10');
     const evaluations: Evaluation[] = Array.from({ length: 6 }, (_, i) =>
       createEvaluation({ dueDate: new Date(baseDate.getTime() + i * 1000) })
@@ -29,10 +31,11 @@ describe('getOverflowWeeks - Pure Tests', () => {
   });
 
   it('returns empty map when all weeks are under the threshold', () => {
+    setWeeklyThreshold(5);
     const evaluations: Evaluation[] = [
-      createEvaluation({ dueDate: new Date('2025-01-06') }),
-      createEvaluation({ dueDate: new Date('2025-01-13') }),
-      createEvaluation({ dueDate: new Date('2025-01-20') }),
+      createEvaluation({ dueDate: new Date('2025-09-08') }),
+      createEvaluation({ dueDate: new Date('2025-09-08') }),
+      createEvaluation({ dueDate: new Date('2025-09-08') }),
     ];
 
     const result = getOverflowWeeks(evaluations);
@@ -40,6 +43,7 @@ describe('getOverflowWeeks - Pure Tests', () => {
   });
 
   it('returns empty map when given an empty evaluation list', () => {
+    setWeeklyThreshold(5);
     const evaluations: Evaluation[] = [];
     const result = getOverflowWeeks(evaluations);
 
@@ -47,6 +51,7 @@ describe('getOverflowWeeks - Pure Tests', () => {
   });
 
   it('throws error when evaluation has invalid dueDate', () => {
+    setWeeklyThreshold(5);
     const evaluations: Evaluation[] = [
       {
         course: 'Test Course',
