@@ -1,0 +1,56 @@
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import FeedbackForm from './FeedbackForm';
+
+describe('FeedbackForm', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    jest.clearAllMocks();
+  });
+
+  test('renders heading and submit button', () => {
+    render(<FeedbackForm />);
+    expect(screen.getByText(/give feedback/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
+  });
+
+  test('submit is disabled until a rating is selected', () => {
+    render(<FeedbackForm />);
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    expect(submitButton).toBeDisabled();
+  });
+
+  test('selecting a rating enables submit', () => {
+    render(<FeedbackForm />);
+    const emojiButton = screen.getByRole('button', { name: /rate 3/i });
+    fireEvent.click(emojiButton);
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    expect(submitButton).not.toBeDisabled();
+  });
+
+  test('submitting feedback stores it in localStorage', () => {
+    render(<FeedbackForm />);
+    const emojiButton = screen.getByRole('button', { name: /rate 5/i });
+    fireEvent.click(emojiButton);
+
+    const textarea = screen.getByPlaceholderText(/leave a comment/i);
+    fireEvent.change(textarea, { target: { value: 'Great app!' } });
+
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitButton);
+
+    const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+    expect(feedbacks.length).toBe(1);
+    expect(feedbacks[0]).toMatchObject({
+      rating: 5,
+      comment: 'Great app!',
+    });
+  });
+
+  test('shows thank-you message after submission', () => {
+    render(<FeedbackForm />);
+    fireEvent.click(screen.getByRole('button', { name: /rate 1/i }));
+    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+    expect(screen.getByText(/thank you for your feedback/i)).toBeInTheDocument();
+  });
+});
