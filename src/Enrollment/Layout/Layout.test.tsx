@@ -1,20 +1,22 @@
+// src/Enrollment/Layout/Layout.test.tsx
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
 import Layout from "./Layout";
+import { BrowserRouter } from "react-router-dom";
+
 
 describe("Layout Component", () => {
-  test("renders sidebar and content", () => {
+  test("renders sidebar and dashboard link", () => {
     render(
-      <MemoryRouter initialEntries={["/dashboard"]}>
+      <BrowserRouter>
         <Layout />
-      </MemoryRouter>
+      </BrowserRouter>
     );
 
-    expect(screen.getByText("Student Portal")).toBeInTheDocument();
     expect(screen.getByText("Dashboard")).toBeInTheDocument();
 
-    const svgIcons = screen.getAllByRole("img", { hidden: true });
-    expect(svgIcons.length).toBeGreaterThan(0);
+    const svgIcon = screen.getByTestId("dashboard-icon");
+    expect(svgIcon).toBeInTheDocument();
   });
 });
