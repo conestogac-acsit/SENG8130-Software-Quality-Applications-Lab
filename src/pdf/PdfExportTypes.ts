@@ -19,6 +19,7 @@ export interface MonthlyEvaluationSummary {
 
 export interface CourseWeeklyEvaluationSummary {
     course: string;
+    isOverloaded: boolean;
     weeks: {
         weekStart: string;
         weekEnd: string;

@@ -53,6 +53,7 @@ describe("PdfExportTypes", () => {
     it("should match CourseWeeklyEvaluationSummary structure", () => {
         const courseSummary: CourseWeeklyEvaluationSummary = {
             course: "PROG8051",
+            isOverloaded: false,
             weeks: [
                 {
                     weekStart: "2025-07-07",
@@ -63,6 +64,7 @@ describe("PdfExportTypes", () => {
         };
 
         expect(courseSummary.course).toBe("PROG8051");
+        expect(courseSummary.isOverloaded).toBe(false);
         expect(courseSummary.weeks[0].weekStart).toBe("2025-07-07");
     });
 
@@ -73,6 +75,7 @@ describe("PdfExportTypes", () => {
             courseSummaries: [
                 {
                     course: "PROG8051",
+                    isOverloaded: false,
                     weeks: [
                         {
                             weekStart: "2025-07-07",
@@ -85,8 +88,9 @@ describe("PdfExportTypes", () => {
         };
 
         expect(report.totalCourses).toBe(1);
-        expect(report.courseSummaries[0].weeks[0].evaluations[0].title).toBe(
-            "Assignment 1"
-        );
+        expect(report.courseSummaries[0].isOverloaded).toBe(false);
+        expect(
+            report.courseSummaries[0].weeks[0].evaluations[0].title
+        ).toBe("Assignment 1");
     });
 });
