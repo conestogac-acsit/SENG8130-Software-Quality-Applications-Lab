@@ -1,24 +1,29 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import FirstnameInput from './FirstNameInput';
+import { render, screen } from '@testing-library/react';
+import FirstNameInput from './FirstNameInput';
 
-describe('FirstnameInput', () => {
-  it('renders the input field with label', () => {
-    render(<FirstnameInput />);
-    expect(screen.getByLabelText('First Name')).toBeInTheDocument();
+describe('FirstNameInput Component', () => {
+  it('renders the label correctly', () => {
+    render(<FirstNameInput label="First Name" name="firstName" placeholder="Enter first name" />);
+
+    const labelElement = screen.getByText('First Name');
+    expect(labelElement).toBeInTheDocument();
   });
 
-  it('allows typing in the input field', () => {
-    render(<FirstnameInput />);
-    const input = screen.getByLabelText('First Name') as HTMLInputElement;
-    fireEvent.change(input, { target: { value: 'Parminder' } });
-    expect(input.value).toBe('Parminder');
+  it('renders the input with correct placeholder and type', () => {
+    render(<FirstNameInput label="Email" name="email" placeholder="Enter email" type="email" />);
+    const inputElement = screen.getByPlaceholderText('Enter email');
+
+    expect(inputElement).toBeInTheDocument();
+    expect(inputElement).toHaveAttribute('type', 'email');
+    expect(inputElement).toHaveAttribute('name', 'email');
   });
 
-  it('logs to console on mount', () => {
-    const logSpy = jest.spyOn(console, 'log').mockImplementation();
-    render(<FirstnameInput />);
-    expect(logSpy).toHaveBeenCalledWith('FirstnameInput mounted');
-    logSpy.mockRestore();
-  });
+  it('associates label htmlFor with input id', () => {
+    render(<FirstNameInput label="Username" name="username" placeholder="Enter username" />);
+    const label = screen.getByText('Username') as HTMLLabelElement;
+    const input = screen.getByPlaceholderText('Enter username') as HTMLInputElement;
+
+    expect(label.htmlFor).toBe(input.id);
+  });
 });
