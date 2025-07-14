@@ -77,12 +77,7 @@ const StudentList: React.FC<StudentListProps> = ({ studentGetter = () => [] }) =
                 <td className="px-4 py-3">{student.section}</td>
                 <td className="px-4 py-3">{student.group}</td>
                 <td className="px-4 py-3 text-right">
-                  <Link
-                    to={'/email/${student.id}'}
-                    className="text-blue-600"
-                  >
-                    ✉
-                  </Link>
+                  <button className="text-blue-600"> ✉️ </button>
                 </td>
               </tr>
             ))}
