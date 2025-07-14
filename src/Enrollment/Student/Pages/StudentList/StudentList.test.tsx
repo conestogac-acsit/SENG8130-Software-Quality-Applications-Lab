@@ -4,14 +4,14 @@ import StudentList from './StudentList';
 import { Email } from '../../studentData/email';
 
 const testStudentGetter = () => [
-   {
+  {
     id: '1',
     name: 'Alice Johnson',
     email: new Email('alice@example.com'),
     role: 'Student',
     section: 'B',
     group: 'G2',
-    imageUrl: '', 
+    imageUrl: '',
     notes: '',
     isLoopEnrolled: false,
     isGithubEnrolled: false,
@@ -32,16 +32,16 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
   it('renders the "Email" column', () => {
     expect(screen.getByText('Email')).toBeInTheDocument();
   });
-    it('renders the "Role" column', () => {
+  it('renders the "Role" column', () => {
     expect(screen.getByText('Role')).toBeInTheDocument();
   });
-    it('renders the "Section" column', () => {
+  it('renders the "Section" column', () => {
     expect(screen.getByText('Section')).toBeInTheDocument();
   });
-   it('renders the "Group" column', () => {
+  it('renders the "Group" column', () => {
     expect(screen.getByText('Group')).toBeInTheDocument();
   });
-   it('renders the "Actions" column', () => {
+  it('renders the "Actions" column', () => {
     expect(screen.getByText('Actions')).toBeInTheDocument();
   });
   it('renders the "Prev" button', () => {
@@ -56,14 +56,14 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
     expect(screen.getByText('Student')).toBeInTheDocument();
     expect(screen.getByText('B')).toBeInTheDocument();
     expect(screen.getByText('G2')).toBeInTheDocument();
-  });
-it('renders email link correctly', () => {
-    const emailLink = screen.getByRole('link', { name: '✉' });
-    expect(emailLink).toHaveAttribute('href', '/email/1');
-  });
-it('shows pagination summary', () => {
+  });
+  it('renders email button correctly', () => {
+    const emailButton = screen.getByRole('button', { name: '✉️' });
+    expect(emailButton).toBeInTheDocument();
+  });
+  it('shows pagination summary', () => {
     expect(screen.getByText(/Showing 1–1 of 1 students/)).toBeInTheDocument();
-  });
+  });
 });
 describe('StudentList Component - Empty State & Edge Cases', () => {
   it('renders "No students found." when list is empty', () => {
@@ -75,8 +75,8 @@ describe('StudentList Component - Empty State & Edge Cases', () => {
 
     const noStudentMessages = screen.getAllByText('No students found.');
     expect(noStudentMessages.length).toBeGreaterThanOrEqual(1);
-  });
-it('shows correct pagination when empty', () => {
+  });
+  it('shows correct pagination when empty', () => {
     render(
       <MemoryRouter>
         <StudentList studentGetter={() => []} />
