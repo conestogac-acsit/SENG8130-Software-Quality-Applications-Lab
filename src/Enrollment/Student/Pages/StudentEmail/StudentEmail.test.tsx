@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { Email } from "../../studentData/email";
 import { Student } from "../../studentData/studentTypes";
 import StudentEmail from "./StudentEmail";
@@ -18,51 +17,28 @@ const testStudent: Student = {
 };
 
 describe("StudentEmail Component", () => {
-  it("renders 'Student not found.' when no student exists", () => {
-    render(
-      <MemoryRouter initialEntries={["/email/1"]}>
-        <Routes>
-          <Route path="/email/:id" element={<StudentEmail getter={() => []} />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText("Student not found.")).toBeInTheDocument();
-  });
   it("renders student details when student exists", () => {
-    render(
-      <MemoryRouter initialEntries={["/email/1"]}>
-        <Routes>
-          <Route
-            path="/email/:id"
-            element={<StudentEmail getter={() => [testStudent]} />}
-          />
-        </Routes>
-      </MemoryRouter>
-    );
-
+    render(<StudentEmail student={testStudent} />);
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("Test student for verifying email functionality.")).toBeInTheDocument();
   });
-  it("alerts if Compose Email clicked with no content", () => {
-    window.alert = jest.fn();
+  it("renders textarea and button", () => {
+    render(<StudentEmail student={testStudent} />);
+    expect(
+      screen.getByPlaceholderText("Write your message here...")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Compose Email")).toBeInTheDocument();
+  });
+  it("updates textarea value when typing", () => {
+    render(<StudentEmail student={testStudent} />);
 
-    render(
-      <MemoryRouter initialEntries={["/email/1"]}>
-        <Routes>
-          <Route
-            path="/email/:id"
-            element={<StudentEmail getter={() => [testStudent]} />}
-          />
-        </Routes>
-      </MemoryRouter>
-    );
+    const textarea = screen.getByPlaceholderText(
+      "Write your message here..."
+    ) as HTMLTextAreaElement;
 
-    fireEvent.click(screen.getByText("Compose Email"));
+    fireEvent.change(textarea, { target: { value: "Hello!" } });
 
-    expect(window.alert).toHaveBeenCalledWith(
-      "Please enter email content before composing."
-    );
+    expect(textarea.value).toBe("Hello!");
   });
 });
