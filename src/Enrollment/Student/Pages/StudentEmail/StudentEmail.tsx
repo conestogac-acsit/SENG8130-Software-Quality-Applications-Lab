@@ -1,31 +1,23 @@
 import React, { useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { findStudentById } from "../../studentData/findStudentById";
 import { Student } from "../../studentData/studentTypes";
 
-const emptyGetter = () => [];
+type Props = {
+  student: Student;
+};
 
-const StudentEmail: React.FC<{ getter?: () => Student[] }> = ({ getter = emptyGetter }) => {
-  const { id } = useParams();
-
-  const student = id ? findStudentById(id, getter) : undefined;
+const StudentEmail: React.FC<Props> = ({ student }) => {
   const [content, setContent] = useState("");
 
   const handleComposeEmail = useCallback(() => {
-    if (!student) {
-      alert("Student not found.");
-      return;
-    }
-
     if (!content.trim()) {
       alert("Please enter email content before composing.");
       return;
     }
 
-    const subject = encodeURIComponent('Message for ${student.name}');
+    const subject = encodeURIComponent(`Message for ${student.name}`);
     const body = encodeURIComponent(content);
 
-    window.location.href = 'mailto:${student.email.getValue()}?subject=${subject}&body=${body}';
+    window.location.href = `mailto:${student.email.toString()}?subject=${subject}&body=${body}`;
   }, [content, student]);
 
   if (!student) {
@@ -38,12 +30,12 @@ const StudentEmail: React.FC<{ getter?: () => Student[] }> = ({ getter = emptyGe
         <div className="flex items-center gap-4 mb-6">
           <img
             src={student.imageUrl}
-            alt={'Profile picture of ${student.name}'}
+            alt={`Profile picture of ${student.name}`}
             className="w-24 h-24 rounded-full"
           />
           <div>
             <h2 className="text-2xl font-bold">{student.name}</h2>
-            <p className="text-gray-600">{student.email.getValue()}</p>
+            <p className="text-gray-600">{student.email.toString()}</p>
           </div>
         </div>
 
