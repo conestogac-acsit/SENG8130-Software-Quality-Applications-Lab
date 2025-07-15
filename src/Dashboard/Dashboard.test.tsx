@@ -1,35 +1,25 @@
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import Dashboard from './Dashboard';
 
-describe("Dashboard Component", () => {
-  it("renders welcome message", () => {
+describe('Dashboard', () => {
+  it('renders dashboard heading', () => {
     render(
       <MemoryRouter>
         <Dashboard />
       </MemoryRouter>
     );
-
     expect(screen.getByText(/Welcome to the Dashboard!/i)).toBeInTheDocument();
   });
 
-  it("contains link to upload student", () => {
+  it('renders navigation links', () => {
     render(
       <MemoryRouter>
         <Dashboard />
       </MemoryRouter>
     );
-
-    expect(screen.getByRole("link", { name: /upload/i })).toBeInTheDocument();
-  });
-
-  it("contains link to home page", () => {
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByRole("link", { name: /home page/i })).toBeInTheDocument();
+    expect(screen.getByText(/Go to Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/View Calendar/i)).toBeInTheDocument();
   });
 });
