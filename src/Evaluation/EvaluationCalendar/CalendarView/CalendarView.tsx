@@ -1,12 +1,19 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
-import { Evaluation } from "../../EvaluationService";
+import { Evaluation, EvaluationService } from "../../EvaluationService";
+import { LocalStorage } from "../../../localStorageService/LocalStorage";
 
-interface CalendarViewProps {
-  evaluations: Evaluation[];
-}
+const evaluationService = new EvaluationService(new LocalStorage());
 
-const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+const CalendarView: React.FC = () => {
+  const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
+
+  useEffect(() => {
+    const loaded = evaluationService.loadEvaluations();
+    setEvaluations(loaded);
+  }, []);
+
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -17,7 +24,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
         month: "short",
         day: "numeric",
         timeZone: "America/Toronto",
-      }).format(ev.dueDate);
+      }).format(new Date(ev.dueDate));
 
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
@@ -30,19 +37,29 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [evaluations]);
 
-  if (sortedDates.length === 0) {
-    return <p className="text-center text-gray-500">No evaluations scheduled</p>;
-  }
-
   return (
-    <div className="space-y-4">
-      {sortedDates.map((dateStr) => (
-        <CalendarDayCard
-          key={dateStr}
-          date={dateStr}
-          evaluations={groupedByDate[dateStr]}
-        />
-      ))}
+    <div className="p-6 space-y-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">Evaluation Calendar</h2>
+        <Link
+          to="/dashboard/evaluation-form"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          Add Evaluation
+        </Link>
+      </div>
+
+      {sortedDates.length === 0 ? (
+        <p className="text-center text-gray-500">No evaluations scheduled</p>
+      ) : (
+        sortedDates.map((dateStr) => (
+          <CalendarDayCard
+            key={dateStr}
+            date={dateStr}
+            evaluations={groupedByDate[dateStr]}
+          />
+        ))
+      )}
     </div>
   );
 };
