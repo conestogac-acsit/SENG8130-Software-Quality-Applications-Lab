@@ -17,3 +17,13 @@ describe('EnrollmentBarChart', () => {
     const rects = container.querySelectorAll('rect');
     expect(rects.length).toBeGreaterThan(0);
   });
+  test('renders chart title even when data is empty', () => {
+  const emptyData: any[] = [];
+  render(<EnrollmentBarChart data={emptyData} />);
+  const title = screen.getByText(/Platform Enrollment Comparison/i);
+  expect(title).toBeInTheDocument();
+});
+
+
+});
+
