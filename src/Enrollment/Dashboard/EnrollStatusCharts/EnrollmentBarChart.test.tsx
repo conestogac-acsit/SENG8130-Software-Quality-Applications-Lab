@@ -12,4 +12,8 @@ describe('EnrollmentBarChart', () => {
     const svg = container.querySelector('svg');
     expect(svg).not.toBeNull();
   });
-  
+   test('renders bar rects', () => {
+    const { container } = render(<EnrollmentBarChart data={testData} />);
+    const rects = container.querySelectorAll('rect');
+    expect(rects.length).toBeGreaterThan(0);
+  });
