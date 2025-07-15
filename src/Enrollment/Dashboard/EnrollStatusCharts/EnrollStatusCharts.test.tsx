@@ -41,4 +41,3 @@ describe('EnrollStatusCharts', () => {
     expect(screen.getByText(/Platform Enrollment Comparison/i)).toBeInTheDocument();
   });
 });
-
