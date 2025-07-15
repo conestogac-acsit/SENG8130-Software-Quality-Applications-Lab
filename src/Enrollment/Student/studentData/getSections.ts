@@ -1,16 +1,9 @@
-import { getAllStudents } from "./getAllStudents"; // ✅ CORRECT import
+import { getAllStudents } from "./getAllStudents";
 
-/**
- * getSections
- *
- * Extracts a unique list of section names from all available students.
- * This assumes each student object contains a `section` field.
- *
- * If no students are found, returns an empty array.
- */
 export function getSections(): string[] {
   const students = getAllStudents();
-  if (!students || !Array.isArray(students)) {
+
+  if (!Array.isArray(students)) {
     return [];
   }
 
