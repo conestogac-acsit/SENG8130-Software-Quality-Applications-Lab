@@ -1,4 +1,4 @@
 export { getAllStudents, StudentDataGetter } from './loadAllStudents';
 export { getStudents } from './paginateStudents';
 export type { Student } from './studentTypes';
-export { findStudentById } from "./findStudentById";
+export { Email } from './email';
