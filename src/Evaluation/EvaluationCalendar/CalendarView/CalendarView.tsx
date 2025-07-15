@@ -16,7 +16,6 @@ const CalendarView: React.FC = () => {
 
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
-
     evaluations.forEach((ev) => {
       const dateKey = new Intl.DateTimeFormat("en-US", {
         weekday: "short",

@@ -1,67 +1,45 @@
-import React, { useMemo, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
-import { Evaluation, EvaluationService } from "../../EvaluationService";
-import { LocalStorage } from "../../../localStorageService/LocalStorage";
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import CalendarView from "./CalendarView";
+import { Evaluation } from "../../EvaluationService";
 
-const evaluationService = new EvaluationService(new LocalStorage());
+describe("CalendarView", () => {
+  const mockEvaluations: Evaluation[] = [
+    {
+      course: "SENG8130",
+      title: "Assignment 1",
+      type: "Assignment",
+      weight: 10,
+      dueDate: new Date("2025-06-24").toISOString() as unknown as Date,
+      instructor: "Andy",
+      campus: "Main Campus",
+    },
+    {
+      course: "SENG8061",
+      title: "Quiz 1",
+      type: "Quiz",
+      weight: 5,
+      dueDate: new Date("2025-06-24").toISOString() as unknown as Date,
+      instructor: "Kiran",
+      campus: "Main Campus",
+    },
+  ];
 
-const CalendarView: React.FC = () => {
-  const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
+  const STORAGE_KEY = "Evaluation_Data_Storage";
 
-  useEffect(() => {
-    const loaded = evaluationService.loadEvaluations();
-    setEvaluations(loaded);
-  }, []);
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
-  const { groupedByDate, sortedDates } = useMemo(() => {
-    const grouped: Record<string, Evaluation[]> = {};
+  it("renders fallback when no evaluations in storage", () => {
+    render(<CalendarView />);
+    expect(screen.getByText(/No evaluations scheduled/i)).toBeInTheDocument();
+  });
 
-    evaluations.forEach((ev) => {
-      const dateKey = new Intl.DateTimeFormat("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        timeZone: "America/Toronto",
-      }).format(new Date(ev.dueDate));
-
-      if (!grouped[dateKey]) grouped[dateKey] = [];
-      grouped[dateKey].push(ev);
-    });
-
-    const sorted = Object.keys(grouped).sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    );
-
-    return { groupedByDate: grouped, sortedDates: sorted };
-  }, [evaluations]);
-
-  return (
-    <div className="p-6 space-y-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Evaluation Calendar</h2>
-        <Link
-          to="/dashboard/evaluation-form"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-        >
-          Add Evaluation
-        </Link>
-      </div>
-
-      {sortedDates.length === 0 ? (
-        <p className="text-center text-gray-500">No evaluations scheduled</p>
-      ) : (
-        sortedDates.map((dateStr) => (
-          <CalendarDayCard
-            key={dateStr}
-            date={dateStr}
-            evaluations={groupedByDate[dateStr]}
-          />
-        ))
-      )}
-    </div>
-  );
-};
-
-export default CalendarView;
+  it("renders evaluations from localStorage", () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockEvaluations));
+    render(<CalendarView />);
+    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
+  });
+});
