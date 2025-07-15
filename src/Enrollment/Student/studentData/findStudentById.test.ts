@@ -1,6 +1,6 @@
 import { findStudentById } from "./findStudentById";
 import { Student } from "./studentTypes";
-import { Email } from "./Email";
+import { Email } from "./email";
 
 describe("findStudentById", () => {
   const students: Student[] = [
