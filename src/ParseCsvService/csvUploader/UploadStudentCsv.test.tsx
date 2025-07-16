@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import UploadStudentCsv from './UploadStudentCsv';
 
 describe('UploadStudentCsv', () => {
@@ -9,7 +10,7 @@ describe('UploadStudentCsv', () => {
 
  it('renders the file input and visible text input', () => {
   render(<UploadStudentCsv />);
-  
+
   const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
   const textInput = screen.getByPlaceholderText('No file selected');
 
@@ -61,7 +62,7 @@ describe('UploadStudentCsv', () => {
     render(<UploadStudentCsv />);
     const uploadBtn = screen.queryByText('Upload Student CSV');
 
-    
+
     if (uploadBtn) {
       fireEvent.click(uploadBtn);
       expect(screen.getByText('Please select a CSV file first.')).toBeInTheDocument();
@@ -73,10 +74,10 @@ describe('UploadStudentCsv', () => {
     const txtFile = new File(['dummy'], 'notcsv.txt', { type: 'text/plain' });
     const csvFile = new File(['dummy'], 'valid.csv', { type: 'text/csv' });
     const fileInput = screen.getByRole('textbox').previousSibling as HTMLInputElement;
-   
+
     fireEvent.change(fileInput, { target: { files: [txtFile] } });
     expect(screen.getByText('File must be a CSV.')).toBeInTheDocument();
-   
+
     fireEvent.change(fileInput, { target: { files: [csvFile] } });
     expect(screen.queryByText('File must be a CSV.')).not.toBeInTheDocument();
     expect(screen.getByPlaceholderText('No file selected')).toHaveValue('valid.csv');
