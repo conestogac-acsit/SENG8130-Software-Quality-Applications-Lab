@@ -22,9 +22,6 @@ function getMonthWeekRange(year: number, month: number): { start: Date; end: Dat
   return { start, end };
 }
 
-git add src/Evaluation/WeekView/WeekView.tsx
-git commit -m "feat(WeekView): complete component implementation with UI"
-
 const WeekView: React.FC<WeekViewProps> = ({ year, month, evaluations }) => {
   const weeklyData = useMemo(() => {
     const { start, end } = getMonthWeekRange(year, month);
