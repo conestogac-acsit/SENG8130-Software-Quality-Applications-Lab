@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
-import CalendarNavigation from "../../../Components/CalendarNavigation/CalendarNavigation";
-import { useCalendarNavigation } from "../hooks/useCalendarNavigation";
-import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
+import { CalendarNavigation } from "../../../Components/CalendarNavigation";
+import { useCalendarNavigation } from "../useCalendarNavigation";
+import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
 
 interface CalendarViewProps {
