@@ -21,12 +21,6 @@ function App() {
                 <p className="mt-4 text-lg text-gray-300">
                   Welcome! This is the desktop shell for SQATE tooling modules.
                 </p>
-                <Link
-                  to="/student-email"
-                  className="mt-8 inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors"
-                >
-                  Student List
-                </Link>
               </header>
             </div>
           }
