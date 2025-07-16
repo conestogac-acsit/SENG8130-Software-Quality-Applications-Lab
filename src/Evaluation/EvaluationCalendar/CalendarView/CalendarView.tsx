@@ -1,12 +1,14 @@
 import React, { useMemo } from "react";
 import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
+import { getEvaluationsForDate } from "../../EvaluationService/EvaluationsForDateService";  
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+  const todaysEvaluations = getEvaluationsForDate(evaluations, new Date());
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
