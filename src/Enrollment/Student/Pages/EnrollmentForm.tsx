@@ -2,12 +2,11 @@ import React from 'react';
 import CenteredFormContainer from '../../../Components/CenteredFormContainer/CenteredFormContainer';
 import Button from '../../../Components/Button/Button';
 
-const EnrollmentForm: React.FC = () => {
-  const handleEnrollment = (type: string): void => {
-    // Correct use of template literal inside console.log
-    console.log('Enrolled in: ${type}');
-  };
+interface EnrollmentFormProps {
+  onEnroll: (type: string) => void;
+}
 
+const EnrollmentForm: React.FC<EnrollmentFormProps> = ({ onEnroll }) => {
   return (
     <CenteredFormContainer>
       <h1 className="text-2xl font-semibold mb-4">Student Enrollment Form</h1>
@@ -62,15 +61,15 @@ const EnrollmentForm: React.FC = () => {
 
         <div className="flex flex-col items-center gap-4 mt-6">
           <div className="flex gap-4">
-            <Button label="Enroll in GitHub" onClick={() => handleEnrollment('GitHub')} />
-            <Button label="Enroll in Loop" onClick={() => handleEnrollment('Loop')} />
-            <Button label="Enroll in both" onClick={() => handleEnrollment('Both')} />
+            <Button label="Enroll in GitHub" onClick={() => onEnroll('GitHub')} />
+            <Button label="Enroll in Loop" onClick={() => onEnroll('Loop')} />
+            <Button label="Enroll in both" onClick={() => onEnroll('Both')} />
           </div>
-          <Button label="Submit" onClick={() => handleEnrollment('Form Submitted')} />
+          <Button label="Submit" onClick={() => onEnroll('Form Submitted')} />
         </div>
       </form>
     </CenteredFormContainer>
   );
 };
 
-export default EnrollmentForm;
+export default EnrollmentForm;

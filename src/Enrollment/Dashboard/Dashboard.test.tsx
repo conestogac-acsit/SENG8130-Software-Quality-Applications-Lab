@@ -3,10 +3,12 @@ import { MemoryRouter } from "react-router-dom";
 import Dashboard from "./Dashboard";
 
 describe("Dashboard Component", () => {
+  const mockHandleEnrollment = jest.fn(); // mock function for prop
+
   it("renders welcome message", () => {
     render(
       <MemoryRouter>
-        <Dashboard />
+        <Dashboard handleEnrollment={mockHandleEnrollment} />
       </MemoryRouter>
     );
 
@@ -16,7 +18,7 @@ describe("Dashboard Component", () => {
   it("contains link to upload student", () => {
     render(
       <MemoryRouter>
-        <Dashboard />
+        <Dashboard handleEnrollment={mockHandleEnrollment} />
       </MemoryRouter>
     );
 
@@ -26,7 +28,7 @@ describe("Dashboard Component", () => {
   it("contains link to home page", () => {
     render(
       <MemoryRouter>
-        <Dashboard />
+        <Dashboard handleEnrollment={mockHandleEnrollment} />
       </MemoryRouter>
     );
 
