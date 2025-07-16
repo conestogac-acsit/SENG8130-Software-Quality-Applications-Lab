@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
+import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<ModuleNotFound />} />
       </Routes>
     </BrowserRouter>
   );
@@ -30,7 +32,7 @@ function HomePage() {
         </p>
       </header>
     </div>
+
   );
 }
-
 export default App;
