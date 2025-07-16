@@ -1,15 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ModuleNotFound from './Components/ModuleNotFound'; // adjust path if needed
-import StudentList from './Enrollment/Student/Pages/StudentList/StudentList';
-import StudentEmailWrapper from './Enrollment/Student/Pages/StudentEmail/StudentEmailWrapper';
+import StudentDetailsByID from './Enrollment/Student/Pages/StudentEmail/StudentdetailsByID';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/students/email/:id" element={<StudentEmailWrapper />} />
-        <Route path="/students" element={<StudentList />} />
         <Route
           path="/"
           element={
@@ -24,12 +21,15 @@ function App() {
                 <p className="mt-4 text-lg text-gray-300">
                   Welcome! This is the desktop shell for SQATE tooling modules.
                 </p>
+                <div className="mt-8 space-x-4">
+                </div>
               </header>
             </div>
           }
         />
       
         <Route path="*" element={<ModuleNotFound />} />
+        <Route path="/students/:id" element={<StudentDetailsByID studentGetter={() => []}/>}/>
       </Routes>
     </Router>
   );
