@@ -43,9 +43,12 @@ export class EvaluationService implements IEvaluationService {
   
   loadEvaluations(): Evaluation[] {
     try {
-      const data = this.storageService.load<Evaluation[]>(EVALUATION_DATA_STORAGE_KEY);
+      const data = this.storageService.load<any[]>(EVALUATION_DATA_STORAGE_KEY);
       if (data) {
-        return data;
+        return data.map(ev => ({
+          ...ev,
+          dueDate: new Date(ev.dueDate)  
+        }));
       } else {
         console.warn('No evaluations found in storage');
         return [];

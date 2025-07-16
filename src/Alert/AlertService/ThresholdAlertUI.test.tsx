@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import ThresholdAlertUI from "./ThresholdAlertUI";
 import { Evaluation } from "../../Evaluation/EvaluationService";
-import { setWeeklyThreshold } from "./alertThresholdService";
+import { setWeeklyThreshold } from "./AlertThresholdService";
 
 describe("ThresholdAlertUI", () => {
   let container: HTMLDivElement;
@@ -30,7 +30,7 @@ describe("ThresholdAlertUI", () => {
   });
 
   it("hides alert when evaluations are below threshold", () => {
-    setWeeklyThreshold(3);
+    setWeeklyThreshold(1);
     render(<ThresholdAlertUI evaluations={evals.slice(0, 2)} />, container);
     expect(container.textContent).not.toMatch(/exceed the configured threshold/i);
   });
