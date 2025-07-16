@@ -1,1 +1,0 @@
-export { getInstructorSubmissionStatus } from './submissionTracker';
