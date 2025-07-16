@@ -10,7 +10,7 @@ const Dashboard: React.FC = () => {
       </p>
       <p className="text-gray-700 mb-2">
         If there's no data, please{" "}
-        <Link to={`/upload-student`} className="text-blue-600 font-medium hover:underline">
+        <Link to={`../Student/Pages/EnrollmentForm`} className="text-blue-600 font-medium hover:underline">
           upload
         </Link>{" "}
         first.
