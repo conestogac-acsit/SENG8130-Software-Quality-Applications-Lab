@@ -4,9 +4,10 @@ import { Evaluation } from "../../EvaluationService";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
+  onDelete: (ev: Evaluation) => void;
 }
 
-const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, onDelete }) => {
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -37,11 +38,25 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
   return (
     <div className="space-y-4">
       {sortedDates.map((dateStr) => (
-        <CalendarDayCard
-          key={dateStr}
-          date={dateStr}
-          evaluations={groupedByDate[dateStr]}
-        />
+        <div key={dateStr} className="border rounded p-2">
+          <h2 className="font-semibold">{dateStr}</h2>
+          <ul>
+            {groupedByDate[dateStr].map((ev) => (
+              <li key={ev.evaluationId} className="flex justify-between items-center">
+                <CalendarDayCard
+                  date={dateStr}
+                  evaluations={[ev]}
+                />
+                <button
+                  onClick={() => onDelete(ev)}
+                  className="bg-red-500 text-white px-2 py-1 rounded text-sm ml-2"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
     </div>
   );
