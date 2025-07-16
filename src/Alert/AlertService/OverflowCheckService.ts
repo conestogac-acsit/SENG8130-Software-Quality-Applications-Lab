@@ -1,6 +1,5 @@
 import { Evaluation } from '../../Evaluation/EvaluationService';
-
-const WEEKLY_THRESHOLD = 5;
+import { getWeeklyThreshold } from './AlertThresholdService';
 
 function getISOWeek(date: Date): number {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -17,7 +16,7 @@ export function getOverflowWeeks(evaluations: Evaluation[]): Map<number, Evaluat
   for (const ev of evaluations) {
     const dueDate = new Date(ev.dueDate);
     if (isNaN(dueDate.getTime())) {
-      throw new Error(`Invalid date in evaluation: ${ev.title}`);
+        throw new Error('-Invalid date in evaluation: ${ev.title}-');
     }
 
     const week = getISOWeek(dueDate);
@@ -29,7 +28,7 @@ export function getOverflowWeeks(evaluations: Evaluation[]): Map<number, Evaluat
 
   const overflows = new Map<number, Evaluation[]>();
   for (const [week, evals] of groupedByWeek.entries()) {
-    if (evals.length > WEEKLY_THRESHOLD) {
+    if (evals.length > getWeeklyThreshold()) {
       overflows.set(week, evals);
     }
   }
