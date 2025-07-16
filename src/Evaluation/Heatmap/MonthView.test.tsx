@@ -47,8 +47,8 @@ describe('MonthView', () => {
     const countElements = screen.getAllByText(/evaluations$/);
     const texts = countElements.map(el => el.textContent?.trim());
 
-    expect(texts).toContain('2 evaluations'); // January
-    expect(texts).toContain('1 evaluations'); // March
-    expect(texts).toContain('0 evaluations'); // Other months
+    expect(texts).toContain('2 evaluations'); 
+    expect(texts).toContain('1 evaluations'); 
+    expect(texts).toContain('0 evaluations'); 
   });
 });
