@@ -1,3 +1,4 @@
 export { IEvaluationService, EvaluationService } from './EvaluationService';
 export { EvaluationType, Evaluation } from './EvaluationService';
 export { saveOrUpdateEvaluation } from './saveOrUpdateEvaluationService';
+import { getEvaluationsForInstructor } from './EvaluationsForInstructorService';
