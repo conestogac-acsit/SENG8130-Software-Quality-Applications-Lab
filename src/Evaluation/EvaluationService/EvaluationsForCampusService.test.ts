@@ -1,4 +1,4 @@
-import { getEvaluationsForCampus } from './getEvaluationsForCampus';
+import { getEvaluationsForCampus } from './EvaluationsForCampusService';
 import type { Evaluation } from './EvaluationService';
 
 describe('getEvaluationsForCampus', () => {
