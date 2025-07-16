@@ -1,12 +1,16 @@
 import React, { useMemo } from "react";
+import React, { useState } from 'react';
 import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
+import { getEvaluationsForType } from '../../EvaluationService';
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+  const [selectedType, setSelectedType] = useState<string>('Quiz');
+  const typeEvaluations = getEvaluationsForType(evaluations, selectedType);
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
