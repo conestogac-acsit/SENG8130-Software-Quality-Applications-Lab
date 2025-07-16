@@ -1,1 +1,0 @@
-export { getAlertSummary } from './AlertSummaryReport';
