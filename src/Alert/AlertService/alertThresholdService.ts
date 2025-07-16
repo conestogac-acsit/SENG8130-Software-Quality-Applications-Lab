@@ -1,7 +1,7 @@
 import { Evaluation } from '../../Evaluation/EvaluationService';
 import { getISOWeek } from 'date-fns';
 
-let weeklyThreshold = 10;
+let weeklyThreshold = 2;
 
 export function setWeeklyThreshold(value: number): void {
   if (value < 1) throw new Error("Threshold must be ≥ 1");
