@@ -2,45 +2,38 @@ import React, { useState, useCallback } from "react";
 import { Student } from "../../studentData/studentTypes";
 
 type Props = {
-  student: Student;
+  student?: Student;
 };
-
 const StudentEmail: React.FC<Props> = ({ student }) => {
   const [content, setContent] = useState("");
-
   const handleComposeEmail = useCallback(() => {
     if (!content.trim()) {
       alert("Please enter email content before composing.");
       return;
     }
-
-    const subject = encodeURIComponent(`Message for ${student.name}`);
+    const subject = encodeURIComponent(`Message for ${student?.name}`);
     const body = encodeURIComponent(content);
-
-    window.location.href = `mailto:${student.email.toString()}?subject=${subject}&body=${body}`;
+    const emailAddress = student?.email?.toString();
+    window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
   }, [content, student]);
-
-  if (!student) {
-    return <div className="p-6 text-red-600">Student not found.</div>;
-  }
 
   return (
     <div className="p-6">
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex items-center gap-4 mb-6">
           <img
-            src={student.imageUrl}
-            alt={`Profile picture of ${student.name}`}
+            src={student?.imageUrl}
+            alt={`Profile picture`}
             className="w-24 h-24 rounded-full"
           />
           <div>
-            <h2 className="text-2xl font-bold">{student.name}</h2>
-            <p className="text-gray-600">{student.email.toString()}</p>
+            <h2 className="text-2xl font-bold">{student?.name}</h2>
+            <p className="text-gray-600">{student?.email?.toString()}</p>
           </div>
         </div>
 
         <h3 className="text-lg font-semibold mb-2">Notes</h3>
-        <p className="text-gray-700 mb-4">{student.notes}</p>
+        <p className="text-gray-700 mb-4">{student?.notes}</p>
 
         <h3 className="text-lg font-semibold mb-2">Email Content</h3>
         <textarea
@@ -50,7 +43,6 @@ const StudentEmail: React.FC<Props> = ({ student }) => {
           className="w-full border rounded p-3 mb-4 text-sm"
           placeholder="Write your message here..."
         />
-
         <button
           onClick={handleComposeEmail}
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
@@ -61,5 +53,4 @@ const StudentEmail: React.FC<Props> = ({ student }) => {
     </div>
   );
 };
-
 export default StudentEmail;
