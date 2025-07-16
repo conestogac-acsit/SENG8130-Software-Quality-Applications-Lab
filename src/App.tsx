@@ -1,11 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ModuleNotFound from './Components/ModuleNotFound'; // adjust path if needed
+import StudentList from './Enrollment/Student/Pages/StudentList/StudentList';
+import StudentEmailWrapper from './Enrollment/Student/Pages/StudentEmail/StudentEmailWrapper';
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/students/email/:id" element={<StudentEmailWrapper />} />
+        <Route path="/students" element={<StudentList />} />
         <Route
           path="/"
           element={
@@ -24,6 +28,7 @@ function App() {
             </div>
           }
         />
+      
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
     </Router>
