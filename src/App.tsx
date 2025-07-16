@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
+import ModuleNotFound from './Components/ModuleNotFound';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<ModuleNotFound />} />
       </Routes>
     </BrowserRouter>
   );

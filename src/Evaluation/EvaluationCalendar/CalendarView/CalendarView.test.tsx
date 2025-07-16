@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import CalendarView from "./CalendarView";
-import { Evaluation } from "../../Evaluation/EvaluationService";
+import { Evaluation } from "../../EvaluationService";
 
 describe("CalendarView", () => {
   const mockEvaluations: Evaluation[] = [
