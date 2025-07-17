@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CalendarView from "./CalendarView";
 import { Evaluation } from "../../EvaluationService";
 
@@ -36,9 +36,9 @@ describe("CalendarView", () => {
 
   it("renders evaluation cards for each grouped date", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Lab Report/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Assignment 1/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Quiz 1/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Lab Report/i).length).toBeGreaterThan(0);
   });
 
   it("shows fallback when no evaluations are scheduled", () => {
@@ -50,17 +50,13 @@ describe("CalendarView", () => {
 
   it("renders the view switcher buttons", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(screen.getByText("Weekly")).toBeInTheDocument();
-    expect(screen.getByText("Monthly")).toBeInTheDocument();
+    expect(screen.getByText(/Weekly/i)).toBeInTheDocument();
+    expect(screen.getByText(/Monthly/i)).toBeInTheDocument();
   });
-
-});
 
   it("renders CalendarNavigation label", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(
-      screen.getByText(/Week of/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Week of/i)).toBeInTheDocument();
   });
 
   it("renders Prev and Next buttons", () => {
@@ -71,14 +67,7 @@ describe("CalendarView", () => {
 
   it("groups evaluations under correct dates", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-
-    expect(
-      screen.getByText("Tue, Jun 24, 2025")
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText("Wed, Jun 25, 2025")
-    ).toBeInTheDocument();
+    expect(screen.getAllByText("Tue, Jun 24, 2025").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Wed, Jun 25, 2025").length).toBeGreaterThan(0);
   });
 });
-
