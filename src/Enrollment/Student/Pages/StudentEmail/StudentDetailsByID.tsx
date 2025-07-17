@@ -9,7 +9,6 @@ type Props = {
 
 const StudentDetailsByID: React.FC<Props> = ({ studentGetter }) => {
   const { id } = useParams<{ id: string }>();
-
   if (!id) {
     return (
       <div className="p-8 text-red-600 text-lg">
@@ -17,18 +16,7 @@ const StudentDetailsByID: React.FC<Props> = ({ studentGetter }) => {
       </div>
     );
   }
-
-  let student;
-  try {
-    student = findStudentById(id, studentGetter);
-  } catch (err) {
-    return (
-      <div className="p-8 text-red-600 text-lg">
-        Error: {(err as Error).message}
-      </div>
-    );
-  }
-
+  const student = findStudentById(id, studentGetter);
   if (!student) {
     return (
       <div className="p-8 text-red-600 text-lg">
@@ -36,7 +24,6 @@ const StudentDetailsByID: React.FC<Props> = ({ studentGetter }) => {
       </div>
     );
   }
-
   return (
     <div className="p-8 max-w-xl mx-auto bg-white rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Student Details</h2>
