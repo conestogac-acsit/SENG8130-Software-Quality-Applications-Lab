@@ -57,4 +57,20 @@ describe("StudentDetailsByID", () => {
       screen.getByText(/No student ID provided in URL/i)
     ).toBeInTheDocument();
   });
+  it("shows error message if student not found for given ID", () => {
+    render(
+      <MemoryRouter initialEntries={["/students/unknown"]}>
+        <Routes>
+          <Route
+            path="/students/:id"
+            element={<StudentDetailsByID studentGetter={() => testStudents} />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(
+      screen.getByText(/Student not found for ID = unknown/i)
+    ).toBeInTheDocument();
+  });
 });
