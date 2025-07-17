@@ -81,7 +81,8 @@ function createWindow() {
   if (isDev) {
     win.loadURL('http://localhost:5173');
   } else {
-     win.loadFile(path.join(__dirname, '../dist/index.html'));
+     win.loadFile(path.join(__dirname, '../../dist/index.html'));
+
   }
 
   const menu = Menu.buildFromTemplate(menuTemplate);

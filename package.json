@@ -2,6 +2,7 @@
   "name": "sqate-tools",
   "private": true,
   "version": "0.0.0",
+  "main": "electron/public/main.cjs",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run electron:dev\"",
@@ -39,6 +40,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
+    "electron-packager": "^17.1.2",
     "eslint": "^9.25.0",
     "jest": "^29.7.0",
     "postcss": "^8.4.38",
