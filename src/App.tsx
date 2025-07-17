@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />}>
-          <Route path="/student-email" element={<StudentEmail />} />
+          <Route path="student-email" element={<StudentEmail />} />
         </Route>
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
