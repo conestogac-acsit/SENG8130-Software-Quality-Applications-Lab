@@ -1,14 +1,23 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
+
 import Dashboard from './Enrollment/Dashboard/Dashboard';
 import EnrollmentForm from './Enrollment/Student/Pages/EnrollmentForm';
+import ModuleNotFound from './Components/ModuleNotFound'; 
+import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
+import EvaluationCard from '../src/Dashboard/EvaluationCard';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route path="/" element={<HomePage />} />
+        <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/evaluation" element={<EvaluationCard />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<ModuleNotFound />} />
       </Routes>
     </BrowserRouter>
   );
@@ -32,5 +41,4 @@ function HomePage() {
     </div>
   );
 }
-
 export default App;
