@@ -41,4 +41,24 @@ describe("StudentEmail Component", () => {
 
     expect(textarea.value).toBe("Hello!");
   });
+  it("calls onComposeEmail with correct mailto link when button is clicked", () => {
+  let capturedUrl = "";
+  render(
+    <StudentEmail
+      student={testStudent}
+      onComposeEmail={(url) => {
+        capturedUrl = url;
+      }}
+    />
+  );
+  const textarea = screen.getByPlaceholderText("Write your message here...");
+  fireEvent.change(textarea, { target: { value: "Hello student!" } });
+  const button = screen.getByText("Compose Email");
+  fireEvent.click(button);
+  expect(capturedUrl).toContain("mailto:john@example.com");
+  expect(capturedUrl).toContain("subject=Message%20for%20John%20Doe");
+  expect(capturedUrl).toContain("body=Hello%20student!");
+});
+
+
 });
