@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { Student } from "../../studentData/studentTypes";
 import { Email } from "../../studentData/email";
-import StudentDetailsByID from "./StudentdetailsByID";
+import StudentDetailsByID from "./StudentDetailsByID";
 
 const testStudents: Student[] = [
   {
