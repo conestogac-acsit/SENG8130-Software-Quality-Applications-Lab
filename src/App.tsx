@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} >
-          <Route path="students/id" element={<StudentDetailsByID studentGetter={() => []}/>}/>
+          <Route path="students/:id" element={<StudentDetailsByID studentGetter={() => []}/>}/>
         </Route>
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
