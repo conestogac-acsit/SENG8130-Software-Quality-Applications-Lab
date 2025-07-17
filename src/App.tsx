@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ModuleNotFound from './Components/ModuleNotFound'; // adjust path if needed
-import StudentList from './Enrollment/Student/Pages/StudentList/StudentList';
+import { StudentList } from './Enrollment/Student/Pages/StudentList';
 
 function App() {
   return (
