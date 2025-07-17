@@ -7,6 +7,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/students/:id" element={<StudentDetailsByID studentGetter={() => []}/>}/>
         <Route
           path="/"
           element={
@@ -29,7 +30,7 @@ function App() {
         />
       
         <Route path="*" element={<ModuleNotFound />} />
-        <Route path="/students/:id" element={<StudentDetailsByID studentGetter={() => []}/>}/>
+        
       </Routes>
     </Router>
   );
