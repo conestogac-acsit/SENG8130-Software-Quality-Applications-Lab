@@ -1,12 +1,15 @@
-import React, { useMemo } from "react";
-import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
+import React, { useMemo, useState } from "react";
+import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
+import { CalendarViewSwitcher } from "../../../Components/CalendarViewSwitcher";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+  const [view, setView] = useState<"weekly" | "monthly">("weekly");
+
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -36,6 +39,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
 
   return (
     <div className="space-y-4">
+      <CalendarViewSwitcher currentView={view} setView={setView} />
+
+      <div className="text-center text-gray-400 italic text-sm">
+        Navigation coming soon...
+      </div>
+
       {sortedDates.map((dateStr) => (
         <CalendarDayCard
           key={dateStr}

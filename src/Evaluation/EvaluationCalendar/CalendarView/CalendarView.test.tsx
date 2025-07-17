@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import CalendarView from "./CalendarView";
 import { Evaluation } from "../../EvaluationService";
 
@@ -34,18 +34,24 @@ describe("CalendarView", () => {
     },
   ];
 
-  it("renders evaluation cards for each date", () => {
+  it("renders evaluation cards for each grouped date", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-
     expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Lab Report/i)).toBeInTheDocument();
   });
 
-  it("shows fallback message when no evaluations are scheduled", () => {
+  it("shows fallback when no evaluations are scheduled", () => {
     render(<CalendarView evaluations={[]} />);
     expect(
       screen.getByText(/No evaluations scheduled/i)
     ).toBeInTheDocument();
   });
+
+  it("renders the view switcher buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText("Weekly")).toBeInTheDocument();
+    expect(screen.getByText("Monthly")).toBeInTheDocument();
+  });
+
 });
