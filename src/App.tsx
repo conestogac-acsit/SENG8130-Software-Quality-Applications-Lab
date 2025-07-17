@@ -30,7 +30,6 @@ function App() {
         />
         <Route path="/dashboard" element={<Dashboard handleEnrollment={handleEnrollment} />} />
         <Route path="/student/enroll" element={<EnrollmentForm onEnroll={handleEnrollment} />} />
-        
       </Routes>
     </BrowserRouter>
   );
