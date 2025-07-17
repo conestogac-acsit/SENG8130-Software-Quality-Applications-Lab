@@ -5,4 +5,9 @@ if (typeof global.TextEncoder === 'undefined') {
 }
 if (typeof global.TextDecoder === 'undefined') {
   global.TextDecoder = TextDecoder as typeof global.TextDecoder;
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> 60325e8 (481-Mil1-Add Student Enrollment Card to Dashboard (TDD) (#511))
