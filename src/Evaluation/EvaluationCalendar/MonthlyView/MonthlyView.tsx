@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import CalendarDayCard from "../../Components/CalendarDayCard";
-import { Evaluation } from "../../Evaluation/EvaluationService";
+import CalendarDayCard from "../../../Components/CalendarDayCard";
+import { Evaluation } from "../../EvaluationService";
 
 interface MonthlyViewProps {
   evaluations: Evaluation[];

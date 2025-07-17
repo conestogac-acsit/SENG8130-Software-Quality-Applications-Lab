@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import MonthlyView from "./MonthlyView";
-import { Evaluation } from "../../Evaluation/EvaluationService";
+import { Evaluation } from "../../EvaluationService";
 
 describe("MonthlyView", () => {
   const mockEvaluations: Evaluation[] = [

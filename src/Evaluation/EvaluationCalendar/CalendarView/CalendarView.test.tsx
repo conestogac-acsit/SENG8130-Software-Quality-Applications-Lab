@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import CalendarView from "./CalendarView";
 import { Evaluation } from "../../EvaluationService";
 
@@ -34,15 +34,14 @@ describe("CalendarView", () => {
     },
   ];
 
-  it("renders evaluation cards for each date", () => {
+  it("renders evaluation cards for weekly view by default", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-
     expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Lab Report/i)).toBeInTheDocument();
   });
 
-  it("shows fallback message when no evaluations are scheduled", () => {
+  it("shows fallback message when no evaluations are scheduled (weekly)", () => {
     render(<CalendarView evaluations={[]} />);
     expect(
       screen.getByText(/No evaluations scheduled/i)
@@ -51,8 +50,30 @@ describe("CalendarView", () => {
 
   it("renders CalendarNavigation label", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText(/Week of/i)).toBeInTheDocument();
+  });
+
+  it("renders Weekly and Monthly toggle buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText("Weekly")).toBeInTheDocument();
+    expect(screen.getByText("Monthly")).toBeInTheDocument();
+  });
+
+  it("toggles to MonthlyView and shows weekday headers", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    fireEvent.click(screen.getByText("Monthly"));
+
+    expect(screen.getByText("Mon")).toBeInTheDocument();
+    expect(screen.getByText("Tue")).toBeInTheDocument();
+    expect(screen.getByText("Wed")).toBeInTheDocument();
+  });
+
+  it("shows monthly fallback when there are no evaluations", () => {
+    render(<CalendarView evaluations={[]} />);
+    fireEvent.click(screen.getByText("Monthly"));
+
     expect(
-      screen.getByText(/Week of/i)
+      screen.getByText(/No evaluations are scheduled for this month/i)
     ).toBeInTheDocument();
   });
 
@@ -62,15 +83,9 @@ describe("CalendarView", () => {
     expect(screen.getByText(/Next/i)).toBeInTheDocument();
   });
 
-  it("groups evaluations under correct dates", () => {
+  it("groups evaluations under correct dates in weekly view", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-
-    expect(
-      screen.getByText("Tue, Jun 24, 2025")
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText("Wed, Jun 25, 2025")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Tue, Jun 24, 2025")).toBeInTheDocument();
+    expect(screen.getByText("Wed, Jun 25, 2025")).toBeInTheDocument();
   });
 });
