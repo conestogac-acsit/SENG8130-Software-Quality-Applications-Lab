@@ -3,8 +3,9 @@ import { Student } from "../../studentData/studentTypes";
 
 type Props = {
   student?: Student;
+  onComposeEmail?: (url: string) => void;
 };
-const StudentEmail: React.FC<Props> = ({ student }) => {
+const StudentEmail: React.FC<Props> = ({ student, onComposeEmail }) => {
   const [content, setContent] = useState("");
   const handleComposeEmail = useCallback(() => {
     if (!content.trim()) {
@@ -14,8 +15,14 @@ const StudentEmail: React.FC<Props> = ({ student }) => {
     const subject = encodeURIComponent(`Message for ${student?.name}`);
     const body = encodeURIComponent(content);
     const emailAddress = student?.email?.toString();
-    window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-  }, [content, student]);
+     const mailtoUrl = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+
+    if (onComposeEmail) {
+      onComposeEmail(mailtoUrl); // ✅ testable
+    } else {
+      window.location.href = mailtoUrl; // fallback for production
+    }
+  }, [content, student, onComposeEmail]);
 
   return (
     <div className="p-6">
