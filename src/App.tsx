@@ -4,12 +4,27 @@ import logo from "./assets/logo.png";
 import ModuleNotFound from "./Components/ModuleNotFound";
 import EnrollmentDashboard from "./Enrollment/Dashboard/Dashboard";
 import EvaluationCard from "../src/Dashboard/EvaluationCard";
+import { Heatmap } from "./Evaluation/Heatmap";
+import { LocalStorage } from "./localStorageService";
+import {
+  Evaluation,
+  EvaluationService,
+} from "./Evaluation/EvaluationService/EvaluationService";
+
+const evaluations: Evaluation[] = new EvaluationService(
+  new LocalStorage()
+).loadEvaluations();
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
+        <Route
+          path="/heatmap"
+          element={<Heatmap evaluations={evaluations} />}
+        />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
