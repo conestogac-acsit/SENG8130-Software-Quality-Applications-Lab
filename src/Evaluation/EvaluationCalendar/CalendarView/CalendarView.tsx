@@ -7,7 +7,7 @@ import WeeklyView from "../WeeklyView/WeeklyView";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
-  viewMode: "weekly" | "calendar"; // Supports view switching
+  viewMode: "weekly" | "calendar"; 
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) => {
@@ -53,7 +53,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) =>
     );
   }
 
-  // Show WeeklyView if viewMode is "weekly"
   if (viewMode === "weekly") {
     return <WeeklyView evaluations={evaluations} />;
   }
