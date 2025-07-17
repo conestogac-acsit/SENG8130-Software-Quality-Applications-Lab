@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './assets/logo.png';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ModuleNotFound from './Components/ModuleNotFound'; // adjust path if needed
+import ModuleNotFound from './Components/ModuleNotFound';
 import EnrollStatusExports from './Enrollment/Dashboard/EnrollStatusCharts/EnrollStatusExports';
 
 function App() {
@@ -26,14 +26,8 @@ function App() {
             </div>
           }
         />
-        <Route
-          path="/export-dashboard"
-          element={<EnrollStatusExports />}
-        />
-        <Route
-          path="*"
-          element={<ModuleNotFound />}
-        />
+        <Route path="/export-dashboard" element={<EnrollStatusExports />} />
+        <Route path="*" element={<ModuleNotFound />} />
       </Routes>
     </Router>
   );
