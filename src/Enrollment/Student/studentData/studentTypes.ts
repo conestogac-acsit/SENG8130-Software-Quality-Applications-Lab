@@ -1,4 +1,4 @@
-type Email = string;
+import { Email } from "./email";
 
 export interface Student {
   id: string;
