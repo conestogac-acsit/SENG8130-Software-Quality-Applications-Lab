@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../../Components/Button/Button';
 
 const EnrollmentActionSection: React.FC = () => {
   const [message, setMessage] = useState<string>('');
-
-  useEffect(() => {
-    console.log('EnrollmentActionSection mounted');
-  }, []);
 
   const handleEnroll = (): void => {
     setMessage('Enrollment triggered');
