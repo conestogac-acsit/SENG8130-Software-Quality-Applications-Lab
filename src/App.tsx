@@ -7,6 +7,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/students" element={<StudentList studentGetter={() => []} />} />
         <Route
           path="/"
           element={
@@ -26,7 +27,7 @@ function App() {
           }
         />
         <Route path="*" element={<ModuleNotFound />} />
-        <Route path="/students" element={<StudentList studentGetter={() => []} />} />
+        
       </Routes>
     </Router>
   );
