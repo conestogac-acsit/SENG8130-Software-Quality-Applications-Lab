@@ -41,4 +41,20 @@ describe("StudentDetailsByID", () => {
     expect(screen.getByText("G1")).toBeInTheDocument();
     expect(screen.getByText("Top student")).toBeInTheDocument();
   });
+  it("shows message if no ID is provided in URL", () => {
+    render(
+      <MemoryRouter initialEntries={["/students"]}>
+        <Routes>
+          <Route
+            path="/students"
+            element={<StudentDetailsByID studentGetter={() => testStudents} />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(
+      screen.getByText(/No student ID provided in URL/i)
+    ).toBeInTheDocument();
+  });
 });
