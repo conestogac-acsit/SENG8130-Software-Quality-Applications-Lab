@@ -35,5 +35,10 @@ describe("StudentDetailsByID", () => {
     );
     expect(screen.getByText("Alice")).toBeInTheDocument();
     expect(screen.getByText("alice@example.com")).toBeInTheDocument();
+    expect(screen.getByText("Student Details")).toBeInTheDocument();
+    expect(screen.getByText("Alice")).toBeInTheDocument();
+    expect(screen.getByText("alice@example.com")).toBeInTheDocument();
+    expect(screen.getByText("G1")).toBeInTheDocument();
+    expect(screen.getByText("Top student")).toBeInTheDocument();
   });
 });
