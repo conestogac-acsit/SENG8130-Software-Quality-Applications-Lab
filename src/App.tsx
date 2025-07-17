@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
-import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
+import Dashboard from './Enrollment/Dashboard/Dashboard';
+import EnrollmentForm from './Enrollment/Student/Pages/EnrollmentForm';
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />}/>
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
