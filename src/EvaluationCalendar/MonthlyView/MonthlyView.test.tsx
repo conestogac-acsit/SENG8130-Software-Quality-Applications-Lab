@@ -51,6 +51,22 @@ describe("MonthlyView", () => {
 
   it("renders fallback message for days with no evaluations", () => {
     render(<MonthlyView evaluations={[]} month={5} year={2025} />);
-    expect(screen.getAllByText(/No evaluations scheduled/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/No evaluations scheduled for this day/i).length
+    ).toBeGreaterThan(0);
+  });
+
+  it("renders monthly-level fallback message when no evaluations exist in month", () => {
+    render(<MonthlyView evaluations={[]} month={5} year={2025} />);
+    expect(
+      screen.getByText(/No evaluations are scheduled for this month/i)
+    ).toBeInTheDocument();
+  });
+
+  it("does NOT render monthly-level fallback message when evaluations exist", () => {
+    render(<MonthlyView evaluations={mockEvaluations} month={5} year={2025} />);
+    expect(
+      screen.queryByText(/No evaluations are scheduled for this month/i)
+    ).not.toBeInTheDocument();
   });
 });
