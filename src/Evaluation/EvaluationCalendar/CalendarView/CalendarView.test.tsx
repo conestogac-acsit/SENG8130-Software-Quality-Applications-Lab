@@ -10,7 +10,7 @@ describe("CalendarView", () => {
       title: "Assignment 1",
       type: "Assignment",
       weight: 10,
-      dueDate: new Date("2025-06-24"),
+      dueDate: new Date("2025-06-24T12:00:00-04:00"),
       instructor: "Andy",
       campus: "Main Campus",
     },
@@ -19,7 +19,7 @@ describe("CalendarView", () => {
       title: "Quiz 1",
       type: "Quiz",
       weight: 5,
-      dueDate: new Date("2025-06-24"),
+      dueDate: new Date("2025-06-24T12:00:00-04:00"),
       instructor: "Kiran",
       campus: "Main Campus",
     },
@@ -28,7 +28,7 @@ describe("CalendarView", () => {
       title: "Lab Report",
       type: "Practical Lab",
       weight: 15,
-      dueDate: new Date("2025-06-25"),
+      dueDate: new Date("2025-06-25T12:00:00-04:00"),
       instructor: "Sanju",
       campus: "Milton",
     },
@@ -46,6 +46,31 @@ describe("CalendarView", () => {
     render(<CalendarView evaluations={[]} />);
     expect(
       screen.getByText(/No evaluations scheduled/i)
+    ).toBeInTheDocument();
+  });
+
+  it("renders CalendarNavigation label", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(
+      screen.getByText(/Week of/i)
+    ).toBeInTheDocument();
+  });
+
+  it("renders Prev and Next buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText(/Prev/i)).toBeInTheDocument();
+    expect(screen.getByText(/Next/i)).toBeInTheDocument();
+  });
+
+  it("groups evaluations under correct dates", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+
+    expect(
+      screen.getByText("Tue, Jun 24, 2025")
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText("Wed, Jun 25, 2025")
     ).toBeInTheDocument();
   });
 });
