@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Dashboard from './Enrollment/Dashboard/Dashboard'; // adjust path if needed
-import EnrollmentForm from './Enrollment/Student/Pages/EnrollmentForm'; // adjust path if needed
-
+import Dashboard from './Enrollment/Dashboard/Dashboard'; 
+import EnrollmentForm from './Enrollment/Student/Pages/EnrollmentForm'; 
 function App() {
   const handleEnrollment = (type: string) => {
-    console.log(`Enrollment Action: ${type}`);
+    console.log("Enrollment Action:", type);
   };
 
   return (
@@ -29,16 +28,9 @@ function App() {
             </div>
           }
         />
-
-        <Route
-          path="/dashboard"
-          element={<Dashboard handleEnrollment={handleEnrollment} />}
-        />
-
-        <Route
-          path="/student/enroll"
-          element={<EnrollmentForm onEnroll={handleEnrollment} />}
-        />
+        <Route path="/dashboard" element={<Dashboard handleEnrollment={handleEnrollment} />} />
+        <Route path="/student/enroll" element={<EnrollmentForm onEnroll={handleEnrollment} />} />
+        
       </Routes>
     </BrowserRouter>
   );
