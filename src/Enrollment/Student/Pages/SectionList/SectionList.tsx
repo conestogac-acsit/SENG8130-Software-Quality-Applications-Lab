@@ -1,6 +1,6 @@
 // src/Enrollment/Student/Pages/SectionList/SectionList.tsx
 
-import React from "react";
+import React, { useState } from "react";
 
 // Minimal hardcoded student data
 const students = [
@@ -17,10 +17,29 @@ function getSections(): string[] {
 
 const SectionList: React.FC = () => {
   const sections = getSections();
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const sortedSections = [...sections].sort((a, b) =>
+    sortOrder === "asc" ? a.localeCompare(b) : b.localeCompare(a)
+  );
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-6">Section List</h1>
+
+      {/* Sort By Dropdown */}
+      <div className="mb-4">
+        <label htmlFor="sortOrder" className="mr-2 font-medium">Sort By:</label>
+        <select
+          id="sortOrder"
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
+          className="border border-gray-300 px-2 py-1 rounded"
+        >
+          <option value="asc">Section Name (A → Z)</option>
+          <option value="desc">Section Name (Z → A)</option>
+        </select>
+      </div>
 
       <table className="min-w-full bg-white shadow rounded">
         <thead>
@@ -29,7 +48,7 @@ const SectionList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sections.map((section, index) => (
+          {sortedSections.map((section, index) => (
             <tr key={index} className="border-t">
               <td className="px-6 py-4">
                 <a
