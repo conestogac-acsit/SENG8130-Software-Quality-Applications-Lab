@@ -1,12 +1,25 @@
 import React, { useMemo } from "react";
 import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
+import WeeklyView from "../WeeklyView/WeeklyView";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
+  viewMode: "weekly" | "calendar"; // Add support for switching views
 }
 
-const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) => {
+  // If no evaluations at all, show fallback message
+  if (evaluations.length === 0) {
+    return <p className="text-center text-gray-500">No evaluations scheduled</p>;
+  }
+
+  // Render Weekly View
+  if (viewMode === "weekly") {
+    return <WeeklyView evaluations={evaluations} />;
+  }
+
+  // Render Full Calendar View
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -29,10 +42,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
 
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [evaluations]);
-
-  if (sortedDates.length === 0) {
-    return <p className="text-center text-gray-500">No evaluations scheduled</p>;
-  }
 
   return (
     <div className="space-y-4">
