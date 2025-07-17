@@ -1,13 +1,24 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import ModuleNotFound from "./Components/ModuleNotFound";
 import EnrollmentDashboard from "./Enrollment/Dashboard/Dashboard";
 import EnrollmentCard from "./Dashboard/EnrollmentCard";
 import EvaluationCard from "./Dashboard/EvaluationCard";
 import logo from "./assets/logo.png"; 
 
-const Home = () => {
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/evaluation" element={<EvaluationCard />} />
+        <Route path="*" element={<ModuleNotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#282c34] to-white flex flex-col items-center justify-start">
       <header className="w-full text-center py-12">
@@ -26,19 +37,5 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/enrollment" element={<EnrollmentDashboard />} />
-        <Route path="/evaluation" element={<EvaluationCard />} />
-        <Route path="*" element={<ModuleNotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
 }
-
 export default App;
