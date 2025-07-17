@@ -7,21 +7,10 @@ import WeeklyView from "../WeeklyView/WeeklyView";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
-  viewMode: "weekly" | "calendar"; // Add support for switching views
+  viewMode: "weekly" | "calendar"; // Supports view switching
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) => {
-  // If no evaluations at all, show fallback message
-  if (evaluations.length === 0) {
-    return <p className="text-center text-gray-500">No evaluations scheduled</p>;
-  }
-
-  // Render Weekly View
-  if (viewMode === "weekly") {
-    return <WeeklyView evaluations={evaluations} />;
-  }
-
-const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
   const [view, setView] = useState<"weekly" | "monthly">("weekly");
 
   const {
@@ -56,7 +45,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [evaluations]);
 
-  if (sortedDates.length === 0) {
+  if (evaluations.length === 0 || sortedDates.length === 0) {
     return (
       <p className="text-center text-gray-500">
         No evaluations scheduled
@@ -64,19 +53,20 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     );
   }
 
+  // Show WeeklyView if viewMode is "weekly"
+  if (viewMode === "weekly") {
+    return <WeeklyView evaluations={evaluations} />;
+  }
+
   return (
     <div className="space-y-4">
       <CalendarNavigation
         label={getLabel(view)}
         onPrev={() =>
-          view === "weekly"
-            ? navigateWeek("prev")
-            : navigateMonth("prev")
+          view === "weekly" ? navigateWeek("prev") : navigateMonth("prev")
         }
         onNext={() =>
-          view === "weekly"
-            ? navigateWeek("next")
-            : navigateMonth("next")
+          view === "weekly" ? navigateWeek("next") : navigateMonth("next")
         }
       />
 
