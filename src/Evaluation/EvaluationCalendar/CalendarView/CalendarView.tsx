@@ -1,5 +1,7 @@
-import React, { useMemo } from "react";
-import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
+import React, { useMemo, useState } from "react";
+import { CalendarNavigation } from "../../../Components/CalendarNavigation";
+import { useCalendarNavigation } from "../useCalendarNavigation";
+import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
 import WeeklyView from "../WeeklyView/WeeklyView";
 
@@ -19,7 +21,18 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) =>
     return <WeeklyView evaluations={evaluations} />;
   }
 
-  // Render Full Calendar View
+const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+  const [view, setView] = useState<"weekly" | "monthly">("weekly");
+
+  const {
+    startDate,
+    year,
+    month,
+    navigateWeek,
+    navigateMonth,
+    getLabel,
+  } = useCalendarNavigation();
+
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -43,15 +56,39 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) =>
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [evaluations]);
 
+  if (sortedDates.length === 0) {
+    return (
+      <p className="text-center text-gray-500">
+        No evaluations scheduled
+      </p>
+    );
+  }
+
   return (
     <div className="space-y-4">
-      {sortedDates.map((dateStr) => (
-        <CalendarDayCard
-          key={dateStr}
-          date={dateStr}
-          evaluations={groupedByDate[dateStr]}
-        />
-      ))}
+      <CalendarNavigation
+        label={getLabel(view)}
+        onPrev={() =>
+          view === "weekly"
+            ? navigateWeek("prev")
+            : navigateMonth("prev")
+        }
+        onNext={() =>
+          view === "weekly"
+            ? navigateWeek("next")
+            : navigateMonth("next")
+        }
+      />
+
+      <div className="space-y-4">
+        {sortedDates.map((dateStr) => (
+          <CalendarDayCard
+            key={dateStr}
+            date={dateStr}
+            evaluations={groupedByDate[dateStr]}
+          />
+        ))}
+      </div>
     </div>
   );
 };
