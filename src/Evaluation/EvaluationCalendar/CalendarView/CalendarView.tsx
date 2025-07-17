@@ -3,11 +3,14 @@ import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import MonthlyView from "../MonthlyView/MonthlyView";
+import CalendarPdfExportButtons from "../../../Components/CalendarPdfExportButtons/CalendarPdfExportButtons";
 import { Evaluation } from "../../EvaluationService";
 import Button from "../../../Components/Button/Button";
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
 import { buildEvaluationReport } from "../PdfExport/reportBuilder";
 import { EvaluationReportTemplate } from "../PdfExport/PdfTemplates";
+import { exportEvaluationReportToPDF } from "../PdfExport/PdfGenerator";
+import { EvaluationReport } from "../PdfExport/PdfExportTypes";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -59,7 +62,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   const showNoEvaluationsMessage =
     view === "weekly" && sortedDates.length === 0;
 
-  // 🔍 Extract evaluations visible in the current view
   const visibleEvaluations = useMemo(() => {
     if (view === "weekly") {
       const start = new Date(startDate);
@@ -77,8 +79,62 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     }
   }, [filteredEvaluations, startDate, view, year, month]);
 
-  // 📄 Prepare report (used internally or for export later)
-  const report = useMemo(() => buildEvaluationReport(visibleEvaluations), [visibleEvaluations]);
+  const report = useMemo(
+    () => buildEvaluationReport(visibleEvaluations),
+    [visibleEvaluations]
+  );
+
+  const renderPDF = (report: EvaluationReport, filename: string) => {
+    const container = document.getElementById("calendar-pdf");
+    if (!container) return;
+
+    container.innerHTML = "";
+    const element = <EvaluationReportTemplate report={report} />;
+    setTimeout(() => {
+      exportEvaluationReportToPDF("calendar-pdf", filename);
+    }, 100);
+  };
+
+  const handleExportWeekly = () => {
+    const start = new Date(startDate);
+    const end = new Date(startDate);
+    end.setDate(end.getDate() + 6);
+
+    const weeklyEvals = filteredEvaluations.filter((ev) => {
+      const date = new Date(ev.dueDate);
+      return date >= start && date <= end;
+    });
+
+    const report = buildEvaluationReport(weeklyEvals);
+    renderPDF(report, "weekly-evaluation-report.pdf");
+  };
+
+  const handleExportMonthly = () => {
+    const monthlyEvals = filteredEvaluations.filter((ev) => {
+      const d = new Date(ev.dueDate);
+      return d.getFullYear() === year && d.getMonth() === month;
+    });
+
+    const report = buildEvaluationReport(monthlyEvals);
+    renderPDF(report, "monthly-evaluation-report.pdf");
+  };
+
+  const handleExportDaily = () => {
+    const dailyEvals = filteredEvaluations.filter((ev) => {
+      const d = new Date(ev.dueDate);
+      return selectedDate
+        ? d.toDateString() === new Date(selectedDate).toDateString()
+        : false;
+    });
+
+    const report = buildEvaluationReport(dailyEvals);
+    renderPDF(report, "daily-evaluation-report.pdf");
+  };
+
+  const handleExportCourse = () => {
+    const report = buildEvaluationReport(filteredEvaluations);
+    renderPDF(report, "course-evaluation-report.pdf");
+  };
 
   return (
     <div className="space-y-4">
@@ -106,7 +162,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         />
       </div>
 
-      {/* Calendar Content */}
+      <CalendarPdfExportButtons
+        onExportDaily={handleExportDaily}
+        onExportWeekly={handleExportWeekly}
+        onExportMonthly={handleExportMonthly}
+        onExportCourse={handleExportCourse}
+      />
+
       {showNoEvaluationsMessage ? (
         <p className="text-center text-gray-500 italic">
           No evaluations scheduled
@@ -122,10 +184,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           ))}
         </div>
       ) : (
-        <MonthlyView evaluations={filteredEvaluations} year={year} month={month} />
+        <MonthlyView
+          evaluations={filteredEvaluations}
+          year={year}
+          month={month}
+        />
       )}
 
-      {/* Hidden Report Render Target for PDF Export */}
       <div id="calendar-pdf" style={{ display: "none" }}>
         <EvaluationReportTemplate report={report} />
       </div>
