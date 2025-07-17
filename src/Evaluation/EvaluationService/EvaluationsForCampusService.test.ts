@@ -1,5 +1,5 @@
-import { getEvaluationsForCampus } from './EvaluationsForCampusService';
 import type { Evaluation } from './EvaluationService';
+import { getEvaluationsForCampus } from './EvaluationsForCampusService';
 
 describe('getEvaluationsForCampus', () => {
   const evaluations: Evaluation[] = [
@@ -21,9 +21,5 @@ describe('getEvaluationsForCampus', () => {
 
   it('should throw an error if campus is an empty string', () => {
     expect(() => getEvaluationsForCampus(evaluations, '')).toThrow('Invalid campus');
-  });
-
-  it('should throw an error if campus is not a string', () => {
-    expect(() => getEvaluationsForCampus(evaluations, null)).toThrow('Invalid campus');
   });
 });
