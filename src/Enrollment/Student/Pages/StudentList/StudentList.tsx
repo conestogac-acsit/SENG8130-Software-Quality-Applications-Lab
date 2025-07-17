@@ -5,6 +5,7 @@ import { getStudents } from '../../studentData/paginateStudents';
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
+const emptyGetter = () => [];
 const StudentList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(page, pageSize);
+  const { data: students, total, totalPages } = getStudents(emptyGetter, page, pageSize);
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
