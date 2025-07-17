@@ -1,9 +1,10 @@
 import type { Evaluation } from './EvaluationService';
 
-export function getEvaluationsForCampus(data: Evaluation[], campus: string): Evaluation[] {
-  if (!campus || typeof campus !== 'string') {
-    throw new Error('Invalid campus');
-  }
+export enum Campus {
+  Milton = "Milton",
+  Waterloo = "Waterloo",
+}
 
+export function getEvaluationsForCampus(data: Evaluation[], campus: Campus): Evaluation[] {
   return data.filter(ev => ev.campus === campus);
 }

@@ -1,18 +1,21 @@
 import React, { useMemo } from "react";
 import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
-import { getEvaluationsForCampus } from '../../EvaluationService/EvaluationsForCampusService';
+import { Campus, getEvaluationsForCampus } from "../../EvaluationService/EvaluationsForCampusService";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
-  const campusEvaluations = getEvaluationsForCampus(evaluations, 'Main'); 
+  const campusEvaluations = useMemo(
+    () => getEvaluationsForCampus(evaluations, Campus.Main),
+    [evaluations]
+  );
+
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
-
-    evaluations.forEach((ev) => {
+    campusEvaluations.forEach((ev) => {
       const dateKey = new Intl.DateTimeFormat("en-US", {
         weekday: "short",
         year: "numeric",
@@ -20,7 +23,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
         day: "numeric",
         timeZone: "America/Toronto",
       }).format(ev.dueDate);
-
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
     });
@@ -30,7 +32,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     );
 
     return { groupedByDate: grouped, sortedDates: sorted };
-  }, [evaluations]);
+  }, [campusEvaluations]);
 
   if (sortedDates.length === 0) {
     return <p className="text-center text-gray-500">No evaluations scheduled</p>;
