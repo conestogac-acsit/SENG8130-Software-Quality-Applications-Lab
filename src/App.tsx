@@ -8,6 +8,12 @@ function App() {
     <Router>
       <Routes>
         <Route
+          path="/student-email"
+          element={
+            <StudentEmail/>
+          }
+        />
+        <Route
           path="/"
           element={
             <div className="text-center">
@@ -23,12 +29,6 @@ function App() {
                 </p>
               </header>
             </div>
-          }
-        />
-        <Route
-          path="/student-email"
-          element={
-            <StudentEmail/>
           }
         />
       </Routes>
