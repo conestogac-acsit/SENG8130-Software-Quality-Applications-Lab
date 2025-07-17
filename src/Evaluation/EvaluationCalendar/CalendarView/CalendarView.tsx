@@ -41,10 +41,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     <div className="space-y-4">
       <CalendarViewSwitcher currentView={view} setView={setView} />
 
-      <div className="text-center text-gray-400 italic text-sm">
-        Navigation coming soon...
-      </div>
-
       {sortedDates.map((dateStr) => (
         <CalendarDayCard
           key={dateStr}

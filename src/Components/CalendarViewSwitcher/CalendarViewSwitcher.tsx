@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../Button/Button";
 
 interface CalendarViewSwitcherProps {
   currentView: "weekly" | "monthly";
@@ -11,29 +12,31 @@ const CalendarViewSwitcher: React.FC<CalendarViewSwitcherProps> = ({
 }) => {
   return (
     <div className="flex gap-2">
-      <button
-        type="button"
-        className={`px-4 py-2 rounded ${
+      <div
+        className={`rounded ${
           currentView === "weekly"
             ? "bg-blue-600 text-white"
             : "bg-gray-200 text-gray-800"
         }`}
-        onClick={() => setView("weekly")}
       >
-        Weekly
-      </button>
+        <Button
+          label="Weekly"
+          onClick={() => setView("weekly")}
+        />
+      </div>
 
-      <button
-        type="button"
-        className={`px-4 py-2 rounded ${
+      <div
+        className={`rounded ${
           currentView === "monthly"
             ? "bg-blue-600 text-white"
             : "bg-gray-200 text-gray-800"
         }`}
-        onClick={() => setView("monthly")}
       >
-        Monthly
-      </button>
+        <Button
+          label="Monthly"
+          onClick={() => setView("monthly")}
+        />
+      </div>
     </div>
   );
 };

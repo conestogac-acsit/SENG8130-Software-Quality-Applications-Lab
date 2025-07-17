@@ -12,39 +12,39 @@ describe("CalendarViewSwitcher", () => {
   it("renders both Weekly and Monthly buttons", () => {
     render(<CalendarViewSwitcher currentView="weekly" setView={setViewMock} />);
 
-    expect(screen.getByText(/Weekly/i)).toBeInTheDocument();
-    expect(screen.getByText(/Monthly/i)).toBeInTheDocument();
+    expect(screen.getByText("Weekly")).toBeInTheDocument();
+    expect(screen.getByText("Monthly")).toBeInTheDocument();
   });
 
-  it("applies active style to the selected view", () => {
-    const { rerender } = render(
-      <CalendarViewSwitcher currentView="weekly" setView={setViewMock} />
-    );
+  it("applies active style to the selected view (weekly)", () => {
+    render(<CalendarViewSwitcher currentView="weekly" setView={setViewMock} />);
 
-    const weeklyButton = screen.getByText("Weekly");
-    const monthlyButton = screen.getByText("Monthly");
+    const weeklyWrapper = screen.getByText("Weekly").parentElement;
+    const monthlyWrapper = screen.getByText("Monthly").parentElement;
 
-    expect(weeklyButton).toHaveClass("bg-blue-600");
-    expect(monthlyButton).toHaveClass("bg-gray-200");
+    expect(weeklyWrapper).toHaveClass("bg-blue-600");
+    expect(monthlyWrapper).toHaveClass("bg-gray-200");
+  });
 
-    rerender(<CalendarViewSwitcher currentView="monthly" setView={setViewMock} />);
-    expect(monthlyButton).toHaveClass("bg-blue-600");
-    expect(weeklyButton).toHaveClass("bg-gray-200");
+  it("applies active style to the selected view (monthly)", () => {
+    render(<CalendarViewSwitcher currentView="monthly" setView={setViewMock} />);
+
+    const weeklyWrapper = screen.getByText("Weekly").parentElement;
+    const monthlyWrapper = screen.getByText("Monthly").parentElement;
+
+    expect(monthlyWrapper).toHaveClass("bg-blue-600");
+    expect(weeklyWrapper).toHaveClass("bg-gray-200");
   });
 
   it("calls setView with 'weekly' when Weekly is clicked", () => {
     render(<CalendarViewSwitcher currentView="monthly" setView={setViewMock} />);
-
     fireEvent.click(screen.getByText("Weekly"));
-
     expect(setViewMock).toHaveBeenCalledWith("weekly");
   });
 
   it("calls setView with 'monthly' when Monthly is clicked", () => {
     render(<CalendarViewSwitcher currentView="weekly" setView={setViewMock} />);
-
     fireEvent.click(screen.getByText("Monthly"));
-
     expect(setViewMock).toHaveBeenCalledWith("monthly");
   });
 });
