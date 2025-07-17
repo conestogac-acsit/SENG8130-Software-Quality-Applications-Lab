@@ -1,5 +1,7 @@
-import React, { useMemo } from "react";
-import CalendarDayCard from "../../../Components/CalendarDayCard/CalendarDayCard";
+import React, { useMemo, useState } from "react";
+import { CalendarNavigation } from "../../../Components/CalendarNavigation";
+import { useCalendarNavigation } from "../useCalendarNavigation";
+import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
 import ThresholdAlertUI from "../../../Alert/AlertService/ThresholdAlertUI";
 
@@ -8,6 +10,17 @@ interface CalendarViewProps {
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+  const [view, setView] = useState<"weekly" | "monthly">("weekly");
+
+  const {
+    startDate,
+    year,
+    month,
+    navigateWeek,
+    navigateMonth,
+    getLabel,
+  } = useCalendarNavigation();
+
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -31,25 +44,43 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [evaluations]);
 
-<ThresholdAlertUI evaluations={evaluations} />
-
   if (sortedDates.length === 0) {
-    return <p className="text-center text-gray-500">No evaluations scheduled</p>;
+    return (
+      <p className="text-center text-gray-500">
+        No evaluations scheduled
+      </p>
+    );
   }
 
- return (
-  <div className="space-y-4">
-    <ThresholdAlertUI evaluations={evaluations} />
+  return (
+    <div className="space-y-4">
+      <ThresholdAlertUI evaluations={evaluations} />
 
-    {sortedDates.map((dateStr) => (
-      <CalendarDayCard
-        key={dateStr}
-        date={dateStr}
-        evaluations={groupedByDate[dateStr]}
+      <CalendarNavigation
+        label={getLabel(view)}
+        onPrev={() =>
+          view === "weekly"
+            ? navigateWeek("prev")
+            : navigateMonth("prev")
+        }
+        onNext={() =>
+          view === "weekly"
+            ? navigateWeek("next")
+            : navigateMonth("next")
+        }
       />
-    ))}
-  </div>
-);
 
+      <div className="space-y-4">
+        {sortedDates.map((dateStr) => (
+          <CalendarDayCard
+            key={dateStr}
+            date={dateStr}
+            evaluations={groupedByDate[dateStr]}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default CalendarView;
