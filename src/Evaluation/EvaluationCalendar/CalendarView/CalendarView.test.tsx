@@ -9,7 +9,7 @@ const mockEvaluations: Evaluation[] = [
     title: "Assignment 1",
     type: "Assignment",
     weight: 10,
-    dueDate: new Date("2025-07-14T12:00:00"), // Monday
+    dueDate: new Date("2025-07-14T12:00:00"), 
     instructor: "Andy",
     campus: "Main Campus",
   },
@@ -18,7 +18,7 @@ const mockEvaluations: Evaluation[] = [
     title: "Quiz 1",
     type: "Quiz",
     weight: 5,
-    dueDate: new Date("2025-07-15T12:00:00"), // Tuesday
+    dueDate: new Date("2025-07-15T12:00:00"), 
     instructor: "Kiran",
     campus: "Main Campus",
   },
@@ -27,13 +27,13 @@ const mockEvaluations: Evaluation[] = [
     title: "Lab Report",
     type: "Practical Lab",
     weight: 15,
-    dueDate: new Date("2025-07-16T12:00:00"), // Wednesday
+    dueDate: new Date("2025-07-16T12:00:00"), 
     instructor: "Sanju",
     campus: "Milton",
   },
 ];
 
-describe("CalendarView (without mocks)", () => {
+describe("CalendarView (real components, no mocks)", () => {
   it("renders WeeklyView when viewMode is 'weekly'", () => {
     render(<CalendarView evaluations={mockEvaluations} viewMode="weekly" />);
     expect(screen.getByText("Mon Jul 14 2025")).toBeInTheDocument();
@@ -46,13 +46,19 @@ describe("CalendarView (without mocks)", () => {
     expect(screen.getByText(/jul 15, 2025/i)).toBeInTheDocument();
   });
 
-  it("shows fallback message when evaluations list is empty", () => {
+  it("shows fallback message when no evaluations are passed", () => {
     render(<CalendarView evaluations={[]} viewMode="calendar" />);
     expect(screen.getByText(/no evaluations scheduled/i)).toBeInTheDocument();
   });
 
-  it("renders calendar navigation label", () => {
+  it("renders calendar navigation label in calendar view", () => {
     render(<CalendarView evaluations={mockEvaluations} viewMode="calendar" />);
     expect(screen.getByText(/week of/i)).toBeInTheDocument();
+  });
+
+  it("renders Prev and Next navigation buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} viewMode="calendar" />);
+    expect(screen.getByText(/prev/i)).toBeInTheDocument();
+    expect(screen.getByText(/next/i)).toBeInTheDocument();
   });
 });
