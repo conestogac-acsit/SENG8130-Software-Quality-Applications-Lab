@@ -4,11 +4,14 @@ import logo from './assets/logo.png';
 import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
+import { StudentList } from './Enrollment/Student/Pages/StudentList';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/enrollment" element={<EnrollmentDashboard />} >
+          <Route path="students" element={<StudentList />} />
+        </Route>
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
