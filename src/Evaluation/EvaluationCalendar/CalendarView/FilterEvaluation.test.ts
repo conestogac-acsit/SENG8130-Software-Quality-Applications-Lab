@@ -29,6 +29,15 @@ describe("filterEvaluations", () => {
       instructor: "Dr. B",
       campus: "Milton",
     },
+    {
+      course: "Physics 101",
+      title: "Midterm",
+      type: "Mid Exam",
+      weight: 30,
+      dueDate: new Date("2025-07-17"),
+      instructor: "Dr. A",
+      campus: "Waterloo",
+    },
   ];
 
   it("returns all evaluations when no filters applied", () => {
@@ -36,27 +45,54 @@ describe("filterEvaluations", () => {
     expect(result).toEqual(data);
   });
 
-  it("returns the correct values when filtering by campus", () => {
-    const result = filterEvaluations(data, { campus: "Waterloo" });
-    expect(result.length).toBe(1);
-    expect(result[0].campus).toBe("Waterloo");
-  });
-
   it("returns the correct values when filtering by date", () => {
     const result = filterEvaluations(data, { date: new Date("2025-07-17") });
-    expect(result.length).toBe(1);
+    expect(result.length).toBe(2);
     expect(isSameDay(result[0].dueDate, new Date("2025-07-17"))).toBe(true);
+    expect(isSameDay(result[1].dueDate, new Date("2025-07-17"))).toBe(true);
   });
 
   it("returns the correct values when filtering by instructor", () => {
     const result = filterEvaluations(data, { instructor: "Dr. A" });
-    expect(result.length).toBe(1);
+    expect(result.length).toBe(2);
     expect(result[0].instructor).toBe("Dr. A");
+    expect(result[1].instructor).toBe("Dr. A");
   });
 
   it("returns the correct values when filtering by evaluation type", () => {
     const result = filterEvaluations(data, { type: "Final Exam" });
     expect(result.length).toBe(1);
     expect(result[0].type).toBe("Final Exam");
+  });
+
+  it("filters correctly by instructor and type", () => {
+    const result = filterEvaluations(data, {
+      instructor: "Dr. A",
+      type: "Mid Exam",
+    });
+    expect(result.length).toBe(1);
+    expect(result[0].title).toBe("Midterm");
+  });
+
+  it("filters correctly by instructor and date", () => {
+    const result = filterEvaluations(data, {
+      instructor: "Dr. A",
+      date: new Date("2025-07-17"),
+    });
+    expect(result.length).toBe(2);
+    result.forEach((ev) => {
+      expect(ev.instructor).toBe("Dr. A");
+      expect(isSameDay(ev.dueDate, new Date("2025-07-17"))).toBe(true);
+    });
+  });
+
+  it("filters correctly by instructor, date, and type", () => {
+    const result = filterEvaluations(data, {
+      instructor: "Dr. A",
+      type: "Quiz",
+      date: new Date("2025-07-17"),
+    });
+    expect(result.length).toBe(1);
+    expect(result[0].title).toBe("Quiz 1");
   });
 });
