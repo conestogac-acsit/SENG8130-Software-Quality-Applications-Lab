@@ -5,43 +5,10 @@ import { Evaluation } from "../../EvaluationService";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
-  viewMode: "calendar"; // Only supports calendar mode for this version
+  viewMode: "calendar";
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) => {
-  // Export handlers
-  const handleExportDaily = () => {
-    console.log("Exporting Daily View to PDF...");
-  };
-
-  const handleExportWeekly = () => {
-    console.log("Exporting Weekly View to PDF...");
-  };
-
-  const handleExportMonthly = () => {
-    console.log("Exporting Monthly View to PDF...");
-  };
-
-  const handleExportCourse = () => {
-    console.log("Exporting Entire Course to PDF...");
-  };
-
-  // Fallback for no evaluations
-  if (evaluations.length === 0) {
-    return (
-      <div className="text-center text-gray-500 space-y-4">
-        <CalendarPdfExportButtons
-          onExportDaily={handleExportDaily}
-          onExportWeekly={handleExportWeekly}
-          onExportMonthly={handleExportMonthly}
-          onExportCourse={handleExportCourse}
-        />
-        <p>No evaluations scheduled</p>
-      </div>
-    );
-  }
-
-  // Group and sort evaluations
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
@@ -65,13 +32,44 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) =>
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [evaluations]);
 
+  const dailyData = sortedDates.map((dateStr) => ({
+    date: dateStr,
+    evaluations: groupedByDate[dateStr],
+  }));
+
+  const courseData = useMemo(() => {
+    const courseMap: Record<string, Evaluation[]> = {};
+    evaluations.forEach((ev) => {
+      if (!courseMap[ev.course]) courseMap[ev.course] = [];
+      courseMap[ev.course].push(ev);
+    });
+    return Object.entries(courseMap).map(([course, evals]) => ({
+      course,
+      evaluations: evals,
+    }));
+  }, [evaluations]);
+
+  if (evaluations.length === 0) {
+    return (
+      <div className="text-center text-gray-500 space-y-4">
+        <CalendarPdfExportButtons
+          dailyData={[]}
+          weeklyData={[]}
+          monthlyData={[]}
+          courseData={[]}
+        />
+        <p>No evaluations scheduled</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <CalendarPdfExportButtons
-        onExportDaily={handleExportDaily}
-        onExportWeekly={handleExportWeekly}
-        onExportMonthly={handleExportMonthly}
-        onExportCourse={handleExportCourse}
+        dailyData={dailyData}
+        weeklyData={[]}
+        monthlyData={[]}
+        courseData={courseData}
       />
       {sortedDates.map((dateStr) => (
         <CalendarDayCard

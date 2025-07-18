@@ -1,70 +1,83 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import CalendarPdfExportButtons from "./CalendarPdfExportButtons";
+import { Evaluation } from "../../Evaluation/EvaluationService";
+
+const commonEvaluation: Evaluation = {
+  course: "SENG1001",
+  title: "Assignment 1",
+  type: "Assignment",
+  weight: 10,
+  dueDate: new Date("2025-07-25"),
+  instructor: "John",
+  campus: "Doon",
+};
+
+const dailyData = [
+  {
+    date: "2025-07-25",
+    evaluations: [commonEvaluation],
+  },
+];
+
+const weeklyData = [
+  {
+    weekStart: "2025-07-21",
+    evaluations: [commonEvaluation],
+  },
+];
+
+const monthlyData = [
+  {
+    month: "July 2025",
+    evaluations: [commonEvaluation],
+  },
+];
+
+const courseData = [
+  {
+    course: "SENG1001",
+    evaluations: [commonEvaluation],
+  },
+];
 
 describe("CalendarPdfExportButtons", () => {
-    let onExportDaily: jest.Mock;
-    let onExportWeekly: jest.Mock;
-    let onExportMonthly: jest.Mock;
-    let onExportCourse: jest.Mock;
+  it("renders all export buttons", () => {
+    render(
+      <CalendarPdfExportButtons
+        dailyData={dailyData}
+        weeklyData={weeklyData}
+        monthlyData={monthlyData}
+        courseData={courseData}
+      />
+    );
 
-    beforeEach(() => {
-        onExportDaily = jest.fn();
-        onExportWeekly = jest.fn();
-        onExportMonthly = jest.fn();
-        onExportCourse = jest.fn();
+    expect(screen.getByText("Export Daily PDF")).toBeInTheDocument();
+    expect(screen.getByText("Export Weekly PDF")).toBeInTheDocument();
+    expect(screen.getByText("Export Monthly PDF")).toBeInTheDocument();
+    expect(screen.getByText("Export Entire Course PDF")).toBeInTheDocument();
+  });
 
-        render(
-            <CalendarPdfExportButtons
-                onExportDaily={onExportDaily}
-                onExportWeekly={onExportWeekly}
-                onExportMonthly={onExportMonthly}
-                onExportCourse={onExportCourse}
-            />
-        );
-    });
+  it("triggers export handlers on button click", () => {
+    console.log = jest.fn(); // Spy on console.log for confirmation
 
-    it("renders the Export to PDF button", () => {
-        expect(screen.getByRole("button", { name: /export to pdf/i })).toBeInTheDocument();
-    });
+    render(
+      <CalendarPdfExportButtons
+        dailyData={dailyData}
+        weeklyData={weeklyData}
+        monthlyData={monthlyData}
+        courseData={courseData}
+      />
+    );
 
-    it("opens and closes dropdown menu when Export to PDF button is clicked", () => {
-        const exportButton = screen.getByRole("button", { name: /export to pdf/i });
-        fireEvent.click(exportButton);
-        expect(screen.getByRole("button", { name: /export daily/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Export Daily PDF"));
+    fireEvent.click(screen.getByText("Export Weekly PDF"));
+    fireEvent.click(screen.getByText("Export Monthly PDF"));
+    fireEvent.click(screen.getByText("Export Entire Course PDF"));
 
-        // Click again to close dropdown
-        fireEvent.click(exportButton);
-        expect(screen.queryByRole("button", { name: /export daily/i })).not.toBeInTheDocument();
-    });
-
-    it("calls onExportDaily when Export Daily is clicked", () => {
-        fireEvent.click(screen.getByRole("button", { name: /export to pdf/i }));
-        fireEvent.click(screen.getByRole("button", { name: /export daily/i }));
-        expect(onExportDaily).toHaveBeenCalledTimes(1);
-    });
-
-    it("calls onExportWeekly when Export Weekly is clicked", () => {
-        fireEvent.click(screen.getByRole("button", { name: /export to pdf/i }));
-        fireEvent.click(screen.getByRole("button", { name: /export weekly/i }));
-        expect(onExportWeekly).toHaveBeenCalledTimes(1);
-    });
-
-    it("calls onExportMonthly when Export Monthly is clicked", () => {
-        fireEvent.click(screen.getByRole("button", { name: /export to pdf/i }));
-        fireEvent.click(screen.getByRole("button", { name: /export monthly/i }));
-        expect(onExportMonthly).toHaveBeenCalledTimes(1);
-    });
-
-    it("calls onExportCourse when Export Entire Course is clicked", () => {
-        fireEvent.click(screen.getByRole("button", { name: /export to pdf/i }));
-        fireEvent.click(screen.getByRole("button", { name: /export entire course/i }));
-        expect(onExportCourse).toHaveBeenCalledTimes(1);
-    });
-
-    it("closes dropdown after selecting an option", () => {
-        fireEvent.click(screen.getByRole("button", { name: /export to pdf/i }));
-        fireEvent.click(screen.getByRole("button", { name: /export daily/i }));
-        expect(screen.queryByRole("button", { name: /export daily/i })).not.toBeInTheDocument();
-    });
+    expect(console.log).toHaveBeenCalledWith("Exporting Daily View to PDF...");
+    expect(console.log).toHaveBeenCalledWith("Exporting Weekly View to PDF...");
+    expect(console.log).toHaveBeenCalledWith("Exporting Monthly View to PDF...");
+    expect(console.log).toHaveBeenCalledWith("Exporting Entire Course to PDF...");
+  });
 });
