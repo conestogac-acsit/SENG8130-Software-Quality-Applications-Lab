@@ -2,8 +2,9 @@ import React, { useMemo, useState } from "react";
 import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
-import WeeklyView from "../WeeklyView/WeeklyView";
+import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
+import Button from "../../../Components/Button/Button"; 
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
 
 interface CalendarViewProps {
@@ -54,13 +55,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [filteredEvaluations]);
 
-  if (sortedDates.length === 0) {
-    return (
-      <p className="text-center text-gray-500">
-        No evaluations scheduled
-      </p>
-    );
-  }
+  const showNoEvaluationsMessage =
+    view === "weekly" && sortedDates.length === 0;
 
   return (
     <div className="space-y-4">
@@ -74,28 +70,56 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         }
       />
 
-      {view === "weekly" ? (
-        <WeeklyView evaluations={filteredEvaluations} currentWeekStart={startDate} />
-      ) : (
-        <div className="space-y-4">
-          {sortedDates.map((dateStr) => {
-            const displayDate = new Intl.DateTimeFormat("en-US", {
-              weekday: "short",
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-              timeZone: "America/Toronto",
-            }).format(new Date(dateStr));
+      <div className="flex justify-center gap-4">
+        <Button
+          onClick={() => setView("weekly")}
+          label="Weekly"
+          disabled={view === "weekly"}
+        />
+        <Button
+          onClick={() => setView("monthly")}
+          label="Monthly"
+          disabled={view === "monthly"}
+        />
 
-            return (
-              <CalendarDayCard
-                key={dateStr}
-                date={displayDate}
-                evaluations={groupedByDate[dateStr]}
-              />
-            );
-          })}
+      <div className="space-y-4">
+        {sortedDates.map((isoDate) => {
+          const displayDate = new Intl.DateTimeFormat("en-US", {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "America/Toronto",
+          }).format(new Date(isoDate));
+
+          return (
+            <CalendarDayCard
+              key={isoDate}
+              date={displayDate}
+              evaluations={groupedByDate[isoDate]}
+            />
+          );
+        })}
         </div>
+
+      </div>
+
+      {showNoEvaluationsMessage ? (
+        <p className="text-center text-gray-500 italic">
+          No evaluations scheduled
+        </p>
+      ) : view === "weekly" ? (
+        <div className="space-y-4">
+          {sortedDates.map((dateStr) => (
+            <CalendarDayCard
+              key={dateStr}
+              date={dateStr}
+              evaluations={groupedByDate[dateStr]}
+            />
+          ))}
+        </div>
+      ) : (
+        <MonthlyView evaluations={evaluations} year={year} month={month} />
       )}
     </div>
   );
