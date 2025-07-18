@@ -1,4 +1,4 @@
-import { filterEvaluations } from "./CalendarView.utils";
+import { filterEvaluations } from "./FilterEvaluation";
 import { Evaluation } from "../../EvaluationService/EvaluationService";
 
 function isSameDay(d1: Date, d2: Date): boolean {

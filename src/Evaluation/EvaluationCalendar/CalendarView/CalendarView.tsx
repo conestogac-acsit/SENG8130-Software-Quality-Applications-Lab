@@ -3,7 +3,7 @@ import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
-import { filterEvaluations, FilterOptions } from "./CalendarView.utils";
+import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
