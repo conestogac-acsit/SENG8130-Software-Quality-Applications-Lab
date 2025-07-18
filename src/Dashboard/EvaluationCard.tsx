@@ -5,7 +5,7 @@ import { LocalStorage } from "../localStorageService";
 import type { StorageService } from "../localStorageService";
 import { Evaluation } from "../Evaluation/EvaluationService/EvaluationService";
 import { Heatmap } from "../Evaluation/Heatmap";
-import SuggestedEvaluation from "../Evaluation/SuggestiveEvaluationModule/SuggestedEvaluation/SuggestedEvaluation";
+import SuggestedEvaluation from "../Evaluation/SuggestedEvaluation/SuggestedEvaluation";
 
 const EvaluationCard = () => {
   const navigate = useNavigate();
