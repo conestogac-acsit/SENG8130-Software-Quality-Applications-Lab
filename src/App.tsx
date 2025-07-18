@@ -4,7 +4,6 @@ import logo from './assets/logo.png';
 import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
-import EnrollmentForm from './Enrollment/Student/Pages/EnrollmentForm'
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
-        <Route path="/student/enroll" element={<EnrollmentForm onEnroll={() => {}} />} />
       </Routes>
     </BrowserRouter>
   );
