@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../Components/Button/Button";
+import WeekView from "./WeekView";
 
 type HeatmapProps = {};
 
@@ -52,6 +53,9 @@ const Heatmap: React.FC<HeatmapProps> = () => {
             viewMode === "month" ? "Week View" : "Month View"
           }`}
         />
+      </div>
+      <div>
+        {viewMode === 'week' ? (<WeekView year={year} month={month} />): null}
       </div>
     </div>
   );
