@@ -5,12 +5,13 @@ import ModuleNotFound from './Components/ModuleNotFound';
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
 import StudentDetailsByID from './Enrollment/Student/Pages/StudentEmail/StudentDetailsByID';
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} >
-          <Route path="students/:id" element={<StudentDetailsByID studentGetter={() => []}/>}/>
+          <Route path="students/:id" element={<StudentDetailsByID />}/>
         </Route>
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
