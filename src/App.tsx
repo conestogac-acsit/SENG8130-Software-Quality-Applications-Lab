@@ -1,30 +1,15 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import logo from "./assets/logo.png";
-import ModuleNotFound from "./Components/ModuleNotFound";
-import EnrollmentDashboard from "./Enrollment/Dashboard/Dashboard";
-import EvaluationCard from "../src/Dashboard/EvaluationCard";
-import { Heatmap } from "./Evaluation/Heatmap";
-import { LocalStorage } from "./localStorageService";
-import {
-  Evaluation,
-  EvaluationService,
-} from "./Evaluation/EvaluationService/EvaluationService";
-
-const evaluations: Evaluation[] = new EvaluationService(
-  new LocalStorage()
-).loadEvaluations();
-
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import logo from './assets/logo.png';
+import ModuleNotFound from './Components/ModuleNotFound'; 
+import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
+import EvaluationCard from '../src/Dashboard/EvaluationCard';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
-        <Route
-          path="/heatmap"
-          element={<Heatmap evaluations={evaluations} />}
-        />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
@@ -41,7 +26,9 @@ function HomePage() {
           className="h-[40vmin] pointer-events-none"
           alt="SQATE Desktop Tool official logo"
         />
-        <h1 className="text-4xl font-bold text-blue-600">SQATE Desktop Tool</h1>
+        <h1 className="text-4xl font-bold text-blue-600">
+          SQATE Desktop Tool
+        </h1>
         <p className="mt-4 text-lg text-gray-300">
           Welcome! This is the desktop shell for SQATE tooling modules.
         </p>
