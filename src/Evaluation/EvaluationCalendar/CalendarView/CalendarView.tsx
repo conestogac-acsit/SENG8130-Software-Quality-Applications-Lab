@@ -4,7 +4,6 @@ import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
 
-
 interface CalendarViewProps {
   evaluations: Evaluation[];
 }
@@ -54,8 +53,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
 
   return (
     <div className="space-y-4">
-     
-
       <CalendarNavigation
         label={getLabel(view)}
         onPrev={() =>
