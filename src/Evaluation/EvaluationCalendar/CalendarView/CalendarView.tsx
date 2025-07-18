@@ -3,6 +3,7 @@ import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
+import { CalendarViewSwitcher } from "../CalendarViewSwitcher";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -53,6 +54,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
 
   return (
     <div className="space-y-4">
+      <CalendarViewSwitcher currentView={view} setView={setView} />
+
+      {sortedDates.map((dateStr) => (
+        <CalendarDayCard
+          key={dateStr}
+          date={dateStr}
+          evaluations={groupedByDate[dateStr]}
+        />
+      ))}
+      
       <CalendarNavigation
         label={getLabel(view)}
         onPrev={() =>

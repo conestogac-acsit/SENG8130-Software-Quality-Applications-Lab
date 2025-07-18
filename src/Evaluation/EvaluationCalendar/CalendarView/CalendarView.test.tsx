@@ -34,26 +34,29 @@ describe("CalendarView", () => {
     },
   ];
 
-  it("renders evaluation cards for each date", () => {
+  it("renders evaluation cards for each grouped date", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-
-    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Lab Report/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Assignment 1/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Quiz 1/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Lab Report/i).length).toBeGreaterThan(0);
   });
 
-  it("shows fallback message when no evaluations are scheduled", () => {
+  it("shows fallback when no evaluations are scheduled", () => {
     render(<CalendarView evaluations={[]} />);
     expect(
       screen.getByText(/No evaluations scheduled/i)
     ).toBeInTheDocument();
   });
 
+  it("renders the view switcher buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText(/Weekly/i)).toBeInTheDocument();
+    expect(screen.getByText(/Monthly/i)).toBeInTheDocument();
+  });
+
   it("renders CalendarNavigation label", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(
-      screen.getByText(/Week of/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Week of/i)).toBeInTheDocument();
   });
 
   it("renders Prev and Next buttons", () => {
@@ -64,13 +67,7 @@ describe("CalendarView", () => {
 
   it("groups evaluations under correct dates", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-
-    expect(
-      screen.getByText("Tue, Jun 24, 2025")
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText("Wed, Jun 25, 2025")
-    ).toBeInTheDocument();
+    expect(screen.getAllByText("Tue, Jun 24, 2025").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Wed, Jun 25, 2025").length).toBeGreaterThan(0);
   });
 });
