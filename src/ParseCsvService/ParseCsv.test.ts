@@ -240,4 +240,15 @@ describe('parseCsv - Student', () => {
       const data = await parseCsv<Evaluation>(file, "Evaluation");
       expect(data.length).toBe(0);
     });
-  });
+
+    it('throws an error for completely empty file', async () => {
+      const file = createFile('');
+      await expect(parseCsv(file, "Evaluation")).rejects.toMatch(/Missing required fields/);
+    });
+     
+    it('throws an error for CSV with incorrect headers', async () => {
+      const csv = 'wrong,header,format\nabc,123,456';
+      const file = createFile(csv);
+      await expect(parseCsv(file, "Evaluation")).rejects.toMatch(/Missing required fields/);
+    });
+});

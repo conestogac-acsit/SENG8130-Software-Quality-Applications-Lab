@@ -1,5 +1,4 @@
 import Papa from 'papaparse';
-
 export type EnrollmentStatus = "enrolled" | "unenrolled" | "Active" | "Deactive";
 
 export interface Student {
