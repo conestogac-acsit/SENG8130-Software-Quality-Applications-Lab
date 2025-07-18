@@ -1,6 +1,9 @@
 import React, { useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getStudents } from '../../studentData';
+import EnrollStatusView from '../../../Dashboard/EnrollStatusView';
+
+
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -77,6 +80,10 @@ const StudentList: React.FC = () => {
             Next
           </button>
         </div>
+      </div>
+
+      <div className="mt-10">
+         <EnrollStatusView />
       </div>
     </div>
   );
