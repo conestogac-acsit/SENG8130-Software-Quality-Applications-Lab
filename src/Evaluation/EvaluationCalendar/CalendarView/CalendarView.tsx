@@ -2,14 +2,23 @@ import React, { useMemo, useState } from "react";
 import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
-import WeeklyView from "../WeeklyView/WeeklyView"; 
+import WeeklyView from "../WeeklyView/WeeklyView";
 import { Evaluation } from "../../EvaluationService";
+import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
+  selectedInstructor?: string;
+  selectedType?: string;
+  selectedDate?: Date;
 }
 
-const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
+const CalendarView: React.FC<CalendarViewProps> = ({
+  evaluations,
+  selectedInstructor,
+  selectedType,
+  selectedDate,
+}) => {
   const [view, setView] = useState<"weekly" | "monthly">("weekly");
 
   const {
@@ -21,28 +30,29 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
     getLabel,
   } = useCalendarNavigation();
 
+  const filteredEvaluations = useMemo(() => {
+    const filters: FilterOptions = {
+      instructor: selectedInstructor,
+      type: selectedType,
+      date: selectedDate,
+    };
+    return filterEvaluations(evaluations, filters);
+  }, [evaluations, selectedInstructor, selectedType, selectedDate]);
+
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
 
-    evaluations.forEach((ev) => {
-      const dateKey = new Intl.DateTimeFormat("en-US", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        timeZone: "America/Toronto",
-      }).format(ev.dueDate);
+    filteredEvaluations.forEach((ev) => {
+      const dateKey = ev.dueDate.toISOString().split("T")[0];
 
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
     });
 
-    const sorted = Object.keys(grouped).sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    );
+    const sorted = Object.keys(grouped).sort();
 
     return { groupedByDate: grouped, sortedDates: sorted };
-  }, [evaluations]);
+  }, [filteredEvaluations]);
 
   if (sortedDates.length === 0) {
     return (
@@ -57,28 +67,34 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
       <CalendarNavigation
         label={getLabel(view)}
         onPrev={() =>
-          view === "weekly" 
-          ? navigateWeek("prev") 
-          : navigateMonth("prev")
+          view === "weekly" ? navigateWeek("prev") : navigateMonth("prev")
         }
         onNext={() =>
-          view === "weekly" 
-          ? navigateWeek("next") 
-          : navigateMonth("next")
+          view === "weekly" ? navigateWeek("next") : navigateMonth("next")
         }
       />
 
       {view === "weekly" ? (
-        <WeeklyView evaluations={evaluations} currentWeekStart={startDate} />
+        <WeeklyView evaluations={filteredEvaluations} currentWeekStart={startDate} />
       ) : (
         <div className="space-y-4">
-          {sortedDates.map((dateStr) => (
-            <CalendarDayCard
-              key={dateStr}
-              date={dateStr}
-              evaluations={groupedByDate[dateStr]}
-            />
-          ))}
+          {sortedDates.map((dateStr) => {
+            const displayDate = new Intl.DateTimeFormat("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              timeZone: "America/Toronto",
+            }).format(new Date(dateStr));
+
+            return (
+              <CalendarDayCard
+                key={dateStr}
+                date={displayDate}
+                evaluations={groupedByDate[dateStr]}
+              />
+            );
+          })}
         </div>
       )}
     </div>
