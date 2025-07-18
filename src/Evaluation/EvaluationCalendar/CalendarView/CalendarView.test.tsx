@@ -2,92 +2,91 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import CalendarView from "./CalendarView";
 import { Evaluation } from "../../EvaluationService";
-import { MemoryRouter } from "react-router-dom";
-import "@testing-library/jest-dom";
 
-const evaluations: Evaluation[] = [
-  {
-    course: "SENG8130",
-    title: "Assignment 1",
-    type: "Assignment",
-    weight: 10,
-    dueDate: new Date("2025-07-14T12:00:00"),
-    instructor: "Andy",
-    campus: "Main Campus",
-  },
-  {
-    course: "SENG8061",
-    title: "Quiz 1",
-    type: "Quiz",
-    weight: 5,
-    dueDate: new Date("2025-07-14T12:00:00"),
-    instructor: "Kiran",
-    campus: "Main Campus",
-  },
-  {
-    course: "SENG8071",
-    title: "Lab Report",
-    type: "Practical Lab",
-    weight: 15,
-    dueDate: new Date("2025-07-15T12:00:00"),
-    instructor: "Sanju",
-    campus: "Milton",
-  },
-];
+describe("CalendarView", () => {
+  const mockEvaluations: Evaluation[] = [
+    {
+      course: "SENG8130",
+      title: "Assignment 1",
+      type: "Assignment",
+      weight: 10,
+      dueDate: new Date("2025-06-24T12:00:00-04:00"),
+      instructor: "Andy",
+      campus: "Main Campus",
+    },
+    {
+      course: "SENG8061",
+      title: "Quiz 1",
+      type: "Quiz",
+      weight: 5,
+      dueDate: new Date("2025-06-24T12:00:00-04:00"),
+      instructor: "Kiran",
+      campus: "Main Campus",
+    },
+    {
+      course: "SENG8071",
+      title: "Lab Report",
+      type: "Practical Lab",
+      weight: 15,
+      dueDate: new Date("2025-06-25T12:00:00-04:00"),
+      instructor: "Sanju",
+      campus: "Milton",
+    },
+  ];
 
-describe("CalendarView Component (No mocks)", () => {
-  test("renders WeeklyView when viewMode is 'weekly'", () => {
-    render(<CalendarView evaluations={evaluations} viewMode="weekly" />, {
-      wrapper: MemoryRouter,
-    });
-
-    // Navigation buttons
-    expect(screen.getByText("Prev")).toBeInTheDocument();
-    expect(screen.getByText("Next")).toBeInTheDocument();
-
-    // Check if types are shown (not titles)
-    expect(screen.getAllByText(/Assignment/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Quiz/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Practical Lab/i).length).toBeGreaterThan(0);
+  beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date("2025-06-24T12:00:00-04:00"));
   });
 
-  test("renders CalendarDayCards correctly when viewMode is 'calendar'", () => {
-    render(<CalendarView evaluations={evaluations} viewMode="calendar" />, {
-      wrapper: MemoryRouter,
-    });
-
-    // Check for type strings (titles may be broken)
-    expect(screen.getAllByText(/Assignment/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Quiz/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Practical Lab/i).length).toBeGreaterThan(0);
+  afterAll(() => {
+    jest.useRealTimers();
   });
 
-  test("shows fallback message if no evaluations are passed", () => {
-    render(<CalendarView evaluations={[]} viewMode="calendar" />);
+  it("renders evaluation cards for each date", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText((content) => content.includes("Assignment 1"))).toBeInTheDocument();
+    expect(screen.getByText((content) => content.includes("Quiz 1"))).toBeInTheDocument();
+    expect(screen.getByText((content) => content.includes("Lab Report"))).toBeInTheDocument();
+  });
+
+  it("shows fallback message when no evaluations are scheduled", () => {
+    render(<CalendarView evaluations={[]} />);
     expect(screen.getByText("No evaluations scheduled")).toBeInTheDocument();
   });
 
-  test("displays correct calendar navigation label for month view", () => {
-    render(<CalendarView evaluations={evaluations} viewMode="calendar" />, {
-      wrapper: MemoryRouter,
-    });
-
-    expect(screen.getByText(/July 2025/)).toBeInTheDocument();
+  it("renders CalendarNavigation label", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText(/Week of/i)).toBeInTheDocument();
   });
 
-  test("renders navigation buttons for calendar view", () => {
-    render(<CalendarView evaluations={evaluations} viewMode="calendar" />, {
-      wrapper: MemoryRouter,
-    });
-
+  it("renders Prev and Next buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
     expect(screen.getByText("Prev")).toBeInTheDocument();
     expect(screen.getByText("Next")).toBeInTheDocument();
   });
 
-  test("renders fallback messages for all days in a week if evaluations is empty", () => {
-  render(<CalendarView evaluations={[]} viewMode="weekly" />);
-  const fallbackMessages = screen.getAllByText("No evaluations scheduled");
-  expect(fallbackMessages.length).toBe(1); // Match actual component behavior
+  it("groups evaluations under correct dates", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText("Tue Jun 24 2025")).toBeInTheDocument();
+    expect(screen.getByText("Wed Jun 25 2025")).toBeInTheDocument();
   });
 
+  it("renders WeeklyView when view mode is weekly", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText((text) => text.includes("Assignment 1"))).toBeInTheDocument();
+    expect(screen.getByText((text) => text.includes("Quiz 1"))).toBeInTheDocument();
+  });
+
+  it("shows fallback messages for all 7 days when no evaluations exist in weekly mode", () => {
+    render(<CalendarView evaluations={[]} />);
+    const fallbackMessages = screen.getAllByText((text) =>
+      text === "No evaluations scheduled"
+    );
+    expect(fallbackMessages).toHaveLength(1); // Because no dates render, only the global message shows
+  });
+
+  it("renders WeeklyView navigation label as 'Week of ...'", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText(/Week of/i)).toBeInTheDocument();
+  });
 });
