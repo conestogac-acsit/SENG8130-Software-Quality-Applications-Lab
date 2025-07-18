@@ -14,7 +14,8 @@ describe('PieChartCard', () => {
     expect(screen.getByText(/Enrollment Status/i)).toBeInTheDocument();
   });
 
-   test('renders chart with empty data safely', () => {
+ 
+
     const { container } = render(
       <PieChartCard title="Empty Chart" data={[]} chartId="pie3" />
     );
@@ -22,4 +23,3 @@ describe('PieChartCard', () => {
     expect(svg).not.toBeNull(); // It renders an empty chart container without crashing
   });
   
-});
