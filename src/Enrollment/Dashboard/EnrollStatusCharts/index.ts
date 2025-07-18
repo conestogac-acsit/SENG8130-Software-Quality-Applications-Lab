@@ -1,1 +1,2 @@
-export * from './EnrollStatusCharts'; 
+export { default as EnrollStatusCharts } from './EnrollStatusCharts';
+
