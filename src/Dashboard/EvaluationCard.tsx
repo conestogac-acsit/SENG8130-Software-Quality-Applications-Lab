@@ -4,7 +4,7 @@ import { EvaluationService } from "../Evaluation/EvaluationService/EvaluationSer
 import { LocalStorage } from "../localStorageService";
 import type { StorageService } from "../localStorageService";
 import { Evaluation } from "../Evaluation/EvaluationService/EvaluationService";
-import SuggestiveEvaluationModule from "../Evaluation/SuggestiveEvaluationModule/SuggestiveEvaluationModule";
+import SuggestedEvaluation from "../Evaluation/SuggestiveEvaluationModule/SuggestedEvaluation/SuggestedEvaluation";
 
 const EvaluationCard = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const EvaluationCard = () => {
       </div>
 
       <div className="mt-6">
-        <SuggestiveEvaluationModule evaluations={evaluations} />
+        <SuggestedEvaluation evaluations={evaluations} />
       </div>
     </div>
   );

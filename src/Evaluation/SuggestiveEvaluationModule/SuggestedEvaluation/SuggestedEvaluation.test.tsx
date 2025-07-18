@@ -1,62 +1,65 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import SuggestedEvaluation from './SuggestedEvaluation';
+import '@testing-library/jest-dom';
+import SuggestedEvaluation, { formatWeekRange } from './SuggestedEvaluation';
 import { Evaluation } from '../../EvaluationService/EvaluationService';
 
-const mockEvaluations: Evaluation[] = [
-  {
-    course: 'ENG101',
-    title: 'Essay 1',
-    type: 'Assignment',
-    weight: 15,
-    dueDate: new Date('2025-09-01'), 
-    instructor: 'Dr. A',
-    campus: 'Main',
-  },
-  {
-    course: 'ENG101',
-    title: 'Essay 2',
-    type: 'Assignment',
-    weight: 15,
-    dueDate: new Date('2025-09-01'), 
-    instructor: 'Dr. A',
-    campus: 'Main',
-  },
-  {
-    course: 'ENG101',
-    title: 'Essay 3',
-    type: 'Assignment',
-    weight: 15,
-    dueDate: new Date('2025-09-01'), 
-    instructor: 'Dr. A',
-    campus: 'Main',
-  },
-  {
-    course: 'BIO101',
-    title: 'Quiz',
-    type: 'Quiz',
-    weight: 5,
-    dueDate: new Date('2025-09-22'), 
-    instructor: 'Dr. B',
-    campus: 'South',
-  },
-];
-
 describe('SuggestedEvaluation', () => {
-  test('renders suggestions based on high and low week loads', () => {
+  const mockEvaluations: Evaluation[] = [
+    {
+      course: 'Math',
+      title: 'Quiz 1',
+      type: 'Quiz',
+      weight: 10,
+      dueDate: new Date('2025-09-02'), // Week 36
+      instructor: 'Prof A',
+      campus: 'Main',
+    },
+    {
+      course: 'Science',
+      title: 'Assignment 1',
+      type: 'Assignment',
+      weight: 20,
+      dueDate: new Date('2025-09-03'), // Week 36
+      instructor: 'Prof B',
+      campus: 'Main',
+    },
+    {
+      course: 'History',
+      title: 'Midterm',
+      type: 'Mid Exam',
+      weight: 30,
+      dueDate: new Date('2025-09-04'), // Week 36
+      instructor: 'Prof C',
+      campus: 'Main',
+    },
+    {
+      course: 'English',
+      title: 'Project',
+      type: 'Project',
+      weight: 25,
+      dueDate: new Date('2025-09-23'), // Week 39
+      instructor: 'Prof D',
+      campus: 'Main',
+    },
+  ];
+
+  test('renders suggestions for high and low load weeks', () => {
     render(<SuggestedEvaluation evaluations={mockEvaluations} />);
-
-    expect(
-      screen.getByRole('heading', { name: /suggested evaluation window/i })
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText(/Consider moving one evaluation from/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/📅 Suggested Evaluation Window/)).toBeInTheDocument();
+    expect(screen.getByText(/Consider moving one evaluation/)).toBeInTheDocument();
   });
 
-  test('shows "No suggestions available" if no evaluations', () => {
+  test('shows fallback when no evaluations', () => {
     render(<SuggestedEvaluation evaluations={[]} />);
-    expect(screen.getByText(/No suggestions available/i)).toBeInTheDocument();
+    expect(screen.getByText(/No suggestions available/)).toBeInTheDocument();
+  });
+});
+
+describe('formatWeekRange', () => {
+  test('formats correct range', () => {
+    const input = new Date('2025-07-18'); // Friday
+    const formatted = formatWeekRange(input);
+    expect(formatted).toBe('Jul 14 – Jul 20');
   });
 });

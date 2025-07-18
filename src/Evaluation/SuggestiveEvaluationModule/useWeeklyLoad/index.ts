@@ -1,1 +1,0 @@
-export { useWeeklyLoad } from './useWeeklyLoad';
