@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
+import { Evaluation } from '../EvaluationService';
 
 type WeekViewProps = {
   year: number;
   month: number;
+  evaluations: Evaluation[];
 };
 
 function getMonthWeekRange(year: number, month: number): { start: Date; end: Date } {
@@ -20,7 +22,7 @@ function getMonthWeekRange(year: number, month: number): { start: Date; end: Dat
   return { start, end };
 }
 
-const WeekView: React.FC<WeekViewProps> = ({year, month}) => {
+const WeekView: React.FC<WeekViewProps> = ({ year, month, evaluations }) => {
   const weeklyData = useMemo(() => {
     const { start, end } = getMonthWeekRange(year, month);
     const weeks: { weekLabel: string; count: number }[] = [];
@@ -31,18 +33,24 @@ const WeekView: React.FC<WeekViewProps> = ({year, month}) => {
       const weekEnd = new Date(cursor);
       weekEnd.setDate(weekStart.getDate() + 6);
 
+      const count = evaluations.filter((e) => {
+        const d = e.dueDate;
+        return d >= weekStart && d <= weekEnd;
+      }).length;
+
       const label = `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
 
       weeks.push({
         weekLabel: label,
-        count: 0,
+        count,
       });
 
       cursor.setDate(cursor.getDate() + 7);
     }
 
     return weeks;
-  }, [year, month]);
+  }, [evaluations, year, month]);
+
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       {weeklyData.map(({ weekLabel, count }) => (
