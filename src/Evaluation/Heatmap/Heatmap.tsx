@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import Button from "../../Components/Button/Button";
 
-type HeatmapProps = {
-};
+type HeatmapProps = {};
 
 const Heatmap: React.FC<HeatmapProps> = () => {
   const currentDate = new Date();
-  const [viewMode, setViewMode] = useState<'month' | 'week'>('month');
+  const [viewMode, setViewMode] = useState<"month" | "week">("month");
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
 
@@ -29,7 +29,7 @@ const Heatmap: React.FC<HeatmapProps> = () => {
           </select>
         </label>
 
-        {viewMode === 'week' && (
+        {viewMode === "week" && (
           <label>
             <span className="mr-2">Month:</span>
             <select
@@ -39,19 +39,19 @@ const Heatmap: React.FC<HeatmapProps> = () => {
             >
               {Array.from({ length: 12 }, (_, i) => (
                 <option key={i} value={i}>
-                  {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                  {new Date(0, i).toLocaleString("default", { month: "long" })}
                 </option>
               ))}
             </select>
           </label>
         )}
 
-        <button
-          onClick={() => setViewMode(viewMode === 'month' ? 'week' : 'month')}
-          className="bg-blue-600 text-white px-4 py-1 rounded"
-        >
-          Switch to {viewMode === 'month' ? 'Week View' : 'Month View'}
-        </button>
+        <Button
+          onClick={() => setViewMode(viewMode === "month" ? "week" : "month")}
+          label={`Switch to ${
+            viewMode === "month" ? "Week View" : "Month View"
+          }`}
+        />
       </div>
     </div>
   );
