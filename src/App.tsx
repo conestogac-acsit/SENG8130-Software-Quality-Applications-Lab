@@ -14,7 +14,7 @@ function App() {
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
-        <Route path="/student/enroll" element={<EnrollmentForm />} />
+        <Route path="/student/enroll" element={<EnrollmentForm onEnroll={() => {}} />} />
       </Routes>
     </BrowserRouter>
   );
