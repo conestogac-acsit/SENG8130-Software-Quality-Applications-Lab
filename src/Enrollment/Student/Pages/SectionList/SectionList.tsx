@@ -1,4 +1,4 @@
-// src/Enrollment/Student/Pages/SectionList/SectionList.tsx
+
 
 import React from "react";
 
