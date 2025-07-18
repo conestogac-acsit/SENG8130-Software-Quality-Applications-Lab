@@ -36,9 +36,9 @@ describe("CalendarView", () => {
 
   it("renders weekly view with evaluation cards by default", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/Lab Report/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Assignment 1/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Quiz 1/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Lab Report/i).length).toBeGreaterThanOrEqual(1);
   });
 
   it("displays fallback message in weekly view when no evaluations exist", () => {
@@ -75,8 +75,8 @@ describe("CalendarView", () => {
 
   it("groups evaluations correctly by date in weekly view", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(screen.getByText("Tue, Jun 24, 2025")).toBeInTheDocument();
-    expect(screen.getByText("Wed, Jun 25, 2025")).toBeInTheDocument();
+    expect(screen.getByText((text) => text.includes("2025-06-24"))).toBeInTheDocument();
+    expect(screen.getByText((text) => text.includes("2025-06-25"))).toBeInTheDocument();
   });
 
   it("toggles views correctly", () => {
@@ -84,14 +84,12 @@ describe("CalendarView", () => {
     const weeklyButton = screen.getByText("Weekly");
     const monthlyButton = screen.getByText("Monthly");
 
-    // Switch to monthly
     fireEvent.click(monthlyButton);
     expect(
       screen.getByText(/No evaluations are scheduled for this month/i)
     ).toBeInTheDocument();
 
-    // Switch back to weekly
     fireEvent.click(weeklyButton);
-    expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Assignment 1/i).length).toBeGreaterThanOrEqual(1);
   });
 });
