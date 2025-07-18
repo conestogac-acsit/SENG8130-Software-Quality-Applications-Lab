@@ -34,4 +34,10 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
   it('renders the "Next" button', () => {
     expect(screen.getByText('Next')).toBeInTheDocument();
   });
+    it('renders EnrollStatusView charts section', () => {
+    expect(screen.getByText(/GitHub Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loop Enrollment/i)).toBeInTheDocument();
+    expect(screen.getByText(/Platform Enrollment Comparison/i)).toBeInTheDocument();
+  });
+
 });
