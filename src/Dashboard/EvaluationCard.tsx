@@ -4,6 +4,7 @@ import { EvaluationService } from "../Evaluation/EvaluationService/EvaluationSer
 import { LocalStorage } from "../localStorageService";
 import type { StorageService } from "../localStorageService";
 import { Evaluation } from "../Evaluation/EvaluationService/EvaluationService";
+import {Heatmap} from "../Evaluation/Heatmap";
 
 const EvaluationCard = () => {
   const navigate = useNavigate();
@@ -32,14 +33,13 @@ const EvaluationCard = () => {
       </div>
       <div
         className="cursor-pointer hover:bg-green-100 transition"
-        onClick={() => navigate("/heatmap")}
       >
         <h2 className="text-xl font-semibold text-gray-800">
           Evaluation Heatmap
         </h2>
         <p className="text-gray-500 text-sm mt-2">
           {evaluations.length > 0
-            ? `${evaluations.length} evaluations available`
+            ? <Heatmap />
             : "No evaluations yet"}
         </p>
       </div>
