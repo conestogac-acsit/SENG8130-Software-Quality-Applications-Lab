@@ -4,7 +4,7 @@ import { Evaluation } from "../../EvaluationService";
 
 interface MonthlyViewProps {
   evaluations: Evaluation[];
-  month: number; 
+  month: number;
   year: number;
 }
 
@@ -13,18 +13,17 @@ const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) => {
   const firstDayOfMonth = useMemo(() => new Date(year, month, 1), [month, year]);
   const firstWeekday = useMemo(() => firstDayOfMonth.getDay(), [firstDayOfMonth]);
-  const daysInMonth = useMemo(
-    () => new Date(year, month + 1, 0).getDate(),
-    [month, year]
-  );
+  const daysInMonth = useMemo(() => new Date(year, month + 1, 0).getDate(), [month, year]);
 
   const calendarCells = useMemo(() => {
     const cells: { date: Date; evaluations: Evaluation[] }[] = [];
 
+    // Fill empty cells before the first day of the month
     for (let i = 0; i < firstWeekday; i++) {
       cells.push({ date: new Date(NaN), evaluations: [] });
     }
 
+    // Fill actual days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(year, month, day);
       const dateKey = currentDate.toDateString();
@@ -41,14 +40,18 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) =
 
   const hasAnyEvaluations = calendarCells.some((cell) => cell.evaluations.length > 0);
 
-  return (
-    <div className="space-y-2">
-      {!hasAnyEvaluations && (
+  if (!hasAnyEvaluations) {
+    return (
+      <div className="space-y-2">
         <div className="text-center text-gray-500 italic p-2">
           No evaluations are scheduled for this month.
         </div>
-      )}
+      </div>
+    );
+  }
 
+  return (
+    <div className="space-y-2">
       <div className="grid grid-cols-7 text-center font-bold text-sm">
         {daysInWeek.map((day) => (
           <div key={day}>{day}</div>
