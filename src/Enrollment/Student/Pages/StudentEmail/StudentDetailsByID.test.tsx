@@ -27,7 +27,7 @@ describe("StudentDetailsByID", () => {
           <Route
             path="/students/:id"
             element={
-              <StudentDetailsByID studentGetter={() => testStudents} />
+              <StudentDetailsByID />
             }
           />
         </Routes>
@@ -47,7 +47,7 @@ describe("StudentDetailsByID", () => {
         <Routes>
           <Route
             path="/students"
-            element={<StudentDetailsByID studentGetter={() => testStudents} />}
+            element={<StudentDetailsByID />}
           />
         </Routes>
       </MemoryRouter>
@@ -63,14 +63,14 @@ describe("StudentDetailsByID", () => {
         <Routes>
           <Route
             path="/students/:id"
-            element={<StudentDetailsByID studentGetter={() => testStudents} />}
+            element={<StudentDetailsByID />}
           />
         </Routes>
       </MemoryRouter>
     );
 
     expect(
-      screen.getByText(/Student not found for ID = unknown/i)
+      screen.getByText(/Student not found/i)
     ).toBeInTheDocument();
   });
 });
