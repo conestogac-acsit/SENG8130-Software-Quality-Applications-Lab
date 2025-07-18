@@ -37,7 +37,7 @@ export function getAlertSummary(evaluations: Evaluation[], threshold: number): s
 
   const weekCounts = evaluations.reduce((counts, ev) => {
     if (!(ev.dueDate instanceof Date) || isNaN(ev.dueDate.getTime())) {
-      throw new Error('Invalid dueDate for evaluation: ${ev.title}');
+      throw new Error(`Invalid dueDate for evaluation: ${ev.title}`);
     }
 
     const week = getISOWeek(ev.dueDate);

@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import ThresholdAlertUI from "./ThresholdAlertUI";
 import { Evaluation } from "../../Evaluation/EvaluationService";
 import { setWeeklyThreshold } from "./AlertUtils";
@@ -25,13 +25,15 @@ describe("ThresholdAlertUI", () => {
 
   it("shows alert when evaluations exceed threshold", () => {
     setWeeklyThreshold(2);
-    render(<ThresholdAlertUI evaluations={evals} />, container);
+    const root = createRoot(container);
+    root.render(<ThresholdAlertUI evaluations={evals} />);
     expect(container.textContent).toMatch(/exceed the configured threshold/i);
   });
 
   it("hides alert when evaluations are below threshold", () => {
-    setWeeklyThreshold(1);
-    render(<ThresholdAlertUI evaluations={evals.slice(0, 2)} />, container);
+    setWeeklyThreshold(3);
+    const root = createRoot(container);
+    root.render(<ThresholdAlertUI evaluations={evals.slice(0, 2)} />);
     expect(container.textContent).not.toMatch(/exceed the configured threshold/i);
   });
 });

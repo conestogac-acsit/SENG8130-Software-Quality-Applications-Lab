@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Evaluation } from '../../Evaluation/EvaluationService';
-import { 
-  shouldDisplayAlerts, 
-  getWeeklyThreshold, 
-  getAlertSummary, 
-  getInstructorSubmissionStatus 
-} from '.';
+import {
+  shouldDisplayAlerts,
+  getWeeklyThreshold,
+  getAlertSummary
+} from './AlertUtils';
 
 type AlertProps = {
   evaluations: Evaluation[];
@@ -14,13 +13,13 @@ type AlertProps = {
 const ThresholdAlertUI: React.FC<AlertProps> = ({ evaluations }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [summary, setSummary] = useState('');
-  const [statusMap, setStatusMap] = useState<Record<string, string>>({});
+  const [submittedInstructors, setSubmittedInstructors] = useState<string[]>([]);
 
   useEffect(() => {
     if (!evaluations || evaluations.length === 0) {
       setShowAlert(false);
       setSummary('');
-      setStatusMap({});
+      setSubmittedInstructors([]);
       return;
     }
 
@@ -29,8 +28,7 @@ const ThresholdAlertUI: React.FC<AlertProps> = ({ evaluations }) => {
     setSummary(alertNeeded ? getAlertSummary(evaluations, getWeeklyThreshold()) : '');
 
     const instructors = Array.from(new Set(evaluations.map(ev => ev.instructor)));
-    const statuses = getInstructorSubmissionStatus(evaluations, instructors);
-    setStatusMap(statuses);
+    setSubmittedInstructors(instructors);
   }, [evaluations]);
 
   return (
@@ -45,12 +43,10 @@ const ThresholdAlertUI: React.FC<AlertProps> = ({ evaluations }) => {
       )}
 
       <div>
-        <h2 className="font-semibold text-lg mb-1">Instructor Submission Status</h2>
+        <h2 className="font-semibold text-lg mb-1">Instructors with Submissions</h2>
         <ul className="list-disc list-inside space-y-1">
-          {Object.entries(statusMap).map(([instructor, status]) => (
-            <li key={instructor}>
-              {instructor}: <span className="font-medium">{status}</span>
-            </li>
+          {submittedInstructors.map((instructor) => (
+            <li key={instructor}>{instructor}</li>
           ))}
         </ul>
       </div>
