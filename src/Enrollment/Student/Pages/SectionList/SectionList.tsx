@@ -2,7 +2,6 @@
 
 import React from "react";
 
-// Minimal hardcoded student data
 const students = [
   { name: "Charlie Wu", email: "charlie.wu@gmail.com", role: "Student", section: "SENG8130-Spring 2025-Section 2", group: "G1" },
   { name: "Diana Lee", email: "diana.lee@gmail.com", role: "Student", section: "PMGT101-Winter 2025-Section 1", group: "G2" },
@@ -10,7 +9,6 @@ const students = [
   { name: "Fiona Chen", email: "fiona.chen@gmail.com", role: "Student", section: "PMGT101-Winter 2025-Section 1", group: "G2" },
 ];
 
-// Extract unique section names
 function getSections(): string[] {
   return Array.from(new Set(students.map((s) => s.section)));
 }
