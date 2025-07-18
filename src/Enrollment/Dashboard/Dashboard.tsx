@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { StudentList } from "../Student/Pages/StudentList";
 
 const Dashboard: React.FC = () => {
   return (
@@ -21,7 +22,7 @@ const Dashboard: React.FC = () => {
           home page
         </Link>{" "}
       </p>
-      <Outlet />
+      <StudentList />
     </div>
   );
 };

@@ -1,17 +1,20 @@
 import React, { useState, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getStudents } from '../../studentData/paginateStudents';
-import { StudentDataGetter } from "../../studentData/loadAllStudents";
 
-type StudentListProps = {
-  studentGetter?: StudentDataGetter;
-};
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const StudentList: React.FC<StudentListProps> = ({ studentGetter = () => [] }) => {
+const STUDENT_DATA_STORAGE_KEY = "students_list_key";
+const getStudentsListFromCache = () => {
+  const studentDataFromCache = localStorage.getItem(STUDENT_DATA_STORAGE_KEY);
+  if (!studentDataFromCache) return [];
+  return JSON.parse(studentDataFromCache);
+};
+
+const StudentList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const query = useQuery();
@@ -20,7 +23,7 @@ const StudentList: React.FC<StudentListProps> = ({ studentGetter = () => [] }) =
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(studentGetter, page, pageSize);
+  const { data: students, total, totalPages } = getStudents(getStudentsListFromCache, page, pageSize);
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
