@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Button from '../Components/Button/Button'; 
+import Button from '../Components/Button/Button';
 
 const emojiOptions = ['😡', '😕', '😐', '😊', '😍'];
 
@@ -49,34 +49,65 @@ const FeedbackForm: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        label="📝"
-      />
+    <div
+      style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+      }}
+    >
+      <Button onClick={() => setIsOpen(!isOpen)} label="📝" />
 
       {isOpen && (
         <div
           ref={popupRef}
-          className="bg-white w-80 p-4 mb-3 rounded-xl shadow-lg relative"
+          style={{
+            backgroundColor: 'white',
+            width: '320px',
+            padding: '16px',
+            marginBottom: '10px',
+            borderRadius: '10px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            position: 'relative',
+          }}
         >
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
+            style={{
+              position: 'absolute',
+              top: '8px',
+              right: '12px',
+              fontSize: '20px',
+              color: '#666',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
             &times;
           </button>
 
-          <h2 className="text-lg font-semibold mb-3 text-center">Give Feedback</h2>
+          <h2 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '12px' }}>
+            Give Feedback
+          </h2>
 
-          <div className="flex justify-center space-x-2 mb-3">
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '12px' }}>
             {emojiOptions.map((emoji, index) => (
               <button
                 key={index}
-                className={`text-xl transition-transform ${
-                  rating === index + 1 ? 'scale-125' : ''
-                }`}
                 onClick={() => setRating(index + 1)}
+                style={{
+                  fontSize: '20px',
+                  transform: rating === index + 1 ? 'scale(1.25)' : 'scale(1)',
+                  transition: 'transform 0.2s',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
                 aria-label={`Rate ${index + 1}`}
               >
                 {emoji}
@@ -85,24 +116,39 @@ const FeedbackForm: React.FC = () => {
           </div>
 
           <textarea
-            className="w-full p-2 border rounded mb-3 text-sm"
-            placeholder="Leave a comment (optional)"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            placeholder="Leave a comment (optional)"
+            style={{
+              width: '100%',
+              padding: '8px',
+              fontSize: '14px',
+              border: '1px solid #ccc',
+              borderRadius: '6px',
+              marginBottom: '12px',
+            }}
           />
 
-          <div className="flex justify-end">
+          <div style={{ textAlign: 'right' }}>
             <button
               onClick={handleSubmit}
               disabled={rating === null}
-              className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50 text-sm"
+              style={{
+                backgroundColor: '#2563eb',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: rating !== null ? 'pointer' : 'not-allowed',
+                opacity: rating !== null ? 1 : 0.5,
+              }}
             >
               Submit
             </button>
           </div>
 
           {submitted && (
-            <p className="text-green-600 text-sm mt-2 text-center">
+            <p style={{ color: 'green', textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>
               Thank you for your feedback!
             </p>
           )}
