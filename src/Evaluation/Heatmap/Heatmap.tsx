@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import MonthView from './MonthView';
-import WeekView from './WeekView';
-import { Evaluation } from '../EvaluationService';
 
 type HeatmapProps = {
-  evaluations: Evaluation[];
 };
 
-const Heatmap: React.FC<HeatmapProps> = ({ evaluations }) => {
+const Heatmap: React.FC<HeatmapProps> = () => {
   const currentDate = new Date();
   const [viewMode, setViewMode] = useState<'month' | 'week'>('month');
   const [year, setYear] = useState(currentDate.getFullYear());
@@ -56,14 +52,6 @@ const Heatmap: React.FC<HeatmapProps> = ({ evaluations }) => {
         >
           Switch to {viewMode === 'month' ? 'Week View' : 'Month View'}
         </button>
-      </div>
-
-      <div>
-        {viewMode === 'month' ? (
-          <MonthView year={year} evaluations={evaluations} />
-        ) : (
-          <WeekView year={year} month={month} evaluations={evaluations} />
-        )}
       </div>
     </div>
   );

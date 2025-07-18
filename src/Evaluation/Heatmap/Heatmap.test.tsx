@@ -1,48 +1,17 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Heatmap from "./Heatmap";
-import { Evaluation } from "../EvaluationService";
 
 describe("Heatmap Component", () => {
-  const mockEvaluations: Evaluation[] = [
-    {
-      course: "Math",
-      title: "Midterm",
-      type: "Mid Exam",
-      weight: 30,
-      dueDate: new Date("2025-07-03"),
-      instructor: "X",
-      campus: "Main",
-    },
-    {
-      course: "History",
-      title: "Essay",
-      type: "Assignment",
-      weight: 10,
-      dueDate: new Date("2025-07-10"),
-      instructor: "Y",
-      campus: "North",
-    },
-    {
-      course: "Physics",
-      title: "Quiz",
-      type: "Quiz",
-      weight: 5,
-      dueDate: new Date("2025-07-15"),
-      instructor: "Z",
-      campus: "Main",
-    },
-  ];
-
   it("renders year dropdown and month view by default", () => {
-    render(<Heatmap evaluations={mockEvaluations} />);
+    render(<Heatmap />);
 
     expect(screen.getByLabelText(/Year:/)).toBeInTheDocument();
     expect(screen.getByText(/Switch to\s+Week View/i)).toBeInTheDocument();
   });
 
   it("switches to week view and shows month selector", () => {
-    render(<Heatmap evaluations={mockEvaluations} />);
+    render(<Heatmap />);
 
     const toggleButton = screen.getByRole("button", {
       name: /Switch to Week View/i,
@@ -54,7 +23,7 @@ describe("Heatmap Component", () => {
   });
 
   it("returns to month view when toggled back", () => {
-    render(<Heatmap evaluations={mockEvaluations} />);
+    render(<Heatmap />);
 
     const toggleButton = screen.getByRole("button", {
       name: /Switch to Week View/i,
