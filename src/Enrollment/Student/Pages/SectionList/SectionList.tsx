@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -32,7 +30,7 @@ const SectionList: React.FC = () => {
             <tr key={index} className="border-t">
               <td className="px-6 py-4">
                 <Link
-                  to={`/students?section=${encodeURIComponent(section)}`}
+                  to={`/students/section/${encodeURIComponent(section)}`}
                   className="font-semibold text-blue-600 hover:underline"
                 >
                   {section}
