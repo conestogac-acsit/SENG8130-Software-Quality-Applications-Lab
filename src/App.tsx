@@ -10,9 +10,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/enrollment" element={<EnrollmentDashboard />} >
-          <Route path="students/:id" element={<StudentDetailsByID />}/>
-        </Route>
+        <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/enrollment/students/:id" element={<StudentDetailsByID />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />

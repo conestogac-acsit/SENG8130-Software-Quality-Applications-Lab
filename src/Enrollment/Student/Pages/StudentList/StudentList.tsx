@@ -35,10 +35,6 @@ const StudentList: React.FC = () => {
     updatePageInUrl(newPage);
   }, [page, totalPages, updatePageInUrl]);
 
-  const navigateToStudentDetails = (id: string) => {
-    navigate(`/enrollment/students/${id}`);
-  };
-
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -58,7 +54,6 @@ const StudentList: React.FC = () => {
             <th className="px-4 py-3 text-right">Actions</th>
           </tr>
         </thead>
-        {/* wire the navigateToStudentDetails to onClick of the student name in the row */}
       </table>
 
       <div className="flex items-center justify-between mt-6">

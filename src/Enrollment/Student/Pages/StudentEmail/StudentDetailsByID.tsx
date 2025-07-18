@@ -3,8 +3,13 @@ import { useParams } from "react-router-dom";
 import { findStudentById } from "../../studentData/findStudentById";
 import { Student } from "../../studentData";
 
-//TODO: replace with loading student list from CSV or Local storage
-const getAllStudents = () => [];
+const STUDENT_DATA_STORAGE_KEY = "students_list_key";
+
+const getAllStudents = () => {
+  const studentDataFromCache = localStorage.getItem(STUDENT_DATA_STORAGE_KEY);
+  if (!studentDataFromCache) return;
+  return JSON.parse(studentDataFromCache);
+};
 
 const StudentDetailsByID: React.FC = () => {
   const { id } = useParams<{ id: string }>();

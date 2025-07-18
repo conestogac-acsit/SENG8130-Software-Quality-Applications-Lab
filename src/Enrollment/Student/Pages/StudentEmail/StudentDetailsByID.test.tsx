@@ -1,14 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { Student } from "../../studentData/studentTypes";
-import { Email } from "../../studentData/email";
 import StudentDetailsByID from "./StudentDetailsByID";
 
-const testStudents: Student[] = [
+const testStudents = [
   {
     id: "s1",
     name: "Alice",
-    email: new Email("alice@example.com"),
+    email: "alice@example.com",
     group: "G1",
     role: "Student",
     section: "A",
@@ -19,8 +17,11 @@ const testStudents: Student[] = [
   },
 ];
 
+const STUDENT_DATA_STORAGE_KEY = "students_list_key";
+
 describe("StudentDetailsByID", () => {
   it("renders Studentdetails when student is found", () => {
+    localStorage.setItem(STUDENT_DATA_STORAGE_KEY, JSON.stringify(testStudents));
     render(
       <MemoryRouter initialEntries={["/students/s1"]}>
         <Routes>
