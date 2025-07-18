@@ -1,22 +1,18 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
-import { Evaluation } from "../../EvaluationService";
 import WeeklyView from "../WeeklyView/WeeklyView";
+import { Evaluation } from "../../EvaluationService";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
-  viewMode: "weekly" | "calendar"; 
+  viewMode: "weekly" | "calendar";
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) => {
-  const [view, setView] = useState<"weekly" | "monthly">("weekly");
-
   const {
     startDate,
-    year,
-    month,
     navigateWeek,
     navigateMonth,
     getLabel,
@@ -54,21 +50,25 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations, viewMode }) =>
   }
 
   if (viewMode === "weekly") {
-    return <WeeklyView evaluations={evaluations} />;
+    return (
+      <div className="space-y-4">
+        <CalendarNavigation
+          label={getLabel("weekly")}
+          onPrev={() => navigateWeek("prev")}
+          onNext={() => navigateWeek("next")}
+        />
+        <WeeklyView evaluations={evaluations} currentWeekStart={startDate} />
+      </div>
+    );
   }
 
   return (
     <div className="space-y-4">
       <CalendarNavigation
-        label={getLabel(view)}
-        onPrev={() =>
-          view === "weekly" ? navigateWeek("prev") : navigateMonth("prev")
-        }
-        onNext={() =>
-          view === "weekly" ? navigateWeek("next") : navigateMonth("next")
-        }
+        label={getLabel("monthly")}
+        onPrev={() => navigateMonth("prev")}
+        onNext={() => navigateMonth("next")}
       />
-
       <div className="space-y-4">
         {sortedDates.map((dateStr) => (
           <CalendarDayCard

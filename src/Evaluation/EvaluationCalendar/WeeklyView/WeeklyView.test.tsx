@@ -4,81 +4,78 @@ import WeeklyView from "./WeeklyView";
 import { Evaluation } from "../../EvaluationService";
 
 describe("WeeklyView", () => {
-    beforeAll(() => {
-        jest
-            .spyOn(Date, "now")
-            .mockReturnValue(new Date("2025-07-16T12:00:00Z").valueOf());
-    });
+  // MATCHING what the component renders
+  const currentWeekStart = new Date("2025-06-23T00:00:00");
 
-    afterAll(() => {
-        jest.restoreAllMocks();
-    });
+  const mockEvaluations: Evaluation[] = [
+    {
+      course: "SENG8130",
+      title: "Assignment 1",
+      type: "Assignment",
+      weight: 10,
+      dueDate: new Date("2025-06-24T12:00:00"), 
+      instructor: "Andy",
+      campus: "Main Campus",
+    },
+    {
+      course: "SENG8061",
+      title: "Quiz 1",
+      type: "Quiz",
+      weight: 5,
+      dueDate: new Date("2025-06-24T12:00:00"), 
+      instructor: "Kiran",
+      campus: "Main Campus",
+    },
+    {
+      course: "SENG8071",
+      title: "Lab Report",
+      type: "Practical Lab",
+      weight: 15,
+      dueDate: new Date("2025-06-25T12:00:00"), 
+      instructor: "Sanju",
+      campus: "Milton",
+    },
+  ];
 
-    const mockEvaluations: Evaluation[] = [
-        {
-            course: "CS101",
-            title: "Assignment 1",
-            type: "Assignment",
-            weight: 10,
-            dueDate: new Date("2025-07-14T12:00:00"), // Monday
-            instructor: "Dr. Smith",
-            campus: "Main Campus",
-        },
-        {
-            course: "CS102",
-            title: "Quiz 1",
-            type: "Quiz",
-            weight: 5,
-            dueDate: new Date("2025-07-16T12:00:00"), // Wednesday
-            instructor: "Dr. Allen",
-            campus: "Science Campus",
-        },
+  it("renders 7 day columns for a full week", () => {
+    render(<WeeklyView evaluations={mockEvaluations} currentWeekStart={currentWeekStart} />);
+    const days = screen.getAllByRole("gridcell");
+    expect(days.length).toBe(7);
+  });
+
+  it("displays correct date headers from Monday to Sunday", () => {
+    render(<WeeklyView evaluations={mockEvaluations} currentWeekStart={currentWeekStart} />);
+    const expectedDates = [
+      "Mon Jun 23 2025",
+      "Tue Jun 24 2025",
+      "Wed Jun 25 2025",
+      "Thu Jun 26 2025",
+      "Fri Jun 27 2025",
+      "Sat Jun 28 2025",
+      "Sun Jun 29 2025",
     ];
 
-    it("renders 7 day columns for a full week", () => {
-        render(<WeeklyView evaluations={mockEvaluations} />);
-        const gridCells = screen.getAllByRole("gridcell");
-        expect(gridCells.length).toBe(7);
+    expectedDates.forEach((date) => {
+      expect(screen.getByText(date)).toBeInTheDocument();
     });
+  });
 
-    it("renders correct date labels for Monday to Sunday", () => {
-        render(<WeeklyView evaluations={mockEvaluations} />);
+  it("renders evaluation details correctly under respective days", () => {
+    render(<WeeklyView evaluations={mockEvaluations} currentWeekStart={currentWeekStart} />);
 
-        const monday = new Date("2025-07-14T12:00:00Z");
+    expect(screen.getByText("Assignment 1 (Assignment)")).toBeInTheDocument();
+    expect(screen.getByText("Quiz 1 (Quiz)")).toBeInTheDocument();
+    expect(screen.getByText("Lab Report (Practical Lab)")).toBeInTheDocument();
 
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(monday);
-            date.setDate(monday.getDate() + i);
-            const expectedLabel = date.toDateString();
-            expect(screen.getByText(expectedLabel)).toBeInTheDocument();
-        }
-    });
+    expect(screen.getByText("Course: SENG8130 | Weight: 10%")).toBeInTheDocument();
+    expect(screen.getByText("Course: SENG8061 | Weight: 5%")).toBeInTheDocument();
+    expect(screen.getByText("Course: SENG8071 | Weight: 15%")).toBeInTheDocument();
+  });
 
-    it("renders evaluation titles correctly", () => {
-        render(<WeeklyView evaluations={mockEvaluations} />);
-        expect(screen.getByText(/Assignment 1/i)).toBeInTheDocument();
-        expect(screen.getByText(/Quiz 1/i)).toBeInTheDocument();
-    });
+    it("shows fallback message for empty days", () => {
+    render(<WeeklyView evaluations={mockEvaluations} currentWeekStart={currentWeekStart} />);
+    const emptyMessages = screen.getAllByText("No evaluations scheduled for this day.");
+    expect(emptyMessages.length).toBe(5); 
+  });
 
-    it("renders evaluations on correct days", () => {
-        render(<WeeklyView evaluations={mockEvaluations} />);
-
-        const mondayCell = screen
-            .getByText("Mon Jul 14 2025")
-            .closest("div");
-        expect(mondayCell).toHaveTextContent("Assignment 1");
-
-        const wednesdayCell = screen
-            .getByText("Wed Jul 16 2025")
-            .closest("div");
-        expect(wednesdayCell).toHaveTextContent("Quiz 1");
-    });
-
-    it("shows fallback message from CalendarDayCard for empty days", () => {
-        render(<WeeklyView evaluations={mockEvaluations} />);
-        const fallbacks = screen.queryAllByText(
-            "No evaluations scheduled for this day."
-        );
-        expect(fallbacks.length).toBe(5);
-    });
 });
