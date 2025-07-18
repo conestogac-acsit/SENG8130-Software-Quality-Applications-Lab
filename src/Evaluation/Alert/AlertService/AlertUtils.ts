@@ -1,4 +1,4 @@
-import { Evaluation } from '../../Evaluation/EvaluationService';
+import { Evaluation } from "../../EvaluationService";
 import { getISOWeek } from 'date-fns';
 
 let weeklyThreshold = 2;

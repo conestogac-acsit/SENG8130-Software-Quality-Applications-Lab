@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import ThresholdAlertUI from "./ThresholdAlertUI";
-import { Evaluation } from "../../Evaluation/EvaluationService";
+import { Evaluation } from "../../EvaluationService";
 import { setWeeklyThreshold } from "./AlertUtils";
 
 describe("ThresholdAlertUI", () => {

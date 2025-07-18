@@ -5,7 +5,7 @@ import {
   getAlertSummary
 } from './AlertUtils';
 
-import type { Evaluation } from '../../Evaluation/EvaluationService';
+import { Evaluation } from "../../EvaluationService";
 
 const makeEval = (dueDate: Date, instructor = 'Instructor A'): Evaluation => ({
   course: 'Course 1',

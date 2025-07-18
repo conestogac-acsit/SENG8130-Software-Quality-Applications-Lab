@@ -3,7 +3,7 @@ import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
-import ThresholdAlertUI from "../../../Alert/AlertService/ThresholdAlertUI";
+
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -54,7 +54,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
 
   return (
     <div className="space-y-4">
-      <ThresholdAlertUI evaluations={evaluations} />
+     
 
       <CalendarNavigation
         label={getLabel(view)}

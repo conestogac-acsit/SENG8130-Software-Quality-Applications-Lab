@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Evaluation } from '../../Evaluation/EvaluationService';
+import { Evaluation } from "../../EvaluationService";
 import {
   shouldDisplayAlerts,
   getWeeklyThreshold,
