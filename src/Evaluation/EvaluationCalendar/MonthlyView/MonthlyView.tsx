@@ -39,15 +39,17 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) =
   const hasAnyEvaluations = calendarCells.some((cell) => cell.evaluations.length > 0);
 
   if (!hasAnyEvaluations) {
-    return (
-      <div className="space-y-2">
+    return(
+          <div className="space-y-2">
+      {!hasAnyEvaluations && (
         <div className="text-center text-gray-500 italic p-2">
           No evaluations are scheduled for this month.
         </div>
+      )}
       </div>
-    );
+      );
   }
-
+  
   return (
     <div className="space-y-2">
       <div className="grid grid-cols-7 text-center font-bold text-sm">
@@ -55,7 +57,6 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) =
           <div key={day}>{day}</div>
         ))}
       </div>
-
       <div className="grid grid-cols-7 gap-2">
         {calendarCells.map(({ date, evaluations }, idx) => (
           <div key={idx} role="gridcell">
