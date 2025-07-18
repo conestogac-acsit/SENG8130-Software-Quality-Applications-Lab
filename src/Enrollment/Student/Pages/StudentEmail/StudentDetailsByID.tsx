@@ -20,7 +20,7 @@ const StudentDetailsByID: React.FC<Props> = ({ studentGetter }) => {
   if (!student) {
     return (
       <div className="p-8 text-red-600 text-lg">
-        Student not found for ID = {id}
+        {`Student not found for ID = ${id}`}
       </div>
     );
   }
