@@ -7,7 +7,7 @@ const STUDENT_DATA_STORAGE_KEY = "students_list_key";
 
 const getAllStudents = () => {
   const studentDataFromCache = localStorage.getItem(STUDENT_DATA_STORAGE_KEY);
-  if (!studentDataFromCache) return;
+  if (!studentDataFromCache) return [];
   return JSON.parse(studentDataFromCache);
 };
 
