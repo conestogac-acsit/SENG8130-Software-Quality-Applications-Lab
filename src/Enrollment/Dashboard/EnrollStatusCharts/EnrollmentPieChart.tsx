@@ -33,7 +33,7 @@ const PieChartCard: React.FC<PieChartCardProps> = ({ title, data, chartId }) => 
       </Pie>
       <Tooltip formatter={(value) => [value, 'Students']} />
     </PieChart>
-     
+
     <div className="mt-4 space-y-1" data-testid={`${chartId}-summary`}>
       {data.map((entry) => (
         <p key={entry.name}>{entry.name}: {entry.value}</p>
