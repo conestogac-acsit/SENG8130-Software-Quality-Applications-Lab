@@ -4,6 +4,7 @@ import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
+import Button from "../../../Components/Button/Button"; 
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -60,22 +61,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
       />
 
       <div className="flex justify-center gap-4">
-        <button
+        <Button
           onClick={() => setView("weekly")}
-          className={`px-4 py-1 rounded ${
-            view === "weekly" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-        >
-          Weekly
-        </button>
-        <button
+          label="Weekly"
+          disabled={view === "weekly"}
+        />
+        <Button
           onClick={() => setView("monthly")}
-          className={`px-4 py-1 rounded ${
-            view === "monthly" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-        >
-          Monthly
-        </button>
+          label="Monthly"
+          disabled={view === "monthly"}
+        />
       </div>
 
       {showNoEvaluationsMessage ? (

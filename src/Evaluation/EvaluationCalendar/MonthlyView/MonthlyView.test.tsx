@@ -25,14 +25,6 @@ describe("MonthlyView", () => {
     },
   ];
 
-  it("renders weekday headers (Sun–Sat)", () => {
-    render(<MonthlyView evaluations={[]} month={5} year={2025} />);
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    days.forEach((day) => {
-      expect(screen.getByText(day)).toBeInTheDocument();
-    });
-  });
-
   it("renders evaluation titles and courses using partial match", () => {
     render(<MonthlyView evaluations={mockEvaluations} month={5} year={2025} />);
 
@@ -43,20 +35,29 @@ describe("MonthlyView", () => {
     expect(screen.getByText(/INFO8171/i)).toBeInTheDocument();
   });
 
-  it("renders grid cells including placeholders before the first day", () => {
-    render(<MonthlyView evaluations={[]} month={5} year={2025} />);
-    const gridCells = screen.getAllByRole("gridcell");
-    expect(gridCells.length).toBeGreaterThanOrEqual(30);
+  it("renders weekday headers only when evaluations exist", () => {
+    render(<MonthlyView evaluations={mockEvaluations} month={5} year={2025} />);
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    days.forEach((day) => {
+      expect(screen.getByText(day)).toBeInTheDocument();
+    });
   });
 
-  it("renders fallback message for days with no evaluations", () => {
+  it("does NOT render weekday headers when there are no evaluations", () => {
     render(<MonthlyView evaluations={[]} month={5} year={2025} />);
+    expect(screen.queryByText("Sun")).not.toBeInTheDocument();
+    expect(screen.queryByText("Mon")).not.toBeInTheDocument();
+  });
+
+  it("does NOT render grid cells or daily fallbacks when no evaluations", () => {
+    render(<MonthlyView evaluations={[]} month={5} year={2025} />);
+    expect(screen.queryAllByRole("gridcell").length).toBe(0);
     expect(
-      screen.getAllByText(/No evaluations scheduled for this day/i).length
-    ).toBeGreaterThan(0);
+      screen.queryByText(/No evaluations scheduled for this day/i)
+    ).not.toBeInTheDocument();
   });
 
-  it("renders monthly-level fallback message when no evaluations exist in month", () => {
+  it("renders monthly-level fallback message when no evaluations exist", () => {
     render(<MonthlyView evaluations={[]} month={5} year={2025} />);
     expect(
       screen.getByText(/No evaluations are scheduled for this month/i)
