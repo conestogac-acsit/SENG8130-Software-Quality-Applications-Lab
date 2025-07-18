@@ -51,12 +51,16 @@ describe("CalendarView", () => {
 
   it("shows fallback message when no evaluations are scheduled", () => {
     render(<CalendarView evaluations={[]} />);
-    expect(screen.getByText("No evaluations scheduled")).toBeInTheDocument();
+    expect(
+      screen.getByText("No evaluations scheduled")
+    ).toBeInTheDocument();
   });
 
   it("renders CalendarNavigation label", () => {
     render(<CalendarView evaluations={mockEvaluations} />);
-    expect(screen.getByText(/Week of/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Week of/i)
+    ).toBeInTheDocument();
   });
 
   it("renders Prev and Next buttons", () => {
@@ -82,7 +86,7 @@ describe("CalendarView", () => {
     const fallbackMessages = screen.getAllByText((text) =>
       text === "No evaluations scheduled"
     );
-    expect(fallbackMessages).toHaveLength(1); // Because no dates render, only the global message shows
+    expect(fallbackMessages).toHaveLength(1); 
   });
 
   it("renders WeeklyView navigation label as 'Week of ...'", () => {

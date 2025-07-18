@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
-import WeeklyView from "../WeeklyView/WeeklyView"; // ✅ Import added
+import WeeklyView from "../WeeklyView/WeeklyView"; 
 import { Evaluation } from "../../EvaluationService";
 
 interface CalendarViewProps {
@@ -57,10 +57,14 @@ const CalendarView: React.FC<CalendarViewProps> = ({ evaluations }) => {
       <CalendarNavigation
         label={getLabel(view)}
         onPrev={() =>
-          view === "weekly" ? navigateWeek("prev") : navigateMonth("prev")
+          view === "weekly" 
+          ? navigateWeek("prev") 
+          : navigateMonth("prev")
         }
         onNext={() =>
-          view === "weekly" ? navigateWeek("next") : navigateMonth("next")
+          view === "weekly" 
+          ? navigateWeek("next") 
+          : navigateMonth("next")
         }
       />
 
