@@ -4,8 +4,8 @@ import { EvaluationService } from "../Evaluation/EvaluationService/EvaluationSer
 import { LocalStorage } from "../localStorageService";
 import type { StorageService } from "../localStorageService";
 import { Evaluation } from "../Evaluation/EvaluationService/EvaluationService";
+import { Heatmap } from "../Evaluation/Heatmap";
 import SuggestedEvaluation from "../Evaluation/SuggestiveEvaluationModule/SuggestedEvaluation/SuggestedEvaluation";
-import {Heatmap} from "../Evaluation/Heatmap";
 
 const EvaluationCard = () => {
   const navigate = useNavigate();
@@ -18,15 +18,9 @@ const EvaluationCard = () => {
   }, []);
 
   return (
-    <div className="bg-white rounded-xl shadow p-6">
+    <div className="rounded-xl bg-white shadow p-6 text-center">
       <div
-        className="text-center cursor-pointer hover:bg-green-100 transition p-4 rounded"
-        onClick={() => navigate("/evaluation")}
-      >
-        <h2 className="text-xl font-semibold text-gray-800">Evaluation Service</h2>
-    <div className="rounded-xl bg-white shadow p-6 text-cente">
-      <div
-        className="cursor-pointer hover:bg-green-100 transition"
+        className="cursor-pointer hover:bg-green-100 transition mb-6"
         onClick={() => navigate("/evaluation")}
       >
         <h2 className="text-xl font-semibold text-gray-800">
@@ -39,19 +33,17 @@ const EvaluationCard = () => {
         </p>
       </div>
 
-      <div className="mt-6">
+      <div className="mb-6">
         <SuggestedEvaluation evaluations={evaluations} />
-      <div
-        className="cursor-pointer hover:bg-green-100 transition"
-      >
+      </div>
+
+      <div className="cursor-pointer hover:bg-green-100 transition">
         <h2 className="text-xl font-semibold text-gray-800">
           Evaluation Heatmap
         </h2>
-        <p className="text-gray-500 text-sm mt-2">
-          {evaluations.length > 0
-            ? <Heatmap />
-            : "No evaluations yet"}
-        </p>
+        <div className="text-gray-500 text-sm mt-2">
+          {evaluations.length > 0 ? <Heatmap /> : "No evaluations yet"}
+        </div>
       </div>
     </div>
   );
