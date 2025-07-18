@@ -1,89 +1,49 @@
-import React, { useState } from "react";
-import Button from "../Button/Button";
+import React from "react";
+import { Evaluation } from "../../Evaluation/EvaluationService";
 
-interface CalendarPdfExportButtonsProps {
-    onExportDaily: () => void;
-    onExportWeekly: () => void;
-    onExportMonthly: () => void;
-    onExportCourse: () => void;
+type DailyData = { date: string; evaluations: Evaluation[] }[];
+type WeeklyData = { weekStart: string; evaluations: Evaluation[] }[];
+type MonthlyData = { month: string; evaluations: Evaluation[] }[];
+type CourseData = { course: string; evaluations: Evaluation[] }[];
+
+interface Props {
+  dailyData: DailyData;
+  weeklyData: WeeklyData;
+  monthlyData: MonthlyData;
+  courseData: CourseData;
 }
 
-const CalendarPdfExportButtons: React.FC<CalendarPdfExportButtonsProps> = ({
-    onExportDaily,
-    onExportWeekly,
-    onExportMonthly,
-    onExportCourse,
+const CalendarPdfExportButtons: React.FC<Props> = ({
+  dailyData,
+  weeklyData,
+  monthlyData,
+  courseData,
 }) => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+  const handleExportDaily = () => {
+    console.log("Exporting Daily View to PDF...");
+    // Future export logic
+  };
 
-    const handleExport = (type: string) => {
-        setDropdownOpen(false);
-        switch (type) {
-            case "daily":
-                onExportDaily();
-                break;
-            case "weekly":
-                onExportWeekly();
-                break;
-            case "monthly":
-                onExportMonthly();
-                break;
-            case "course":
-                onExportCourse();
-                break;
-            default:
-                break;
-        }
-    };
+  const handleExportWeekly = () => {
+    console.log("Exporting Weekly View to PDF...");
+  };
 
-    return (
-        <div style={{ position: "relative", display: "inline-block" }}>
-            <Button
-                label="Export to PDF ▼"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-            />
-            {dropdownOpen && (
-                <ul
-                    style={{
-                        position: "absolute",
-                        marginTop: "5px",
-                        background: "white",
-                        border: "1px solid #ccc",
-                        borderRadius: "4px",
-                        listStyle: "none",
-                        padding: "5px",
-                        minWidth: "180px",
-                        zIndex: 1000,
-                    }}
-                >
-                    <li>
-                        <Button
-                            label="Export Daily"
-                            onClick={() => handleExport("daily")}
-                        />
-                    </li>
-                    <li>
-                        <Button
-                            label="Export Weekly"
-                            onClick={() => handleExport("weekly")}
-                        />
-                    </li>
-                    <li>
-                        <Button
-                            label="Export Monthly"
-                            onClick={() => handleExport("monthly")}
-                        />
-                    </li>
-                    <li>
-                        <Button
-                            label="Export Entire Course"
-                            onClick={() => handleExport("course")}
-                        />
-                    </li>
-                </ul>
-            )}
-        </div>
-    );
+  const handleExportMonthly = () => {
+    console.log("Exporting Monthly View to PDF...");
+  };
+
+  const handleExportCourse = () => {
+    console.log("Exporting Entire Course to PDF...");
+  };
+
+  return (
+    <div className="flex flex-wrap gap-4 justify-center">
+      <button onClick={handleExportDaily} className="btn">Export Daily PDF</button>
+      <button onClick={handleExportWeekly} className="btn">Export Weekly PDF</button>
+      <button onClick={handleExportMonthly} className="btn">Export Monthly PDF</button>
+      <button onClick={handleExportCourse} className="btn">Export Entire Course PDF</button>
+    </div>
+  );
 };
 
 export default CalendarPdfExportButtons;
