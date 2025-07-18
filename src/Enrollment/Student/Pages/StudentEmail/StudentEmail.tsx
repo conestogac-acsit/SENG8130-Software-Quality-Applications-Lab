@@ -18,9 +18,9 @@ const StudentEmail: React.FC<Props> = ({ student, onComposeEmail }) => {
      const mailtoUrl = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
 
     if (onComposeEmail) {
-      onComposeEmail(mailtoUrl); // ✅ testable
+      onComposeEmail(mailtoUrl);
     } else {
-      window.location.href = mailtoUrl; // fallback for production
+      window.location.href = mailtoUrl;
     }
   }, [content, student, onComposeEmail]);
 
