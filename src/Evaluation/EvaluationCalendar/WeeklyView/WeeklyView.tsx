@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Evaluation } from "../../EvaluationService";
 import { format } from "date-fns";
 
@@ -7,9 +7,11 @@ interface WeeklyViewProps {
     currentWeekStart: Date;
 }
 
+const DATE_FORMAT = "EEE MMM dd yyyy";
+
 const getStartOfWeek = (date: Date): Date => {
-    const day = date.getDay(); // Sunday = 0, Monday = 1, ...
-    const diff = (day === 0 ? -6 : 1) - day; // Shift to Monday
+    const day = date.getDay(); 
+    const diff = (day === 0 ? -6 : 1) - day; 
     const start = new Date(date);
     start.setDate(start.getDate() + diff);
     start.setHours(0, 0, 0, 0);
@@ -23,22 +25,29 @@ const addDays = (date: Date, days: number): Date => {
 };
 
 const WeeklyView: React.FC<WeeklyViewProps> = ({ evaluations, currentWeekStart }) => {
-    const startOfWeek = getStartOfWeek(currentWeekStart);
-    const daysOfWeek = Array.from({ length: 7 }, (_, i) => addDays(startOfWeek, i));
+    const startOfWeek = useMemo(() => getStartOfWeek(currentWeekStart), [currentWeekStart]);
+
+    const daysOfWeek = useMemo(
+        () => Array.from({ length: 7 }, (_, i) => addDays(startOfWeek, i)),
+        [startOfWeek]
+    );
 
     return (
         <div className="grid grid-cols-7 gap-4">
             {daysOfWeek.map((day) => {
-                const dateStr = format(day, "EEE MMM dd yyyy");
-                const dailyEvaluations = evaluations.filter(
-                    (ev) => format(ev.dueDate, "EEE MMM dd yyyy") === dateStr
+                const dateStr = format(day, DATE_FORMAT);
+
+                const dailyEvaluations = useMemo(
+                    () =>
+                        evaluations.filter(
+                            (ev) => format(ev.dueDate, DATE_FORMAT) === dateStr
+                        ),
+                    [evaluations, dateStr]
                 );
 
                 return (
                     <div key={dateStr} role="gridcell" className="bg-white shadow rounded p-4">
-                        <h2 className="text-xl font-bold mb-2">
-                            {format(day, "EEE MMM dd yyyy")}
-                        </h2>
+                        <h2 className="text-xl font-bold mb-2">{dateStr}</h2>
                         {dailyEvaluations.length > 0 ? (
                             <ul className="space-y-2">
                                 {dailyEvaluations.map((ev, index) => (

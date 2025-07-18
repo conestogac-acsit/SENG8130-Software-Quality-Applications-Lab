@@ -4,7 +4,6 @@ import WeeklyView from "./WeeklyView";
 import { Evaluation } from "../../EvaluationService";
 
 describe("WeeklyView", () => {
-  // MATCHING what the component renders
   const currentWeekStart = new Date("2025-06-23T00:00:00");
 
   const mockEvaluations: Evaluation[] = [
