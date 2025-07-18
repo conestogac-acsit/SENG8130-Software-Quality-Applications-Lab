@@ -1,6 +1,7 @@
 
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 const students = [
   { name: "Charlie Wu", email: "charlie.wu@gmail.com", role: "Student", section: "SENG8130-Spring 2025-Section 2", group: "G1" },
@@ -30,12 +31,12 @@ const SectionList: React.FC = () => {
           {sections.map((section, index) => (
             <tr key={index} className="border-t">
               <td className="px-6 py-4">
-                <a
-                  href={`/students?section=${encodeURIComponent(section)}`}
+                <Link
+                  to={`/students?section=${encodeURIComponent(section)}`}
                   className="font-semibold text-blue-600 hover:underline"
                 >
                   {section}
-                </a>
+                </Link>
               </td>
             </tr>
           ))}

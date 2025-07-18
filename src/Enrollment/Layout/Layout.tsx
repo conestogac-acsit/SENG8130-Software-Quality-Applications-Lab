@@ -27,7 +27,7 @@ const Layout: React.FC = () => {
                 isActive(to) ? "text-blue-600 font-semibold" : "text-gray-800"
               }`}
             >
-              <Icon data-testid="dashboard-icon" className="w-5 h-5" />
+              <Icon aria-label="Dashboard Icon" className="w-5 h-5" />
               {label}
             </Link>
           ))}
