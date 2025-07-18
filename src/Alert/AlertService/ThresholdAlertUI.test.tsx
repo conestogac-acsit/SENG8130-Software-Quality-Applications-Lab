@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import ThresholdAlertUI from "./ThresholdAlertUI";
 import { Evaluation } from "../../Evaluation/EvaluationService";
-import { setWeeklyThreshold } from "./AlertThresholdService";
+import { setWeeklyThreshold } from "./AlertUtils";
 
 describe("ThresholdAlertUI", () => {
   let container: HTMLDivElement;
