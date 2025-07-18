@@ -9,17 +9,15 @@ const Dashboard: React.FC = () => {
         You can check enrollment of all your students here.
       </p>
       <p className="text-gray-700 mb-2">
-        If there's no data, please{" "}
-        <Link to={`/upload-student`} className="text-blue-600 font-medium hover:underline">
-          upload
-        </Link>{" "}
-        first.
+        If there's no data, please <span className="text-gray-500 font-medium">upload</span> first.
+        {/* The Link will be re-added once /upload-student is implemented */}
       </p>
-      
+
       <p className="text-gray-700 mb-2">
-        back to <Link to={`/`} className="text-blue-600 font-medium hover:underline">
+        back to{" "}
+        <Link to={`/`} className="text-blue-600 font-medium hover:underline">
           home page
-        </Link>{" "}
+        </Link>
       </p>
     </div>
   );

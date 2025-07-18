@@ -1,14 +1,12 @@
 import React from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { LayoutDashboard } from "lucide-react";
 
 const Layout: React.FC = () => {
   const location = useLocation();
 
-  const isActive = (path: string) => location.pathname === path;
-
   const navItems = [
-    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { label: "Dashboard", icon: LayoutDashboard },
   ];
 
   return (
@@ -19,17 +17,15 @@ const Layout: React.FC = () => {
       >
         <div className="p-6 font-bold text-lg border-b">Student Portal</div>
         <nav className="p-6 space-y-4">
-          {navItems.map(({ to, label, icon: Icon }, index) => (
-            <Link
-              key={`${to}-${index}`}
-              to={to}
-              className={`flex items-center gap-2 hover:text-blue-600 ${
-                isActive(to) ? "text-blue-600 font-semibold" : "text-gray-800"
-              }`}
+          {navItems.map(({ label, icon: Icon }, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 text-gray-400 cursor-not-allowed"
+              title={`${label} (coming soon)`}
             >
-              <Icon aria-label="Dashboard Icon" className="w-5 h-5" />
+              <Icon className="w-5 h-5" />
               {label}
-            </Link>
+            </div>
           ))}
         </nav>
       </aside>
