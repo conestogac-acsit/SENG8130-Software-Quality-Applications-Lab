@@ -7,7 +7,6 @@ import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
-  selectedCampus?: string;
   selectedInstructor?: string;
   selectedType?: string;
   selectedDate?: Date;
@@ -15,7 +14,6 @@ interface CalendarViewProps {
 
 const CalendarView: React.FC<CalendarViewProps> = ({
   evaluations,
-  selectedCampus,
   selectedInstructor,
   selectedType,
   selectedDate,
@@ -33,13 +31,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
   const filteredEvaluations = useMemo(() => {
     const filters: FilterOptions = {
-      campus: selectedCampus,
       instructor: selectedInstructor,
       type: selectedType,
       date: selectedDate,
     };
     return filterEvaluations(evaluations, filters);
-  }, [evaluations, selectedCampus, selectedInstructor, selectedType, selectedDate]);
+  }, [evaluations, selectedInstructor, selectedType, selectedDate]);
 
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
