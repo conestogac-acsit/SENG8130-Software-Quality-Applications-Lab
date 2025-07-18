@@ -91,7 +91,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       ) : view === "weekly" ? (
         <WeeklyView
           evaluations={filteredEvaluations}
-          currentWeekStart={startDate}
         />
       ) : (
         <MonthlyView evaluations={filteredEvaluations} year={year} month={month} />
