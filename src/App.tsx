@@ -1,22 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
-import ModuleNotFound from './Components/ModuleNotFound';
+import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
-import ThresholdAlertUI from './Alert/AlertService/ThresholdAlertUI';
+import ThresholdAlertUI from "../src/Alert/AlertService/ThresholdAlertUI";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/alerts" element={<ThresholdAlertUI evaluations={[]} />} />
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/alerts" element={<ThresholdAlertUI evaluations={[]} />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
@@ -41,3 +41,4 @@ function HomePage() {
 }
 
 export default App;
+
