@@ -1,11 +1,13 @@
 import React, { useRef, useState, useCallback } from "react";
-import { parseCsv, Student } from "../ParseCsv";
+import { parseCsv } from "../ParseCsv";
 
-interface UploadStudentCsvProps {
-  onStudentsParsed?: (students: Student[]) => void;
+interface CsvUploadButtonProps<T> {
+  parseType: "Student" | "Evaluation";
+  onDataParsed: (data: T[]) => void;
+  label?: string;
 }
 
-const UploadStudentCsv: React.FC<UploadStudentCsvProps> = ({ onStudentsParsed }) => {
+const CsvUploadButton = <T,>({ parseType, onDataParsed, label = "Upload CSV" }: CsvUploadButtonProps<T>) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,19 +36,19 @@ const UploadStudentCsv: React.FC<UploadStudentCsvProps> = ({ onStudentsParsed })
     setErrorMessage(null);
     if (selectedFile) {
       try {
-        const data = await parseCsv<Student>(selectedFile, "Student");
-        if (onStudentsParsed) onStudentsParsed(data);
+        const data = await parseCsv<T>(selectedFile, parseType);
+        onDataParsed(data);
       } catch (err) {
         setErrorMessage("CSV Parse Error: " + err);
       }
     } else {
       setErrorMessage("Please select a CSV file first.");
     }
-  }, [selectedFile, onStudentsParsed]);
+  }, [selectedFile, parseType, onDataParsed]);
 
   return (
     <div>
-      <button onClick={handleSelectFile}>Select Student CSV</button>
+      <button onClick={handleSelectFile}>{label}</button>
       <input
         type="file"
         accept=".csv"
@@ -63,7 +65,7 @@ const UploadStudentCsv: React.FC<UploadStudentCsvProps> = ({ onStudentsParsed })
       />
       {selectedFile && (
         <button onClick={handleUpload} style={{ marginTop: 8 }}>
-          Upload Student CSV
+          {label}
         </button>
       )}
       {errorMessage && (
@@ -73,4 +75,4 @@ const UploadStudentCsv: React.FC<UploadStudentCsvProps> = ({ onStudentsParsed })
   );
 };
 
-export default UploadStudentCsv; 
+export default CsvUploadButton; 
