@@ -1,18 +1,11 @@
+// StudentList.tsx
 import React, { useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getStudents } from '../../studentData/paginateStudents';
 
-
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
-
-const STUDENT_DATA_STORAGE_KEY = "students_list_key";
-const getStudentsListFromCache = () => {
-  const studentDataFromCache = localStorage.getItem(STUDENT_DATA_STORAGE_KEY);
-  if (!studentDataFromCache) return [];
-  return JSON.parse(studentDataFromCache);
-};
 
 const StudentList: React.FC = () => {
   const location = useLocation();
@@ -23,7 +16,7 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(getStudentsListFromCache, page, pageSize);
+  const { data: students, total, totalPages } = getStudents(page, pageSize);
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
@@ -87,10 +80,10 @@ const StudentList: React.FC = () => {
           </tbody>
         )}
       </table>
+
       <div className="flex items-center justify-between mt-6">
         <div className="text-sm text-gray-600">
-          Showing {(page - 1) * pageSize + 1}–
-          {Math.min(page * pageSize, total)} of {total} students
+          Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} of {total} students
         </div>
         <div className="flex gap-2">
           <button
