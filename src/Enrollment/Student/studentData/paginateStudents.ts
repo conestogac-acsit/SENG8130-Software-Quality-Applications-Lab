@@ -1,12 +1,15 @@
-import { getAllStudents, Student, StudentDataGetter} from ".";
+import { Student } from './studentTypes';
 
 export function getStudents(
-  studentGetter: StudentDataGetter,
   page: number = 1,
   pageSize: number = 10
 ): { data: Student[]; total: number; totalPages: number } {
-  const students = getAllStudents(studentGetter);
-  if (!students || !Array.isArray(students)) return { data: [], total: 0, totalPages: 0 };
+  const studentDataFromCache = localStorage.getItem("students_list_key");
+  const students: Student[] = studentDataFromCache ? JSON.parse(studentDataFromCache) : [];
+
+  if (!students || !Array.isArray(students)) {
+    return { data: [], total: 0, totalPages: 0 };
+  }
 
   const total = students.length;
   const totalPages = Math.ceil(total / pageSize);
