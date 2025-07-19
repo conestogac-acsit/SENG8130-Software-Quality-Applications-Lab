@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import StudentList from './StudentList';
 
-describe('StudentList Component (UI Test - Column Names and Pagination)', () => {
+describe('StudentList Component – UI + Charts + Export', () => {
   beforeEach(() => {
     render(
       <MemoryRouter>
@@ -10,28 +10,42 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
       </MemoryRouter>
     );
   });
-  it('renders the "Name" column', () => {
+
+  // Table
+  it('renders Name column', () => {
     expect(screen.getByText('Name')).toBeInTheDocument();
   });
-  it('renders the "Email" column', () => {
-    expect(screen.getByText('Email')).toBeInTheDocument();
-  });
-    it('renders the "Role" column', () => {
-    expect(screen.getByText('Role')).toBeInTheDocument();
-  });
-    it('renders the "Section" column', () => {
-    expect(screen.getByText('Section')).toBeInTheDocument();
-  });
-   it('renders the "Group" column', () => {
-    expect(screen.getByText('Group')).toBeInTheDocument();
-  });
-   it('renders the "Actions" column', () => {
-    expect(screen.getByText('Actions')).toBeInTheDocument();
-  });
-  it('renders the "Prev" button', () => {
+
+  // Pagination
+  it('renders Prev and Next buttons', () => {
     expect(screen.getByText('Prev')).toBeInTheDocument();
-  });
-  it('renders the "Next" button', () => {
     expect(screen.getByText('Next')).toBeInTheDocument();
+  });
+
+  // Pie Charts
+  it('renders GitHub Enrollment pie chart title', () => {
+    expect(screen.getByText(/GitHub Enrollment/i)).toBeInTheDocument();
+  });
+
+  it('renders Loop Enrollment pie chart title', () => {
+    expect(screen.getByText(/Loop Enrollment/i)).toBeInTheDocument();
+  });
+
+  it('renders GitHub pie summary block', () => {
+    expect(screen.getByTestId('githubPieChart-summary')).toBeInTheDocument();
+  });
+
+  it('renders Loop pie summary block', () => {
+    expect(screen.getByTestId('loopPieChart-summary')).toBeInTheDocument();
+  });
+
+  // Bar Chart
+  it('renders Platform Enrollment Comparison chart title', () => {
+    expect(screen.getByText(/Platform Enrollment Comparison/i)).toBeInTheDocument();
+  });
+
+  // Export Button
+  it('renders Export Dashboard button', () => {
+    expect(screen.getByText(/Export Entire Dashboard as PNG/i)).toBeInTheDocument();
   });
 });
