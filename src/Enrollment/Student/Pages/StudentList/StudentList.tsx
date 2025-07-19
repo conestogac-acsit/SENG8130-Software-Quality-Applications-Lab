@@ -1,6 +1,9 @@
-import React, { useState, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getStudents } from '../../studentData';
+import EnrollStatusView from '../../../Dashboard/EnrollStatusView';
+
+
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -15,7 +18,7 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(page, pageSize);
+  const { data: students = [], total, totalPages } = getStudents(page, pageSize);
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
@@ -35,12 +38,43 @@ const StudentList: React.FC = () => {
     updatePageInUrl(newPage);
   }, [page, totalPages, updatePageInUrl]);
 
+  const githubStats = { Enrolled: 0, Unenrolled: 0 };
+  const loopStats = { Enrolled: 0, Unenrolled: 0 };
+
+  students.forEach((student) => {
+    student.isGithubEnrolled ? githubStats.Enrolled++ : githubStats.Unenrolled++;
+    student.isLoopEnrolled ? loopStats.Enrolled++ : loopStats.Unenrolled++;
+  });
+
+  const pieDataGitHub = [
+    { name: 'Enrolled', value: githubStats.Enrolled },
+    { name: 'Unenrolled', value: githubStats.Unenrolled },
+  ];
+
+  const pieDataLoop = [
+    { name: 'Enrolled', value: loopStats.Enrolled },
+    { name: 'Unenrolled', value: loopStats.Unenrolled },
+  ];
+
+  const barData = [
+    {
+      platform: 'GitHub',
+      Enrolled: githubStats.Enrolled,
+      Unenrolled: githubStats.Unenrolled,
+      Total: githubStats.Enrolled + githubStats.Unenrolled,
+    },
+    {
+      platform: 'Loop',
+      Enrolled: loopStats.Enrolled,
+      Unenrolled: loopStats.Unenrolled,
+      Total: loopStats.Enrolled + loopStats.Unenrolled,
+    },
+  ];
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Software Quality Applications Lab</h1>
-        </div>
+        <h1 className="text-2xl font-bold">Software Quality Applications Lab</h1>
       </div>
 
       <table className="w-full bg-white shadow rounded">
@@ -54,12 +88,16 @@ const StudentList: React.FC = () => {
             <th className="px-4 py-3 text-right">Actions</th>
           </tr>
         </thead>
+        <tbody>
+          {
+            
+          }
+        </tbody>
       </table>
 
       <div className="flex items-center justify-between mt-6">
         <div className="text-sm text-gray-600">
-          Showing {(page - 1) * pageSize + 1}–
-          {Math.min(page * pageSize, total)} of {total} students
+          Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} of {total} students
         </div>
         <div className="flex gap-2">
           <button
@@ -77,6 +115,14 @@ const StudentList: React.FC = () => {
             Next
           </button>
         </div>
+      </div>
+
+      <div className="mt-10">
+        <EnrollStatusView
+          pieDataGitHub={pieDataGitHub}
+          pieDataLoop={pieDataLoop}
+          barData={barData}
+        />
       </div>
     </div>
   );
