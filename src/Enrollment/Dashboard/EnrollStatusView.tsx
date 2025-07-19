@@ -1,24 +1,31 @@
 import React from 'react';
-import { EnrollStatusCharts } from './EnrollStatusCharts';
+import {EnrollStatusCharts} from './EnrollStatusCharts';
 
-const pieDataGitHub = [
-  { name: 'Enrolled', value: 12 },
-  { name: 'Unenrolled', value: 3 },
-];
+export interface ChartData {
+  name: string;
+  value: number;
+}
 
-const pieDataLoop = [
-  { name: 'Enrolled', value: 14 },
-  { name: 'Unenrolled', value: 2 },
-];
+export interface BarData {
+  platform: string;
+  Enrolled: number;
+  Unenrolled: number;
+  Total: number;
+}
 
-const barData = [
-  { platform: 'GitHub', Enrolled: 12, Unenrolled: 3, Total: 15 },
-  { platform: 'Loop', Enrolled: 14, Unenrolled: 2, Total: 16 },
-];
+interface EnrollStatusViewProps {
+  pieDataGitHub: ChartData[];
+  pieDataLoop: ChartData[];
+  barData: BarData[];
+}
 
-const EnrollStatusView: React.FC = () => {
+const EnrollStatusView: React.FC<EnrollStatusViewProps> = ({
+  pieDataGitHub,
+  pieDataLoop,
+  barData,
+}) => {
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold">Enrollment Dashboard – Visual Insights</h1>
       <EnrollStatusCharts
         pieDataGitHub={pieDataGitHub}
