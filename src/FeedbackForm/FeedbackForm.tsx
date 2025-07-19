@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Button from '../Components/Button/Button';
+import { LocalStorage } from '../localStorageService';
 
 const emojiOptions = ['😡', '😕', '😐', '😊', '😍'];
 
@@ -9,6 +10,7 @@ const FeedbackForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
+  const storage = new LocalStorage();
 
   const handleSubmit = () => {
     if (rating === null) return;
@@ -19,8 +21,8 @@ const FeedbackForm: React.FC = () => {
       timestamp: Date.now(),
     };
 
-    const prev = JSON.parse(localStorage.getItem('feedbacks') || '[]');
-    localStorage.setItem('feedbacks', JSON.stringify([...prev, feedback]));
+    const prev = storage.load<any[]>('feedbacks') || [];
+    storage.save('feedbacks', [...prev, feedback]);
 
     setSubmitted(true);
     setRating(null);
@@ -49,65 +51,33 @@ const FeedbackForm: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        zIndex: 9999,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-      }}
-    >
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
       <Button onClick={() => setIsOpen(!isOpen)} label="📝" />
 
       {isOpen && (
         <div
           ref={popupRef}
-          style={{
-            backgroundColor: 'white',
-            width: '320px',
-            padding: '16px',
-            marginBottom: '10px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-            position: 'relative',
-          }}
+          className="bg-white w-80 p-4 mb-2 rounded-lg shadow-lg relative"
         >
           <button
             onClick={() => setIsOpen(false)}
-            style={{
-              position: 'absolute',
-              top: '8px',
-              right: '12px',
-              fontSize: '20px',
-              color: '#666',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-            }}
+            className="absolute top-2 right-3 text-gray-500 text-xl hover:text-gray-700"
           >
             &times;
           </button>
 
-          <h2 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '12px' }}>
+          <h2 className="text-center text-lg font-semibold mb-3">
             Give Feedback
           </h2>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '12px' }}>
+          <div className="flex justify-center gap-2 mb-3">
             {emojiOptions.map((emoji, index) => (
               <button
                 key={index}
                 onClick={() => setRating(index + 1)}
-                style={{
-                  fontSize: '20px',
-                  transform: rating === index + 1 ? 'scale(1.25)' : 'scale(1)',
-                  transition: 'transform 0.2s',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
+                className={`text-xl transition-transform transform ${
+                  rating === index + 1 ? 'scale-125' : ''
+                }`}
                 aria-label={`Rate ${index + 1}`}
               >
                 {emoji}
@@ -119,36 +89,23 @@ const FeedbackForm: React.FC = () => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Leave a comment (optional)"
-            style={{
-              width: '100%',
-              padding: '8px',
-              fontSize: '14px',
-              border: '1px solid #ccc',
-              borderRadius: '6px',
-              marginBottom: '12px',
-            }}
+            className="w-full p-2 text-sm border border-gray-300 rounded mb-3"
           />
 
-          <div style={{ textAlign: 'right' }}>
+          <div className="text-right">
             <button
               onClick={handleSubmit}
               disabled={rating === null}
-              style={{
-                backgroundColor: '#2563eb',
-                color: 'white',
-                padding: '6px 12px',
-                borderRadius: '6px',
-                border: 'none',
-                cursor: rating !== null ? 'pointer' : 'not-allowed',
-                opacity: rating !== null ? 1 : 0.5,
-              }}
+              className={`bg-blue-600 text-white py-1 px-3 rounded ${
+                rating === null ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+              }`}
             >
               Submit
             </button>
           </div>
 
           {submitted && (
-            <p style={{ color: 'green', textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>
+            <p className="text-green-600 text-center mt-2 text-sm">
               Thank you for your feedback!
             </p>
           )}
