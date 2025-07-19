@@ -8,10 +8,6 @@ const Dashboard: React.FC = () => {
       <p className="text-gray-700 mb-2">
         You can check enrollment of all your students here.
       </p>
-      <p className="text-gray-700 mb-2">
-        If there's no data, please <span className="text-gray-500 font-medium">upload</span> first.
-        {/* The Link will be re-added once /upload-student is implemented */}
-      </p>
 
       <p className="text-gray-700 mb-2">
         back to{" "}

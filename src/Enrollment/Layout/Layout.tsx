@@ -1,14 +1,7 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import { LayoutDashboard } from "lucide-react";
+import { Outlet } from "react-router-dom";
 
 const Layout: React.FC = () => {
-  const location = useLocation();
-
-  const navItems = [
-    { label: "Dashboard", icon: LayoutDashboard },
-  ];
-
   return (
     <div className="flex h-screen overflow-hidden">
       <aside
@@ -17,16 +10,6 @@ const Layout: React.FC = () => {
       >
         <div className="p-6 font-bold text-lg border-b">Student Portal</div>
         <nav className="p-6 space-y-4">
-          {navItems.map(({ label, icon: Icon }, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-2 text-gray-400 cursor-not-allowed"
-              title={`${label} (coming soon)`}
-            >
-              <Icon className="w-5 h-5" />
-              {label}
-            </div>
-          ))}
         </nav>
       </aside>
 
