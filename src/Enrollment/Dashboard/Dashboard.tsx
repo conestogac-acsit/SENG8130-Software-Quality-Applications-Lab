@@ -1,7 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
+  const [view,setView] = useState<any>("studentList");
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-md">
       <h1 className="text-2xl font-bold text-gray-800 mb-4">Welcome to the Dashboard!</h1>
@@ -21,6 +22,7 @@ const Dashboard: React.FC = () => {
           home page
         </Link>{" "}
       </p>
+      <Outlet />
     </div>
   );
 };
