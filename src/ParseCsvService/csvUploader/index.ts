@@ -1,1 +1,1 @@
-export { default } from './UploadStudentCsv';
+export { default } from './CsvUploadButton';
