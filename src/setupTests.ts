@@ -6,4 +6,3 @@ if (typeof global.TextEncoder === 'undefined') {
 if (typeof global.TextDecoder === 'undefined') {
   global.TextDecoder = TextDecoder as typeof global.TextDecoder;
 }
-
