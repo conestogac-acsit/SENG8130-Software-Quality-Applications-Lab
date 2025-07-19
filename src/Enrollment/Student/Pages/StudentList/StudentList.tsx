@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getStudents } from '../../studentData';
+import EnrollStatusView from '../../../Dashboard/EnrollStatusView';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -34,6 +35,40 @@ const StudentList: React.FC = () => {
     setPage(newPage);
     updatePageInUrl(newPage);
   }, [page, totalPages, updatePageInUrl]);
+
+  // Real chart data calculation
+  const githubStats = { Enrolled: 0, Unenrolled: 0 };
+  const loopStats = { Enrolled: 0, Unenrolled: 0 };
+
+  students.forEach((student) => {
+    student.isGithubEnrolled ? githubStats.Enrolled++ : githubStats.Unenrolled++;
+    student.isLoopEnrolled ? loopStats.Enrolled++ : loopStats.Unenrolled++;
+  });
+
+  const pieDataGitHub = [
+    { name: 'Enrolled', value: githubStats.Enrolled },
+    { name: 'Unenrolled', value: githubStats.Unenrolled },
+  ];
+
+  const pieDataLoop = [
+    { name: 'Enrolled', value: loopStats.Enrolled },
+    { name: 'Unenrolled', value: loopStats.Unenrolled },
+  ];
+
+  const barData = [
+    {
+      platform: 'GitHub',
+      Enrolled: githubStats.Enrolled,
+      Unenrolled: githubStats.Unenrolled,
+      Total: githubStats.Enrolled + githubStats.Unenrolled,
+    },
+    {
+      platform: 'Loop',
+      Enrolled: loopStats.Enrolled,
+      Unenrolled: loopStats.Unenrolled,
+      Total: loopStats.Enrolled + loopStats.Unenrolled,
+    },
+  ];
 
   return (
     <div className="p-6">
@@ -77,6 +112,13 @@ const StudentList: React.FC = () => {
             Next
           </button>
         </div>
+      </div>
+      <div className="mt-10">
+        <EnrollStatusView
+          pieDataGitHub={pieDataGitHub}
+          pieDataLoop={pieDataLoop}
+          barData={barData}
+        />
       </div>
     </div>
   );
