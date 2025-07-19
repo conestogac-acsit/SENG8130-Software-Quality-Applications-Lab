@@ -3,12 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
 import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
+import EvaluationPage from './Evaluation/EvaluationPage/EvaluationPage';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/evaluation" element={<EvaluationPage />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
