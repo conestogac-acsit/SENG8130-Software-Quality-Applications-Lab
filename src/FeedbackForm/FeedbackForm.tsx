@@ -21,8 +21,8 @@ const FeedbackForm: React.FC = () => {
       timestamp: Date.now(),
     };
 
-    const prev = storage.load<any[]>('feedbacks') || [];
-    storage.save('feedbacks', [...prev, feedback]);
+    const previous = storage.load<any[]>('feedbacks') || [];
+    storage.save('feedbacks', [...previous, feedback]);
 
     setSubmitted(true);
     setRating(null);
@@ -57,7 +57,7 @@ const FeedbackForm: React.FC = () => {
       {isOpen && (
         <div
           ref={popupRef}
-          className="bg-white w-80 p-4 mb-2 rounded-lg shadow-lg relative"
+          className="bg-white w-80 p-4 mb-2 rounded-lg shadow-lg relative text-black"
         >
           <button
             onClick={() => setIsOpen(false)}

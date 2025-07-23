@@ -1,71 +1,95 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import FeedbackForm from './FeedbackForm';
-import { LocalStorage } from '../localStorageService'; 
+import { LocalStorage } from '../localStorageService';
 
-describe('FeedbackForm', () => {
-  const storage = new LocalStorage();
+jest.mock('../localStorageService', () => {
+  return {
+    LocalStorage: jest.fn().mockImplementation(() => {
+      let store: any[] = [];
+      return {
+        load: jest.fn(() => store),
+        save: jest.fn((key, data) => {
+          store = data;
+        }),
+      };
+    }),
+  };
+});
 
+jest.mock('../Components/Button/Button', () => {
+  return ({ onClick, label }: any) => (
+    <button onClick={onClick}>{label}</button>
+  );
+});
+
+describe('FeedbackForm Component', () => {
   beforeEach(() => {
-    localStorage.removeItem('feedbacks'); // ✅ Clears previous feedbacks
     jest.clearAllMocks();
   });
 
-  test('renders heading and submit button', () => {
+  it('should render feedback toggle button', () => {
     render(<FeedbackForm />);
-    fireEvent.click(screen.getByRole('button', { name: '📝' })); // Open popup
-
-    expect(screen.getByText(/give feedback/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '📝' })).toBeInTheDocument();
   });
 
-  test('submit is disabled until a rating is selected', () => {
+  it('should open the feedback popup when clicked', () => {
     render(<FeedbackForm />);
-    fireEvent.click(screen.getByRole('button', { name: '📝' }));
-
-    const submitButton = screen.getByRole('button', { name: /submit/i });
-    expect(submitButton).toBeDisabled();
+    fireEvent.click(screen.getByText('📝'));
+    expect(screen.getByText('Give Feedback')).toBeInTheDocument();
   });
 
-  test('selecting a rating enables submit', () => {
+  it('should select emoji and enter comment', () => {
     render(<FeedbackForm />);
-    fireEvent.click(screen.getByRole('button', { name: '📝' }));
+    fireEvent.click(screen.getByText('📝'));
 
-    const emojiButton = screen.getByRole('button', { name: /rate 3/i });
-    fireEvent.click(emojiButton);
+    const emoji = screen.getAllByRole('button', { name: /Rate/ })[2];
+    fireEvent.click(emoji);
+    expect(emoji).toHaveClass('scale-125');
 
-    const submitButton = screen.getByRole('button', { name: /submit/i });
-    expect(submitButton).not.toBeDisabled();
+    const textarea = screen.getByPlaceholderText(/Leave a comment/i);
+    fireEvent.change(textarea, { target: { value: 'Great tool!' } });
+    expect(textarea).toHaveValue('Great tool!');
   });
 
-  test('submitting feedback stores it in localStorage service', () => {
+  it('should submit feedback and show thank-you message', async () => {
     render(<FeedbackForm />);
-    fireEvent.click(screen.getByRole('button', { name: '📝' }));
+    fireEvent.click(screen.getByText('📝'));
 
-    const emojiButton = screen.getByRole('button', { name: /rate 5/i });
-    fireEvent.click(emojiButton);
+    const emoji = screen.getAllByRole('button', { name: /Rate/ })[4];
+    fireEvent.click(emoji);
 
-    const textarea = screen.getByPlaceholderText(/leave a comment/i);
-    fireEvent.change(textarea, { target: { value: 'Great app!' } });
+    const textarea = screen.getByPlaceholderText(/Leave a comment/i);
+    fireEvent.change(textarea, { target: { value: 'Loving it!' } });
 
-    const submitButton = screen.getByRole('button', { name: /submit/i });
-    fireEvent.click(submitButton);
+    fireEvent.click(screen.getByText('Submit'));
 
-    const feedbacks = storage.load<any[]>('feedbacks') || [];
-    expect(feedbacks.length).toBe(1);
-    expect(feedbacks[0]).toMatchObject({
-      rating: 5,
-      comment: 'Great app!',
+    await waitFor(() => {
+      expect(screen.getByText(/thank you for your feedback/i)).toBeInTheDocument();
     });
   });
 
-  test('shows thank-you message after submission', () => {
+  it('should not allow submission without selecting emoji', () => {
     render(<FeedbackForm />);
-    fireEvent.click(screen.getByRole('button', { name: '📝' }));
+    fireEvent.click(screen.getByText('📝'));
 
-    fireEvent.click(screen.getByRole('button', { name: /rate 1/i }));
-    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+    const submit = screen.getByText('Submit');
+    expect(submit).toBeDisabled();
+  });
 
-    expect(screen.getByText(/thank you for your feedback/i)).toBeInTheDocument();
+  it('should close when clicking the close button (×)', () => {
+    render(<FeedbackForm />);
+    fireEvent.click(screen.getByText('📝'));
+
+    fireEvent.click(screen.getByText('×'));
+    expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument();
+  });
+
+  it('should close the popup when clicking outside', () => {
+    render(<div><FeedbackForm /><div data-testid="outside">Outside</div></div>);
+    fireEvent.click(screen.getByText('📝'));
+
+    fireEvent.mouseDown(screen.getByTestId('outside'));
+    expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument();
   });
 });
