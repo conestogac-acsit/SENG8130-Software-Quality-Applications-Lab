@@ -68,4 +68,49 @@ describe('EvaluationService', () => {
       expect(() => service.loadEvaluations()).toThrow('Failed to load evaluations');
     });
   });
+
+  describe('rescheduleEvaluation & helpers', () => {
+    beforeEach(() => {
+      service.saveEvaluations(sampleData);
+    });
+
+    it('should return evaluation by course and title', () => {
+      const found = service.getEvaluationByCourseAndTitle('SENG8130', 'Software quality applications lab');
+      expect(found).toBeDefined();
+      expect(found?.instructor).toBe('John Smith');
+    });
+
+    it('should reschedule evaluation to a future date', () => {
+      const newDate = new Date('2025-12-31');
+      const result = service.rescheduleEvaluation('SENG8130', 'Software quality applications lab', newDate);
+
+      const updated = service.getEvaluationByCourseAndTitle('SENG8130', 'Software quality applications lab');
+
+      expect(result).toBe(true);
+      expect(updated?.dueDate.toISOString().split('T')[0]).toBe('2025-12-31');
+    });
+
+    it('should fail to reschedule to a past date', () => {
+      const pastDate = new Date('2000-01-01');
+      const result = service.rescheduleEvaluation('SENG8130', 'Software quality applications lab', pastDate);
+      expect(result).toBe(false);
+    });
+
+    it('should fail to reschedule a non-existent evaluation', () => {
+      const result = service.rescheduleEvaluation('NON101', 'Does Not Exist', new Date('2025-12-31'));
+      expect(result).toBe(false);
+    });
+
+    it('should fail to reschedule with invalid date', () => {
+      const invalidDate = new Date('not-a-date');
+      const result = service.rescheduleEvaluation('SENG8130', 'Software quality applications lab', invalidDate);
+      expect(result).toBe(false);
+    });
+
+    it('should clear all evaluations', () => {
+      service.clearAllEvaluations();
+      const all = service.loadEvaluations();
+      expect(all.length).toBe(0);
+    });
+  });
 });

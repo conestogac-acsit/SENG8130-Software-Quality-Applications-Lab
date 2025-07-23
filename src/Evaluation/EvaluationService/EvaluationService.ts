@@ -55,4 +55,38 @@ export class EvaluationService implements IEvaluationService {
       throw new Error('Failed to load evaluations');
     }
   }
+
+  getEvaluationByCourseAndTitle(course: string, title: string): Evaluation | undefined {
+    const evaluations = this.loadEvaluations();
+    return evaluations.find(e => e.course === course && e.title === title);
+  }
+
+  rescheduleEvaluation(course: string, title: string, newDate: Date): boolean {
+    const evaluations = this.loadEvaluations();
+    const index = evaluations.findIndex(e => e.course === course && e.title === title);
+
+    if (index === -1) {
+      console.error(`Evaluation not found for course ${course}, title ${title}`);
+      return false;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const newDateCopy = new Date(newDate);
+    newDateCopy.setHours(0, 0, 0, 0);
+
+    if (isNaN(newDateCopy.getTime()) || newDateCopy < today) {
+      console.warn('New due date is invalid or in the past.');
+      return false;
+    }
+
+    evaluations[index].dueDate = newDateCopy;
+    this.saveEvaluations(evaluations);
+    return true;
+  }
+
+  clearAllEvaluations(): void {
+    this.saveEvaluations([]);
+  }
 }
