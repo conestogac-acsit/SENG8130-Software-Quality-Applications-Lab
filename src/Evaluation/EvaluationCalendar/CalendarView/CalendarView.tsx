@@ -6,6 +6,7 @@ import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
 import Button from "../../../Components/Button/Button"; 
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
+import { getInstructorSubmissionStatus } from "../../EvaluationService/SubmissionStatus";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -45,7 +46,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     filteredEvaluations.forEach((ev) => {
       const dateKey = ev.dueDate.toISOString().split("T")[0];
-
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
     });
@@ -54,6 +54,19 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     return { groupedByDate: grouped, sortedDates: sorted };
   }, [filteredEvaluations]);
+
+  const submissionStatus = useMemo(() => {
+    if (!selectedInstructor) return null;
+    const statusMap = getInstructorSubmissionStatus(evaluations, [selectedInstructor]);
+    return statusMap[selectedInstructor];
+  }, [evaluations, selectedInstructor]);
+
+  const statusColor = {
+    'Not Started': 'text-red-500',
+    'Incomplete': 'text-yellow-500',
+    'Needs Fixing': 'text-orange-500',
+    'Submitted': 'text-green-600',
+  }[submissionStatus || 'Not Started'];
 
   const showNoEvaluationsMessage =
     view === "weekly" && sortedDates.length === 0;
@@ -81,44 +94,45 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           label="Monthly"
           disabled={view === "monthly"}
         />
-
-      <div className="space-y-4">
-        {sortedDates.map((isoDate) => {
-          const displayDate = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "America/Toronto",
-          }).format(new Date(isoDate));
-
-          return (
-            <CalendarDayCard
-              key={isoDate}
-              date={displayDate}
-              evaluations={groupedByDate[isoDate]}
-            />
-          );
-        })}
-        </div>
-
       </div>
 
-      {showNoEvaluationsMessage ? (
+      {selectedInstructor && submissionStatus && (
+        <div className="text-center mt-2">
+          <span className={`text-sm font-semibold ${statusColor}`}>
+            Submission Status: {submissionStatus}
+          </span>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {view === "weekly" && !showNoEvaluationsMessage && (
+          sortedDates.map((isoDate) => {
+            const displayDate = new Intl.DateTimeFormat("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              timeZone: "America/Toronto",
+            }).format(new Date(isoDate));
+
+            return (
+              <CalendarDayCard
+                key={isoDate}
+                date={displayDate}
+                evaluations={groupedByDate?.[isoDate] ?? []}
+              />
+            );
+          })
+        )}
+      </div>
+
+      {showNoEvaluationsMessage && (
         <p className="text-center text-gray-500 italic">
           No evaluations scheduled
         </p>
-      ) : view === "weekly" ? (
-        <div className="space-y-4">
-          {sortedDates.map((dateStr) => (
-            <CalendarDayCard
-              key={dateStr}
-              date={dateStr}
-              evaluations={groupedByDate[dateStr]}
-            />
-          ))}
-        </div>
-      ) : (
+      )}
+
+      {view === "monthly" && (
         <MonthlyView evaluations={evaluations} year={year} month={month} />
       )}
     </div>
