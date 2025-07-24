@@ -1,3 +1,15 @@
+import { getInstructorSubmissionStatus, SubmissionStatus } from './SubmissionStatus';
+import { Evaluation, EvaluationType } from '../EvaluationService';
+
+const validEvaluation: Omit<Evaluation, 'instructor'> = {
+  course: "COMP101",
+  title: "Assignment 1",
+  type: "Assignment" as EvaluationType,
+  weight: 20,
+  dueDate: new Date("2025-09-15"),
+  campus: "Main"
+};
+
 describe('getInstructorSubmissionStatus', () => {
   it('should return "Not Started" when no evaluations exist', () => {
     const result = getInstructorSubmissionStatus([], ['alice@uni.edu']);
