@@ -69,3 +69,10 @@ describe('getInstructorSubmissionStatus', () => {
       'c@uni.edu',
       'd@uni.edu'
     ]);
+
+    expect(result['a@uni.edu']).toBe('Submitted');
+    expect(result['b@uni.edu']).toBe('Needs Fixing');
+    expect(result['c@uni.edu']).toBe('Incomplete');
+    expect(result['d@uni.edu']).toBe('Not Started');
+  });
+});
