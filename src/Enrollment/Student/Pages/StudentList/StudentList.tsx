@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getStudents } from '../../studentData';
 import EnrollStatusView from '../../../Dashboard/EnrollStatusView';
 import { Student } from '../../../../studentType';
 
@@ -17,18 +16,12 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(page, pageSize);
+  const students: Student[] = [];
+  const total = 0;
+  const totalPages = 1;
 
-  // ✅ Aggregate pie chart data from real student props
-  const pieDataGitHub = [
-    { name: 'Enrolled', value: students.filter(s => s.isGithubEnrolled).length },
-    { name: 'Unenrolled', value: students.filter(s => !s.isGithubEnrolled).length },
-  ];
-
-  const pieDataLoop = [
-    { name: 'Enrolled', value: students.filter(s => s.isLoopEnrolled).length },
-    { name: 'Unenrolled', value: students.filter(s => !s.isLoopEnrolled).length },
-  ];
+  const pieDataGitHub: { name: string; value: number }[] = [];
+  const pieDataLoop: { name: string; value: number }[] = [];
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
@@ -66,18 +59,26 @@ const StudentList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {students.map((student) => (
-            <tr key={student.id} className="border-b">
-              <td className="px-4 py-3">{student.name}</td>
-              <td className="px-4 py-3">{student.email}</td>
-              <td className="px-4 py-3">{student.role}</td>
-              <td className="px-4 py-3">{student.section}</td>
-              <td className="px-4 py-3">{student.group}</td>
-              <td className="px-4 py-3 text-right">
-                <Link to="#">Edit</Link>
+          {students.length === 0 ? (
+            <tr>
+              <td colSpan={6} className="text-center py-6 text-gray-500">
+                No student data available.
               </td>
             </tr>
-          ))}
+          ) : (
+            students.map((student) => (
+              <tr key={student.id} className="border-b">
+                <td className="px-4 py-3">{student.name}</td>
+                <td className="px-4 py-3">{student.email}</td>
+                <td className="px-4 py-3">{student.role}</td>
+                <td className="px-4 py-3">{student.section}</td>
+                <td className="px-4 py-3">{student.group}</td>
+                <td className="px-4 py-3 text-right">
+                  <Link to="#">Edit</Link>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 
@@ -86,16 +87,23 @@ const StudentList: React.FC = () => {
           Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} of {total} students
         </div>
         <div className="flex gap-2">
-          <button onClick={handlePrev} disabled={page === 1} className="px-3 py-1 border rounded disabled:opacity-50">
+          <button
+            onClick={handlePrev}
+            disabled={page === 1}
+            className="px-3 py-1 border rounded opacity-100 disabled:opacity-50"
+          >
             Prev
           </button>
-          <button onClick={handleNext} disabled={page === totalPages} className="px-3 py-1 border rounded disabled:opacity-50">
+          <button
+            onClick={handleNext}
+            disabled={page >= totalPages || totalPages === 0}
+            className="px-3 py-1 border rounded opacity-100 disabled:opacity-50"
+          >
             Next
           </button>
         </div>
       </div>
 
-      {/* ✅ Pie chart section rendered below */}
       <div className="mt-10">
         <EnrollStatusView pieDataGitHub={pieDataGitHub} pieDataLoop={pieDataLoop} />
       </div>
