@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
+  base: './',
   plugins: [react()],
   resolve: {
     alias: {
@@ -10,4 +11,3 @@ export default defineConfig({
     },
   },
 })
-// This Vite configuration file sets up a React project with an alias for the source directory.
