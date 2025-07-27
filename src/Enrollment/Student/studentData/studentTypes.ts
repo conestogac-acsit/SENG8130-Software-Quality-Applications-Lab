@@ -1,9 +1,7 @@
-import { Email } from "./email";
-
 export interface Student {
-  id: string;
+  studentId: string;
   name: string;
-  email: Email;
+  email: string;
   group: string;
   role: string;
   section: string;
