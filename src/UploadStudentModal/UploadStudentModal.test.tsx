@@ -97,4 +97,26 @@ describe("UploadStudentModal Full Integration", () => {
     fireEvent.click(screen.getByText("Close"));
     expect(closed).toBe(true);
   });
+  it("merges new data with existing data and avoids duplicates", async () => {
+    render(<UploadStudentModal isOpen={true} onClose={() => {}} />);
+
+    fireEvent.change(getFileInput(), {
+      target: { files: [new File([csv1], "first.csv")] },
+    });
+    fireEvent.click(screen.getByText("Upload"));
+    await screen.findByText(/Students uploaded successfully!/i);
+
+    fireEvent.change(getFileInput(), {
+      target: { files: [new File([csv2], "second.csv")] },
+    });
+    fireEvent.click(screen.getByText("Upload"));
+    await screen.findByText(/Students uploaded successfully!/i);
+
+    const stored = JSON.parse(
+      localStorage.getItem("students_list_key") || "[]"
+    );
+    const ids = stored.map((s: any) => s.studentId).sort();
+    expect(stored.length).toBe(2);
+    expect(ids).toEqual(["1", "2"]);
+  });
 });
