@@ -28,4 +28,13 @@ describe("UploadStudentModal Full Integration", () => {
     rerender(<UploadStudentModal isOpen={true} onClose={() => {}} />);
     expect(screen.getByText(/Upload Student CSV/i)).toBeInTheDocument();
   });
+  it("calls onClose when Cancel is clicked", () => {
+    let closed = false;
+    const handleClose = () => {
+      closed = true;
+    };
+    render(<UploadStudentModal isOpen={true} onClose={handleClose} />);
+    fireEvent.click(screen.getByText("Cancel"));
+    expect(closed).toBe(true);
+  });
 });
