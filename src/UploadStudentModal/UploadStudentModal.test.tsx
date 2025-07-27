@@ -80,4 +80,21 @@ describe("UploadStudentModal Full Integration", () => {
     fireEvent.click(screen.getByText("Upload"));
     expect(await screen.findByText(/Row 2:/i)).toBeInTheDocument();
   });
+   it("closes when Close button is clicked after success", async () => {
+    let closed = false;
+    const handleClose = () => {
+      closed = true;
+    };
+    render(<UploadStudentModal isOpen={true} onClose={handleClose} />);
+    const file = new File([validCsv], "students.csv", { type: "text/csv" });
+
+    fireEvent.change(getFileInput(), { target: { files: [file] } });
+    fireEvent.click(screen.getByText("Upload"));
+
+    await waitFor(() =>
+      screen.getByText(/Students uploaded successfully!/i)
+    );
+    fireEvent.click(screen.getByText("Close"));
+    expect(closed).toBe(true);
+  });
 });
