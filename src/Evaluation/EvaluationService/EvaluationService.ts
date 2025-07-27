@@ -54,5 +54,30 @@ export class EvaluationService implements IEvaluationService {
       console.error('Failed to load evaluations:', error);
       throw new Error('Failed to load evaluations');
     }
+    
+  }
+   deleteEvaluation(target: Evaluation): Evaluation[] {
+    try {
+      const data = this.loadEvaluations();
+      const targetDate = new Date(target.dueDate).toDateString();
+
+      const updated = data.filter(ev =>
+        !(
+          ev.title === target.title &&
+          ev.course === target.course &&
+          ev.type === target.type &&
+          new Date(ev.dueDate).toDateString() === targetDate &&
+          ev.instructor === target.instructor &&
+          ev.campus === target.campus &&
+          ev.weight === target.weight
+        )
+      );
+
+      this.saveEvaluations(updated);
+      return updated;
+    } catch (error) {
+      console.error('Failed to delete evaluation:', error);
+      throw new Error('Failed to delete evaluation');
+    }
   }
 }
