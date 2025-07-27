@@ -56,4 +56,19 @@ describe("UploadStudentModal Full Integration", () => {
       screen.queryByText(/Please select a CSV file/i)
     ).not.toBeInTheDocument();
   });
+  it("uploads valid CSV and saves to localStorage", async () => {
+    render(<UploadStudentModal isOpen={true} onClose={() => {}} />);
+    const file = new File([validCsv], "students.csv", { type: "text/csv" });
+    fireEvent.change(getFileInput(), { target: { files: [file] } });
+    fireEvent.click(screen.getByText("Upload"));
+    expect(
+      await screen.findByText(/Students uploaded successfully!/i)
+    ).toBeInTheDocument();
+    const stored = JSON.parse(
+      localStorage.getItem("students_list_key") || "[]"
+    );
+    expect(stored.length).toBe(1);
+    expect(stored[0].studentId).toBe("1");
+    expect(stored[0].email).toBe("john@example.com");
+  });
 });
