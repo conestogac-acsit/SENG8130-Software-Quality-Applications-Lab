@@ -71,4 +71,13 @@ describe("UploadStudentModal Full Integration", () => {
     expect(stored[0].studentId).toBe("1");
     expect(stored[0].email).toBe("john@example.com");
   });
+    it("shows an error when email format is invalid", async () => {
+    render(<UploadStudentModal isOpen={true} onClose={() => {}} />);
+    const file = new File([invalidEmailCsv], "students.csv", {
+      type: "text/csv",
+    });
+    fireEvent.change(getFileInput(), { target: { files: [file] } });
+    fireEvent.click(screen.getByText("Upload"));
+    expect(await screen.findByText(/Row 2:/i)).toBeInTheDocument();
+  });
 });
