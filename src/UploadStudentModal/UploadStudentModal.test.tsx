@@ -44,4 +44,16 @@ describe("UploadStudentModal Full Integration", () => {
       await screen.findByText(/Please select a CSV file/i)
     ).toBeInTheDocument();
   });
+  it("resets messages when a new file is selected", async () => {
+    render(<UploadStudentModal isOpen={true} onClose={() => {}} />);
+    fireEvent.click(screen.getByText("Upload"));
+    expect(
+      await screen.findByText(/Please select a CSV file/i)
+    ).toBeInTheDocument();
+    const file = new File([validCsv], "students.csv", { type: "text/csv" });
+    fireEvent.change(getFileInput(), { target: { files: [file] } });
+    expect(
+      screen.queryByText(/Please select a CSV file/i)
+    ).not.toBeInTheDocument();
+  });
 });
