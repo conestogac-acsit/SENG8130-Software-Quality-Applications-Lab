@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { CalendarNavigation } from "../../../Components/CalendarNavigation";
 import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import MonthlyView from "../MonthlyView/MonthlyView";
-import { Evaluation } from "../../EvaluationService";
+import { Evaluation, EvaluationService } from "../../EvaluationService";
 import Button from "../../../Components/Button/Button"; 
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
+import { LocalStorage } from "../../../localStorageService";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -22,6 +23,22 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 }) => {
   const [view, setView] = useState<"weekly" | "monthly">("weekly");
 
+  const [allEvaluations, setAllEvaluations] = useState<Evaluation[]>([]);
+  const service = useMemo(() => new EvaluationService(new LocalStorage()), []);
+
+  useEffect(() => {
+    setAllEvaluations(evaluations);
+  }, [evaluations]);
+
+  const handleDeleteEvaluation = (target: Evaluation) => {
+    try {
+      const updated = service.deleteEvaluation(target);
+      setAllEvaluations(updated);
+    } catch (err) {
+      console.error("Failed to delete evaluation:", err);
+    }
+  };
+
   const {
     startDate,
     year,
@@ -37,8 +54,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       type: selectedType,
       date: selectedDate,
     };
-    return filterEvaluations(evaluations, filters);
-  }, [evaluations, selectedInstructor, selectedType, selectedDate]);
+    return filterEvaluations(allEvaluations, filters); 
+  }, [allEvaluations, selectedInstructor, selectedType, selectedDate]);
 
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
@@ -81,27 +98,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           label="Monthly"
           disabled={view === "monthly"}
         />
-
-      <div className="space-y-4">
-        {sortedDates.map((isoDate) => {
-          const displayDate = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "America/Toronto",
-          }).format(new Date(isoDate));
-
-          return (
-            <CalendarDayCard
-              key={isoDate}
-              date={displayDate}
-              evaluations={groupedByDate[isoDate]}
-            />
-          );
-        })}
-        </div>
-
       </div>
 
       {showNoEvaluationsMessage ? (
@@ -115,11 +111,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
               key={dateStr}
               date={dateStr}
               evaluations={groupedByDate[dateStr]}
+              onDeleteEvaluation={handleDeleteEvaluation}  
             />
           ))}
         </div>
       ) : (
-        <MonthlyView evaluations={evaluations} year={year} month={month} />
+        <MonthlyView evaluations={allEvaluations} year={year} month={month} /> 
       )}
     </div>
   );
