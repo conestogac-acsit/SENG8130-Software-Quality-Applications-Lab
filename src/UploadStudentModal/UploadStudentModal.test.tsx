@@ -37,4 +37,11 @@ describe("UploadStudentModal Full Integration", () => {
     fireEvent.click(screen.getByText("Cancel"));
     expect(closed).toBe(true);
   });
+    it("shows error if Upload is clicked without selecting a file", async () => {
+    render(<UploadStudentModal isOpen={true} onClose={() => {}} />);
+    fireEvent.click(screen.getByText("Upload"));
+    expect(
+      await screen.findByText(/Please select a CSV file/i)
+    ).toBeInTheDocument();
+  });
 });
