@@ -1,6 +1,6 @@
-import { getStudents } from '.';
 import type { Student } from './studentTypes';
 import {Email} from './email';
+import { getStudents } from './paginateStudents';
 
 describe('getStudents', () => {
   const mockStudents: Student[] = [
