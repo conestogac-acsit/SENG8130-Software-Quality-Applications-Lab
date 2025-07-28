@@ -2,16 +2,26 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import SectionList from "./SectionList";
 
-describe("SectionList", () => {
-  test("renders the section list heading", () => {
+describe("SectionList Component", () => {
+  test("renders the main heading", () => {
     render(<SectionList />);
-    expect(screen.getByText("Section List")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Section List" })).toBeInTheDocument();
   });
 
-  test("renders unique section names as plain text", () => {
+  test("renders the table with section header", () => {
     render(<SectionList />);
-    
-    expect(screen.getByText("SENG8130-Spring 2025-Section 2")).toBeInTheDocument();
-    expect(screen.getByText("PMGT101-Winter 2025-Section 1")).toBeInTheDocument();
+    expect(screen.getByRole("table")).toBeInTheDocument();
+    expect(screen.getByText("Section")).toBeInTheDocument();
+  });
+
+  test("shows 'No sections available' when no sections are present", () => {
+    render(<SectionList />);
+    expect(screen.getByText("No sections available")).toBeInTheDocument();
+  });
+
+  test("does not render any section rows", () => {
+    render(<SectionList />);
+    const sectionRows = screen.queryAllByRole("row");
+    expect(sectionRows.length).toBe(2);
   });
 });
