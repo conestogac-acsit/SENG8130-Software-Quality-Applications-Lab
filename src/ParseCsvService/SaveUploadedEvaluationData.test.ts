@@ -1,5 +1,5 @@
-import { createSaveUploadedEvaluationData, CsvHandler } from '../Services/SaveUploadedEvaluationData'
-import { EvaluationService, Evaluation } from '../Services/SaveUploadedEvaluationData'
+import { createSaveUploadedEvaluationData, CsvHandler } from './SaveUploadedEvaluationData'
+import { EvaluationService, Evaluation } from './SaveUploadedEvaluationData'
 import { LocalStorage } from '../localStorageService';
 
 describe('saveUploadedEvaluationData Integration Test', () => {
