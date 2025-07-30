@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import SectionList from "./SectionList";
 
 describe("SectionList Component", () => {
@@ -22,6 +22,18 @@ describe("SectionList Component", () => {
   test("does not render any section rows", () => {
     render(<SectionList />);
     const sectionRows = screen.queryAllByRole("row");
-    expect(sectionRows.length).toBe(2);
+    expect(sectionRows.length).toBe(2); // 1 for header, 1 for empty row
+  });
+
+  test("renders the search input field", () => {
+    render(<SectionList />);
+    expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
+  });
+
+  test("updates search input value on change", () => {
+    render(<SectionList />);
+    const input = screen.getByPlaceholderText("Search...");
+    fireEvent.change(input, { target: { value: "test" } });
+    expect(input).toHaveValue("test");
   });
 });
