@@ -18,7 +18,7 @@ describe("ErrorBoundary", () => {
     );
 
     expect(screen.getByText("Oops! Something went wrong.")).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: "Go Back Home" })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: "Go Back Home" })).toBeInTheDocument();
   });
 
   it("should render children when no error is thrown", () => {
