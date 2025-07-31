@@ -26,7 +26,7 @@ const addDays = (date: Date, days: number): Date => {
 const WeeklyView: React.FC<WeeklyViewProps> = ({ evaluations }) => {
   const startOfWeek = useMemo(() => {
     if (evaluations.length === 0) {
-      return getStartOfWeek(new Date()); // fallback to current week
+      return getStartOfWeek(new Date()); // fallback to current week if no evaluation is found.
     }
 
     const earliest = new Date(
