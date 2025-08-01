@@ -67,5 +67,30 @@ describe('EvaluationService', () => {
 
       expect(() => service.loadEvaluations()).toThrow('Failed to load evaluations');
     });
+     describe('deleteEvaluation', () => {
+    it('should delete a matching evaluation', () => {
+      service.saveEvaluations(sampleData);
+      const updated = service.deleteEvaluation(sampleData[0]);
+      expect(updated).toEqual([]);
+    });
+
+    it('should not delete if no exact match is found', () => {
+      service.saveEvaluations(sampleData);
+      const nonMatching: Evaluation = {
+        ...sampleData[0],
+        title: 'Different Title', // change to force mismatch
+      };
+      const updated = service.deleteEvaluation(nonMatching);
+      expect(updated).toEqual(sampleData);
+    });
+
+    it('should throw an error if load or save fails during delete', () => {
+      service.saveEvaluations(sampleData);
+      storage.load = () => {
+        throw new Error('Mock load error');
+      };
+      service = new EvaluationService(storage);
+      expect(() => service.deleteEvaluation(sampleData[0])).toThrow('Failed to delete evaluation');
+    });
   });
 });
