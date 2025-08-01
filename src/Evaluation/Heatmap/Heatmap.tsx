@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import Button from "../../Components/Button/Button";
 import WeekView from "./WeekView";
-import { EvaluationService } from "../EvaluationService";
-import { LocalStorage } from "../../localStorageService";
+import { Evaluation } from "../EvaluationService";
 
-type HeatmapProps = {};
+type HeatmapProps = {
+  evaluations: Evaluation[];
+};
 
-const Heatmap: React.FC<HeatmapProps> = () => {
+const Heatmap: React.FC<HeatmapProps> = ({evaluations}) => {
   const currentDate = new Date();
   const [viewMode, setViewMode] = useState<"month" | "week">("month");
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth());
 
-  const evaluations = new EvaluationService(new LocalStorage()).loadEvaluations();
   const yearsToChoose = [year - 1, year, year + 1];
 
   return (

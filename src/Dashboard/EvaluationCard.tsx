@@ -42,7 +42,7 @@ const EvaluationCard = () => {
           Evaluation Heatmap
         </h2>
         <div className="text-gray-500 text-sm mt-2">
-          {evaluations.length > 0 ? <Heatmap /> : "No evaluations yet"}
+          {evaluations.length > 0 ? <Heatmap evaluations={evaluations}/> : "No evaluations yet"}
         </div>
       </div>
     </div>
