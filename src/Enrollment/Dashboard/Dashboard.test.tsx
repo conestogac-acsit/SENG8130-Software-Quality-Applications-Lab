@@ -1,35 +1,54 @@
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom";
 import Dashboard from "./Dashboard";
 
+const LocationDisplay = () => {
+  const location = useLocation();
+  return <div data-testid="location">{location.pathname}</div>;
+};
+
 describe("Dashboard Component", () => {
-  it("renders welcome message", () => {
+  it("navigates to /student/enroll when clicking 'upload'", () => {
     render(
-      <MemoryRouter>
-        <Dashboard />
+      <MemoryRouter initialEntries={["/dashboard"]}>
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <Dashboard />
+                <LocationDisplay />
+              </>
+            }
+          />
+          <Route path="/student/enroll" element={<LocationDisplay />} />
+        </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/Welcome to the Dashboard!/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByText("upload"));
+    expect(screen.getByTestId("location")).toHaveTextContent("/student/enroll");
   });
 
-  it("contains link to upload student", () => {
+  it("navigates to / when clicking 'home page'", () => {
     render(
-      <MemoryRouter>
-        <Dashboard />
+      <MemoryRouter initialEntries={["/dashboard"]}>
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <Dashboard />
+                <LocationDisplay />
+              </>
+            }
+          />
+          <Route path="/" element={<LocationDisplay />} />
+        </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("link", { name: /upload/i })).toBeInTheDocument();
-  });
-
-  it("contains link to home page", () => {
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByRole("link", { name: /home page/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByText("home page"));
+    expect(screen.getByTestId("location")).toHaveTextContent("/");
   });
 });
