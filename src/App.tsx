@@ -1,4 +1,5 @@
 import React from 'react';
+import StudentProfileContainer from './Enrollment/Student/Pages/StudentProfile/StudentProfileContainer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
 import ModuleNotFound from './Components/ModuleNotFound'; 
@@ -12,7 +13,8 @@ function App() {
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
-        <Route path="/studentlist" element={<StudentList />} /> {/* ✅ Add this route */}
+        <Route path="/studentlist" element={<StudentList />} /> 
+        <Route path="/student/:id" element={<StudentProfileContainer />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>

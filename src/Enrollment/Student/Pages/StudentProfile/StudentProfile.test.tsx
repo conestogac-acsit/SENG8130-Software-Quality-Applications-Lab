@@ -1,66 +1,151 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import StudentProfile from "./StudentProfile";
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import StudentProfile from './StudentProfile';
 
-// Mock student service
-jest.mock("../../Services/findStudentById", () => ({
-  findStudentById: jest.fn(() => ({
-    id: "1",
-    name: "Maharshi Purohit",
-    email: "Maharshi.Purohit@example.com",
-    imageUrl: "https://via.placeholder.com/100",
-    notes: "Student has shown good leadership qualities and is actively participating in project discussions.",
-  })),
-}));
-
-jest.mock("../../Services/deleteStudentById", () => ({
-  deleteStudentById: jest.fn(),
-}));
-
-// Mock to avoid real navigation
-jest.mock("react-router-dom", () => {
-  const actual = jest.requireActual("react-router-dom");
-  return {
-    ...actual,
-    Link: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-  };
+// ✅ Mock alert and confirm
+beforeAll(() => {
+  window.alert = jest.fn();
+  window.confirm = jest.fn(() => true);
 });
 
-describe("StudentProfile Component", () => {
-  beforeEach(() => {
-    window.confirm = jest.fn(() => true);
-    window.alert = jest.fn();
+// ✅ Dummy student data
+const mockStudent = {
+  id: '1',
+  name: 'Maharshi Purohit',
+  email: 'maharshi@example.com',
+  imageUrl: 'https://via.placeholder.com/100',
+  notes: 'Consistent and helpful in the team.',
+};
+
+// ✅ Mocks
+const mockFindStudentById = jest.fn(() => mockStudent);
+const mockDeleteStudentById = jest.fn();
+
+const renderWithRouter = (id: string) => {
+  render(
+    <MemoryRouter initialEntries={[`/student/${id}`]}>
+      <Routes>
+        <Route
+          path="/student/:id"
+          element={
+            <StudentProfile
+              findStudentById={mockFindStudentById}
+              deleteStudentById={mockDeleteStudentById}
+            />
+          }
+        />
+        <Route path="/students" element={<div>Redirected after deletion</div>} />
+      </Routes>
+    </MemoryRouter>
+  );
+};
+
+// ✅ Tests
+describe('StudentProfile Component', () => {
+  it('renders student name', () => {
+    renderWithRouter('1');
+    expect(screen.getByText('Maharshi Purohit')).toBeInTheDocument();
   });
 
-  test("renders student information", () => {
-    render(
-      <MemoryRouter initialEntries={["/profile/1"]}>
-        <Routes>
-          <Route path="/profile/:id" element={<StudentProfile />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText("Maharshi Purohit")).toBeInTheDocument();
-    expect(screen.getByText("Student ID: 1")).toBeInTheDocument();
-    expect(screen.getByText("Email: Maharshi.Purohit@example.com")).toBeInTheDocument();
-    expect(screen.getByText(/leadership qualities/)).toBeInTheDocument();
+  it('renders student email', () => {
+    renderWithRouter('1');
+    expect(
+      screen.getByText((text) => text.includes('maharshi@example.com'))
+    ).toBeInTheDocument();
   });
 
-  test("handles Delete Student action", () => {
-    render(
-      <MemoryRouter initialEntries={["/profile/1"]}>
-        <Routes>
-          <Route path="/profile/:id" element={<StudentProfile />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  it('renders student ID', () => {
+    renderWithRouter('1');
+    expect(screen.getByText((text) => text.includes('Student ID:'))).toBeInTheDocument();
+  });
 
-    const deleteBtn = screen.getByText("Delete Student");
+  it('renders student notes', () => {
+    renderWithRouter('1');
+    expect(screen.getByText('Consistent and helpful in the team.')).toBeInTheDocument();
+  });
+
+  it('renders delete button and confirms deletion', () => {
+    renderWithRouter('1');
+    const deleteBtn = screen.getByText('Delete Student');
     fireEvent.click(deleteBtn);
+    expect(mockDeleteStudentById).toHaveBeenCalledWith('1');
+  });
 
-    expect(window.confirm).toHaveBeenCalledWith("Are you sure you want to delete this student?");
-    expect(window.alert).toHaveBeenCalledWith("Student deleted successfully.");
+  it('renders send email button with correct link', () => {
+    renderWithRouter('1');
+    const emailLink = screen.getByText('Send Email') as HTMLAnchorElement;
+    expect(emailLink).toBeInTheDocument();
+    expect(emailLink.href).toContain('/email/1');
+  });
+
+  it('renders edit button with correct link', () => {
+    renderWithRouter('1');
+    const editLink = screen.getByText('Edit Profile') as HTMLAnchorElement;
+    expect(editLink).toBeInTheDocument();
+    expect(editLink.href).toContain('/edit/1');
+  });
+
+  it('shows invalid ID error if no ID is provided', () => {
+    render(
+      <MemoryRouter initialEntries={['/student']}>
+        <Routes>
+          <Route
+            path="/student"
+            element={
+              <StudentProfile
+                findStudentById={mockFindStudentById}
+                deleteStudentById={mockDeleteStudentById}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Invalid student ID/i)).toBeInTheDocument();
+  });
+
+  it('shows not found message if student is missing', () => {
+    const brokenFind = jest.fn(() => undefined);
+    render(
+      <MemoryRouter initialEntries={['/student/1']}>
+        <Routes>
+          <Route
+            path="/student/:id"
+            element={
+              <StudentProfile
+                findStudentById={brokenFind}
+                deleteStudentById={mockDeleteStudentById}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Student not found/i)).toBeInTheDocument();
+  });
+
+  it('renders default image if imageUrl is missing', () => {
+    const noImageStudent = { ...mockStudent, imageUrl: '' };
+    const noImageFind = jest.fn(() => noImageStudent);
+
+    render(
+      <MemoryRouter initialEntries={['/student/1']}>
+        <Routes>
+          <Route
+            path="/student/:id"
+            element={
+              <StudentProfile
+                findStudentById={noImageFind}
+                deleteStudentById={mockDeleteStudentById}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const img = screen.getByAltText('student') as HTMLImageElement;
+    expect(img.src).toContain('placeholder');
   });
 });

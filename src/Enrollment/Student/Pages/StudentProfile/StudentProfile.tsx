@@ -1,9 +1,23 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { findStudentById } from "../../Services/findStudentById";
-import { deleteStudentById } from "../../Services/deleteStudentById";
 
-const StudentProfile = () => {
+type Student = {
+  id: string;
+  name: string;
+  email: string;
+  imageUrl?: string;
+  notes?: string;
+};
+
+type StudentProfileProps = {
+  findStudentById: (id: string) => Student | undefined;
+  deleteStudentById: (id: string) => void;
+};
+
+const StudentProfile: React.FC<StudentProfileProps> = ({
+  findStudentById,
+  deleteStudentById,
+}) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -20,7 +34,7 @@ const StudentProfile = () => {
   const handleDelete = (studentId: string) => {
     const confirmed = window.confirm("Are you sure you want to delete this student?");
     if (confirmed) {
-      deleteStudentById(id);
+      deleteStudentById(studentId);
       alert("Student deleted successfully.");
       navigate("/students");
     }
