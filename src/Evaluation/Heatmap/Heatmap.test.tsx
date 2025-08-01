@@ -4,14 +4,14 @@ import Heatmap from "./Heatmap";
 
 describe("Heatmap Component", () => {
   it("renders year dropdown and month view by default", () => {
-    render(<Heatmap />);
+    render(<Heatmap evaluations={[]}/>);
 
     expect(screen.getByLabelText(/Year:/)).toBeInTheDocument();
     expect(screen.getByText(/Switch to\s+Week View/i)).toBeInTheDocument();
   });
 
   it("switches to week view and shows month selector", () => {
-    render(<Heatmap />);
+    render(<Heatmap evaluations={[]}/>);
 
     const toggleButton = screen.getByRole("button", {
       name: /Switch to Week View/i,
@@ -23,7 +23,7 @@ describe("Heatmap Component", () => {
   });
 
   it("returns to month view when toggled back", () => {
-    render(<Heatmap />);
+    render(<Heatmap evaluations={[]} />);
 
     const toggleButton = screen.getByRole("button", {
       name: /Switch to Week View/i,
