@@ -1,15 +1,20 @@
 import React from 'react';
+import StudentProfileContainer from './Enrollment/Student/Pages/StudentProfile/StudentProfileContainer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
 import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
+import StudentList from './Enrollment/Student/Pages/StudentList/StudentList'; // ✅ Add this line
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
+        <Route path="/studentlist" element={<StudentList />} /> 
+        <Route path="/student/:id" element={<StudentProfileContainer />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
@@ -36,4 +41,5 @@ function HomePage() {
     </div>
   );
 }
+
 export default App;

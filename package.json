@@ -16,7 +16,6 @@
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0"
   },
   "dependencies": {
-    "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "date-fns": "^4.1.0",
     "electron": "^36.3.2",
@@ -40,6 +39,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.0",
     "eslint": "^9.25.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^30.0.4",
