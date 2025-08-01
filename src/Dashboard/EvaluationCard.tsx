@@ -6,6 +6,7 @@ import type { StorageService } from "../localStorageService";
 import { Evaluation } from "../Evaluation/EvaluationService/EvaluationService";
 import { Heatmap } from "../Evaluation/Heatmap";
 import SuggestedEvaluation from "../Evaluation/SuggestedEvaluation/SuggestedEvaluation";
+import EvaluationAlert  from "../Evaluation/EvalauationAlert/EvaluationAlert"
 
 const EvaluationCard = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const EvaluationCard = () => {
 
   return (
     <div className="rounded-xl bg-white shadow p-6 text-center">
+      <EvaluationAlert evaluations={evaluations} threshold={3} />
       <div
         className="cursor-pointer hover:bg-green-100 transition mb-6"
         onClick={() => navigate("/evaluation")}
