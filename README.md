@@ -42,7 +42,7 @@ npm  install
 Start both React (Vite) and Electron in development mode:
 
 ```bash
-npm run dev
+npm start
 ```
 Start only Electron Dev with live reload (after Vite is running):
 

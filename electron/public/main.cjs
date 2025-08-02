@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu, dialog } = require('electron');
 const path = require('path');
 
-const isDev = !app.isPackaged;
+const isDev = process.env.VITE_DEV_SERVER === 'true';
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -16,12 +16,12 @@ function createWindow() {
     },
   });
 
-  if (isDev) {
+   if (isDev) {
     win.loadURL('http://localhost:5173');
-  } else {
-    win.loadFile(path.join(__dirname, '../dist/index.html'));
+  } else 
+  {
+     win.loadFile(path.join(__dirname, '../../dist/index.html'));
   }
-
   const template = [
     ...(process.platform === 'darwin'
       ? [
