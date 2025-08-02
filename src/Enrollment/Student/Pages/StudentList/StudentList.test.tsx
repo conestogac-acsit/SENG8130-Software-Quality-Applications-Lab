@@ -34,4 +34,7 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
   it('renders the "Next" button', () => {
     expect(screen.getByText('Next')).toBeInTheDocument();
   });
+  it('renders Export Dashboard button', () => {
+    expect(screen.getByText(/Export Entire Dashboard as PNG/i)).toBeInTheDocument();
+  });
 });
