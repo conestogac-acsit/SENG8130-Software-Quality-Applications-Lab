@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useCallback } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getStudents } from '../../studentData';
+import EnrollStatusView from '../../../Dashboard/EnrollStatusView';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -17,10 +18,26 @@ const StudentList: React.FC = () => {
 
   const { data: students, total, totalPages } = getStudents(page, pageSize);
 
+  // ✅ Real Bar Chart Data
+  const barData = [
+    {
+      platform: 'GitHub',
+      Enrolled: students.filter(s => s.isGithubEnrolled).length,
+      Unenrolled: students.filter(s => !s.isGithubEnrolled).length,
+      Total: students.length,
+    },
+    {
+      platform: 'Loop',
+      Enrolled: students.filter(s => s.isLoopEnrolled).length,
+      Unenrolled: students.filter(s => !s.isLoopEnrolled).length,
+      Total: students.length,
+    },
+  ];
+
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
     params.set("page", newPage.toString());
-    navigate(`${location.pathname}?${params.toString()}`, { replace: false });
+    navigate(${location.pathname}?${params.toString()}, { replace: false });
   }, [location, navigate]);
 
   const handlePrev = useCallback(() => {
@@ -38,9 +55,7 @@ const StudentList: React.FC = () => {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Software Quality Applications Lab</h1>
-        </div>
+        <h1 className="text-2xl font-bold">Software Quality Applications Lab</h1>
       </div>
 
       <table className="w-full bg-white shadow rounded">
@@ -54,12 +69,25 @@ const StudentList: React.FC = () => {
             <th className="px-4 py-3 text-right">Actions</th>
           </tr>
         </thead>
+        <tbody>
+          {students.map((student) => (
+            <tr key={student.id} className="border-b">
+              <td className="px-4 py-3">{student.name}</td>
+              <td className="px-4 py-3">{student.email}</td>
+              <td className="px-4 py-3">{student.role}</td>
+              <td className="px-4 py-3">{student.section}</td>
+              <td className="px-4 py-3">{student.group}</td>
+              <td className="px-4 py-3 text-right">
+                <Link to="#">Edit</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
 
       <div className="flex items-center justify-between mt-6">
         <div className="text-sm text-gray-600">
-          Showing {(page - 1) * pageSize + 1}–
-          {Math.min(page * pageSize, total)} of {total} students
+          Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} of {total} students
         </div>
         <div className="flex gap-2">
           <button
@@ -77,6 +105,11 @@ const StudentList: React.FC = () => {
             Next
           </button>
         </div>
+      </div>
+
+      {/* ✅ Enrollment Chart Section */}
+      <div className="mt-10">
+        <EnrollStatusView barData={barData} />
       </div>
     </div>
   );
