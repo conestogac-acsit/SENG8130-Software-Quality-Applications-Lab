@@ -1,4 +1,4 @@
-import { Evaluation } from "../Evaluation/EvaluationService";
+import { Evaluation } from "../EvaluationService";
 
 export function groupEvaluationsByCourse(
     evaluations: Evaluation[]

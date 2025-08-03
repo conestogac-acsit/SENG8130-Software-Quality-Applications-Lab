@@ -3,8 +3,8 @@ import {
     getTotalWeightPerCourse,
     getOverloadedCourses,
     validateAllCoursesWithinWeightLimit,
-} from "./evaluationWeightUtils";
-import { Evaluation } from "../Evaluation/EvaluationService";
+} from "./evaluationWeightTracker";
+import { Evaluation } from "../EvaluationService";
 
 describe("evaluationWeightUtils", () => {
     const evals: Evaluation[] = [
