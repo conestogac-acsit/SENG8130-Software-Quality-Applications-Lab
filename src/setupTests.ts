@@ -1,9 +1,12 @@
 import '@testing-library/jest-dom';
-import { TextEncoder, TextDecoder } from 'util';
+
+// Polyfill TextEncoder and TextDecoder (needed by some libraries like react-router in Jest/Node)
+import { TextEncoder, TextDecoder as NodeTextDecoder } from 'util';
+
 if (typeof global.TextEncoder === 'undefined') {
   global.TextEncoder = TextEncoder as typeof global.TextEncoder;
 }
-if (typeof global.TextDecoder === 'undefined') {
-  global.TextDecoder = TextDecoder as typeof global.TextDecoder;
-}
 
+if (typeof global.TextDecoder === 'undefined') {
+  global.TextDecoder = NodeTextDecoder as typeof global.TextDecoder;
+}
