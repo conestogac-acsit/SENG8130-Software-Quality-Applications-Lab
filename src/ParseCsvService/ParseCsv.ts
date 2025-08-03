@@ -1,4 +1,7 @@
 import Papa from 'papaparse';
+import { LocalStorage } from '../localStorageService';
+import type { StorageService } from '../localStorageService/StorageService';
+
 export type EnrollmentStatus = "enrolled" | "unenrolled" | "Active" | "Deactive";
 
 export interface Student {
@@ -36,7 +39,7 @@ const REQUIRED_FIELDS_MAP = {
 
 export type ParseType = keyof typeof REQUIRED_FIELDS_MAP;
 
-export const parseCsv = async <T>(
+export const parseCsv = async <T extends Student | Evaluation>(
   file: File,
   type: ParseType
 ): Promise<T[]> => {
@@ -54,7 +57,7 @@ export const parseCsv = async <T>(
         }
 
         let data: T[];
-        try {
+        try { 
           if (type === 'Evaluation') {
             data = (results.data as any[]).map((row: any) => ({
               course: row.course || '',
@@ -68,6 +71,27 @@ export const parseCsv = async <T>(
           } else {
             data = results.data as T[];
           }
+
+          const { internalDuplicates, existingDuplicates } = detectDuplicates(data, type);
+
+          if (internalDuplicates.length > 0 || existingDuplicates.length > 0) {
+            const userChoice = confirm(
+              `Duplicate records detected:\n\n` +
+              `- ${internalDuplicates.length} duplicates found in uploaded file.\n` +
+              `- ${existingDuplicates.length} duplicates already exist in saved records.\n\n` +
+              `Click "OK" to replace duplicates (overwrite old data).\n` +
+              `Click "Cancel" to skip duplicates (save only unique records).`
+            );
+
+            const strategy = userChoice ? "replace" : "skip";
+            saveDataWithStrategy(data, existingDuplicates, type, strategy);
+
+            alert(`Data saved successfully. Duplicates were handled using "${strategy}" strategy.`);
+          } else {
+            saveDataWithStrategy(data, [], type, "skip");
+            alert("No duplicates found. All records have been saved successfully!");
+          }
+
           resolve(data);
         } catch (error) {
           reject('Failed to parse CSV.');
@@ -79,3 +103,57 @@ export const parseCsv = async <T>(
     });
   });
 };
+
+function detectDuplicates<T extends Student | Evaluation>(
+  parsedData: T[],
+  type: ParseType,
+  storage: StorageService = new LocalStorage()
+) {
+  const existingData = storage.load<T[]>(type) || [];
+  const seen = new Set<string>();
+  const internalDuplicates: T[] = [];
+
+  const getKey = (item: T) =>
+    type === "Student"
+      ? (item as Student).studentId
+      : `${(item as Evaluation).course}-${(item as Evaluation).title}`;
+
+  for (const row of parsedData) {
+    const key = getKey(row);
+    if (seen.has(key)) {
+      internalDuplicates.push(row);
+    } else {
+      seen.add(key);
+    }
+  }
+
+  const existingKeys = new Set(existingData.map(getKey));
+  const existingDuplicates = parsedData.filter(row => existingKeys.has(getKey(row)));
+
+  return { internalDuplicates, existingDuplicates };
+}
+
+function saveDataWithStrategy<T extends Student | Evaluation>(
+  parsedData: T[],
+  duplicates: T[],
+  type: ParseType,
+  strategy: "skip" | "replace",
+  storage: StorageService = new LocalStorage()
+) {
+  const existingData = storage.load<T[]>(type) || [];
+
+  const getKey = (item: T) =>
+    type === "Student"
+      ? (item as Student).studentId
+      : `${(item as Evaluation).course}-${(item as Evaluation).title}`;
+
+  if (strategy === "skip") {
+    const duplicateKeys = new Set(duplicates.map(getKey));
+    const filtered = parsedData.filter(item => !duplicateKeys.has(getKey(item)));
+    storage.save(type, [...existingData, ...filtered]);
+  } else {
+    const duplicateKeys = new Set(duplicates.map(getKey));
+    const filteredExisting = existingData.filter(item => !duplicateKeys.has(getKey(item)));
+    storage.save(type, [...filteredExisting, ...parsedData]);
+  }
+}
