@@ -34,4 +34,11 @@ describe('StudentList Component (UI Test - Column Names and Pagination)', () => 
   it('renders the "Next" button', () => {
     expect(screen.getByText('Next')).toBeInTheDocument();
   });
+  it('disables "Prev" and "Next" buttons when no students are found', () => {
+  const prevButton = screen.getByText('Prev') as HTMLButtonElement;
+  const nextButton = screen.getByText('Next') as HTMLButtonElement;
+
+  expect(prevButton).toBeDisabled();
+  expect(nextButton).toBeDisabled();
+});
 });

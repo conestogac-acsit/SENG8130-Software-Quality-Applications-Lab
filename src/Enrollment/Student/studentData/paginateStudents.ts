@@ -1,4 +1,5 @@
-import { getAllStudents, Student, StudentDataGetter} from ".";
+import { getAllStudents, Student} from ".";
+import { StudentDataGetter } from './loadAllStudents';
 
 export function getStudents(
   studentGetter: StudentDataGetter,

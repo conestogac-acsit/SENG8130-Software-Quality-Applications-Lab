@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getStudents } from '../../studentData';
+import { getStudents } from '../../studentData/paginateStudents';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
-
+const emptyGetter = () => [];
 const StudentList: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const StudentList: React.FC = () => {
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
   const pageSize = 10;
 
-  const { data: students, total, totalPages } = getStudents(page, pageSize);
+  const { data: students, total, totalPages } = getStudents(emptyGetter, page, pageSize);
 
   const updatePageInUrl = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
@@ -64,14 +64,14 @@ const StudentList: React.FC = () => {
         <div className="flex gap-2">
           <button
             onClick={handlePrev}
-            disabled={page === 1}
+            disabled={page === 1 || total === 0}
             className="px-3 py-1 border rounded disabled:opacity-50"
           >
             Prev
           </button>
           <button
             onClick={handleNext}
-            disabled={page === totalPages}
+            disabled={students.length < pageSize || total === 0}
             className="px-3 py-1 border rounded disabled:opacity-50"
           >
             Next
