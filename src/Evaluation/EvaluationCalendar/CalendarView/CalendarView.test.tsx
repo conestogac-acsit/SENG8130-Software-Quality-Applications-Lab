@@ -92,4 +92,50 @@ describe("CalendarView", () => {
     fireEvent.click(weeklyButton);
     expect(screen.getAllByText(/Assignment 1/i).length).toBeGreaterThanOrEqual(1);
   });
+
+  it("displays overloaded course warning when weight exceeds 100%", () => {
+    const overloadedEvaluations: Evaluation[] = [
+      {
+        course: "SENG9999",
+        title: "Overloaded Assignment",
+        type: "Assignment",
+        weight: 110,
+        dueDate: new Date("2025-06-24T12:00:00-04:00"),
+        instructor: "Heavy",
+        campus: "Test Campus",
+      },
+    ];
+
+    render(<CalendarView evaluations={overloadedEvaluations} />);
+
+    expect(screen.getByText(/Overloaded Courses/i)).toBeInTheDocument();
+    expect(screen.getByText(/SENG9999 \(110%\)/i)).toBeInTheDocument();
+  });
+
+  it("does not show overloaded warning when all courses are within limit", () => {
+    const normalEvaluations: Evaluation[] = [
+      {
+        course: "SENG1001",
+        title: "Safe Assignment",
+        type: "Assignment",
+        weight: 50,
+        dueDate: new Date("2025-06-24T12:00:00-04:00"),
+        instructor: "Mild",
+        campus: "Test Campus",
+      },
+      {
+        course: "SENG1001",
+        title: "Another Assignment",
+        type: "Assignment",
+        weight: 50,
+        dueDate: new Date("2025-06-25T12:00:00-04:00"),
+        instructor: "Mild",
+        campus: "Test Campus",
+      },
+    ];
+
+    render(<CalendarView evaluations={normalEvaluations} />);
+    expect(screen.queryByText(/Overloaded Courses/i)).not.toBeInTheDocument();
+  });
+
 });

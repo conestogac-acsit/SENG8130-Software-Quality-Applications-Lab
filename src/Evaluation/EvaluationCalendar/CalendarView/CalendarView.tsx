@@ -4,8 +4,9 @@ import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
-import Button from "../../../Components/Button/Button"; 
+import Button from "../../../Components/Button/Button";
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
+import { getTotalWeightPerCourse, getOverloadedCourses, } from "../../EvaluationWeightTracker/evaluationWeightTracker";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -58,6 +59,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   const showNoEvaluationsMessage =
     view === "weekly" && sortedDates.length === 0;
 
+  const totalWeightPerCourse = useMemo(
+    () => getTotalWeightPerCourse(filteredEvaluations),
+    [filteredEvaluations]
+  );
+
+  const overloadedCourses = useMemo(
+    () => getOverloadedCourses(filteredEvaluations),
+    [filteredEvaluations]
+  );
+
   return (
     <div className="space-y-4">
       <CalendarNavigation
@@ -69,6 +80,21 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           view === "weekly" ? navigateWeek("next") : navigateMonth("next")
         }
       />
+
+      {overloadedCourses.length > 0 && (
+        <div className="bg-red-100 text-red-700 p-2 rounded text-center text-sm">
+          ⚠️ Overloaded Courses:{" "}
+          {overloadedCourses.map((course, idx) => {
+            const weight = totalWeightPerCourse[course];
+            return (
+              <span key={course}>
+                {course} ({weight}%)
+                {idx < overloadedCourses.length - 1 ? ", " : ""}
+              </span>
+            );
+          })}
+        </div>
+      )}
 
       <div className="flex justify-center gap-4">
         <Button
@@ -82,24 +108,24 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           disabled={view === "monthly"}
         />
 
-      <div className="space-y-4">
-        {sortedDates.map((isoDate) => {
-          const displayDate = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "America/Toronto",
-          }).format(new Date(isoDate));
+        <div className="space-y-4">
+          {sortedDates.map((isoDate) => {
+            const displayDate = new Intl.DateTimeFormat("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              timeZone: "America/Toronto",
+            }).format(new Date(isoDate));
 
-          return (
-            <CalendarDayCard
-              key={isoDate}
-              date={displayDate}
-              evaluations={groupedByDate[isoDate]}
-            />
-          );
-        })}
+            return (
+              <CalendarDayCard
+                key={isoDate}
+                date={displayDate}
+                evaluations={groupedByDate[isoDate]}
+              />
+            );
+          })}
         </div>
 
       </div>
