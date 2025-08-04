@@ -1,4 +1,5 @@
 import React from "react";
+import { evaluationCalendarStyles as styles } from "../../Evaluation/EvaluationCalendar/Styles/evaluationCalendarStyles";
 
 const CalendarDayCard: React.FC<{
     date: string;
@@ -11,22 +12,22 @@ const CalendarDayCard: React.FC<{
     }[];
 }> = ({ date, evaluations }) => {
     return (
-        <div className="bg-white shadow rounded p-4">
-            <h2 className="text-xl font-bold mb-2">{date}</h2>
+        <div className={styles.dayCard}>
+            <h2 className={styles.dayCardHeader}>{date}</h2>
 
             {evaluations.length === 0 ? (
-                <p className="text-sm text-gray-500 italic">No evaluations scheduled for this day.</p>
+                <p className={styles.dayCardEmpty}>No evaluations scheduled for this day.</p>
             ) : (
-                <ul className="space-y-2">
+                <ul className={styles.dayCardList}>
                     {evaluations.map((ev, idx) => (
                         <li
                             key={idx}
-                            className="border border-gray-200 rounded p-2 hover:bg-gray-50"
+                            className={styles.dayCardItem}
                         >
-                            <div className="text-sm font-semibold">
+                            <div className={styles.dayCardItemTitle}>
                                 {ev.title} ({ev.type})
                             </div>
-                            <div className="text-xs text-gray-600">
+                            <div className={styles.dayCardItemMeta}>
                                 Course: {ev.course} | Weight: {ev.weight}%
                             </div>
                         </li>

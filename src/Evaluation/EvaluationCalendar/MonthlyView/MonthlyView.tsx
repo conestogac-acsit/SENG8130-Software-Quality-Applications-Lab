@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import { Evaluation } from "../../EvaluationService";
+import { evaluationCalendarStyles as styles } from "../Styles/evaluationCalendarStyles";
 
 interface MonthlyViewProps {
   evaluations: Evaluation[];
@@ -42,7 +43,7 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) =
     return(
           <div className="space-y-2">
       {!hasAnyEvaluations && (
-        <div className="text-center text-gray-500 italic p-2">
+        <div className={styles.noEvaluationsMessage}>
           No evaluations are scheduled for this month.
         </div>
       )}
@@ -52,12 +53,12 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({ evaluations, month, year }) =
   
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-7 text-center font-bold text-sm">
+      <div className="grid grid-cols-7 text-center font-bold text-sm text-gray-700 dark:text-gray-200">
         {daysInWeek.map((day) => (
           <div key={day}>{day}</div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className={styles.monthlyGrid}>
         {calendarCells.map(({ date, evaluations }, idx) => (
           <div key={idx} role="gridcell">
             {!isNaN(date.getTime()) ? (

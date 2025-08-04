@@ -6,6 +6,7 @@ import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
 import Button from "../../../Components/Button/Button"; 
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
+import { evaluationCalendarStyles as styles } from "../Styles/evaluationCalendarStyles";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -58,8 +59,23 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   const showNoEvaluationsMessage =
     view === "weekly" && sortedDates.length === 0;
 
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle("dark");
+  };
+
   return (
-    <div className="space-y-4">
+    <div className={styles.calendarViewContainer}>
+      {/* Dark mode toggle */}
+      <div className="flex justify-end">
+        <button
+          onClick={toggleDarkMode}
+          className="text-sm px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+        >
+          Toggle Dark Mode
+        </button>
+      </div>
+
+      {/* Navigation */}
       <CalendarNavigation
         label={getLabel(view)}
         onPrev={() =>
@@ -70,53 +86,48 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         }
       />
 
-      <div className="flex justify-center gap-4">
-        <Button
+      {/* View Toggle */}
+      <div className={styles.viewToggleWrapper}>
+        <button
+          className={styles.viewToggleButton(view === "weekly")}
           onClick={() => setView("weekly")}
-          label="Weekly"
           disabled={view === "weekly"}
-        />
-        <Button
+        >
+          Weekly
+        </button>
+        <button
+          className={styles.viewToggleButton(view === "monthly")}
           onClick={() => setView("monthly")}
-          label="Monthly"
           disabled={view === "monthly"}
-        />
-
-      <div className="space-y-4">
-        {sortedDates.map((isoDate) => {
-          const displayDate = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "America/Toronto",
-          }).format(new Date(isoDate));
-
-          return (
-            <CalendarDayCard
-              key={isoDate}
-              date={displayDate}
-              evaluations={groupedByDate[isoDate]}
-            />
-          );
-        })}
-        </div>
-
+        >
+          Monthly
+        </button>
       </div>
 
+      {/* Content */}
       {showNoEvaluationsMessage ? (
-        <p className="text-center text-gray-500 italic">
+        <p className={styles.noEvaluationsMessage}>
           No evaluations scheduled
         </p>
       ) : view === "weekly" ? (
-        <div className="space-y-4">
-          {sortedDates.map((dateStr) => (
-            <CalendarDayCard
-              key={dateStr}
-              date={dateStr}
-              evaluations={groupedByDate[dateStr]}
-            />
-          ))}
+        <div className={styles.cardSection}>
+          {sortedDates.map((dateStr) => {
+            const displayDate = new Intl.DateTimeFormat("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              timeZone: "America/Toronto",
+            }).format(new Date(dateStr));
+
+            return (
+              <CalendarDayCard
+                key={dateStr}
+                date={displayDate}
+                evaluations={groupedByDate[dateStr]}
+              />
+            );
+          })}
         </div>
       ) : (
         <MonthlyView evaluations={evaluations} year={year} month={month} />
@@ -124,5 +135,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     </div>
   );
 };
+
 
 export default CalendarView;
