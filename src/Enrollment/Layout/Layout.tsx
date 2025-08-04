@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { LayoutDashboard } from "lucide-react";
 
+// Inside JSX:
+<LayoutDashboard data-testid="dashboard-icon" className="w-5 h-5" />
+
+
 const Layout: React.FC = () => {
   const location = useLocation();
 
