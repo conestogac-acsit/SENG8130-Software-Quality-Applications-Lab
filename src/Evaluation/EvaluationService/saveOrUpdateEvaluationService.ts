@@ -1,4 +1,4 @@
-import type { Evaluation, IEvaluationService } from '.';
+import type { Evaluation, IEvaluationService } from './type';
 
 export function saveOrUpdateEvaluation(
   data: Evaluation[],
