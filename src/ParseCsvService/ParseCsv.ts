@@ -1,4 +1,6 @@
 import Papa from 'papaparse';
+import { REQUIRED_FIELDS_MAP, ParseType } from './config';
+
 export type EnrollmentStatus = "enrolled" | "unenrolled" | "Active" | "Deactive";
 
 export interface Student {
@@ -24,18 +26,6 @@ export interface Evaluation {
   campus: string;
 }
 
-const REQUIRED_FIELDS_MAP = {
-  Student: [
-    'studentId', 'name', 'email', 'section', 'group', 'role',
-    'imageUrl', 'notes', 'loopStatus', 'githubStatus'
-  ],
-  Evaluation: [
-    'course', 'title', 'type', 'weight', 'dueDate', 'instructor', 'campus'
-  ]
-} as const;
-
-export type ParseType = keyof typeof REQUIRED_FIELDS_MAP;
-
 export const parseCsv = async <T>(
   file: File,
   type: ParseType
@@ -46,17 +36,18 @@ export const parseCsv = async <T>(
       skipEmptyLines: true,
       complete: (results) => {
         const requiredFields = REQUIRED_FIELDS_MAP[type];
-        const csvFields = results.meta.fields;
+        const fields = results.meta.fields || [];
 
-        if (!csvFields || !requiredFields.every(field => csvFields.includes(field))) {
-          reject(`Missing required fields for type ${type}`);
+        if (!requiredFields.every(f => fields.includes(f))) {
+          reject(new Error(`Missing required fields for type ${type}`));
           return;
         }
 
-        let data: T[];
         try {
+          let data: T[];
+
           if (type === 'Evaluation') {
-            data = (results.data as any[]).map((row: any) => ({
+            data = (results.data as any[]).map(row => ({
               course: row.course || '',
               title: row.title || '',
               type: row.type || '',
@@ -68,13 +59,14 @@ export const parseCsv = async <T>(
           } else {
             data = results.data as T[];
           }
+
           resolve(data);
         } catch (error) {
-          reject('Failed to parse CSV.');
+          reject(new Error('Failed to parse CSV.'));
         }
       },
       error: (err) => {
-        reject(err.message);
+        reject(new Error(err.message));
       }
     });
   });
