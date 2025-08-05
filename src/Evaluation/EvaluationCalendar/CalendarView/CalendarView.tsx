@@ -4,8 +4,9 @@ import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
-import Button from "../../../Components/Button/Button"; 
+import Button from "../../../Components/Button/Button";
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
+import { EvaluationConflictDetector } from "../../EvaluationService/EvaluationConflictDetector";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -39,6 +40,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     };
     return filterEvaluations(evaluations, filters);
   }, [evaluations, selectedInstructor, selectedType, selectedDate]);
+
+  const conflicts = useMemo(() => {
+    return EvaluationConflictDetector.detectConflicts(filteredEvaluations);
+  }, [filteredEvaluations]);
 
   const { groupedByDate, sortedDates } = useMemo(() => {
     const grouped: Record<string, Evaluation[]> = {};
@@ -81,28 +86,20 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           label="Monthly"
           disabled={view === "monthly"}
         />
-
-      <div className="space-y-4">
-        {sortedDates.map((isoDate) => {
-          const displayDate = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "America/Toronto",
-          }).format(new Date(isoDate));
-
-          return (
-            <CalendarDayCard
-              key={isoDate}
-              date={displayDate}
-              evaluations={groupedByDate[isoDate]}
-            />
-          );
-        })}
-        </div>
-
       </div>
+
+      {conflicts.length > 0 && (
+        <div className="bg-red-100 text-red-800 p-3 rounded shadow text-sm">
+          Conflicts detected on these dates with multiple heavy-weight evaluations:
+          <ul className="list-disc list-inside mt-2">
+            {conflicts.map((c) => (
+              <li key={c.date}>
+                {new Date(c.date).toLocaleDateString()} ({c.evaluations.length} items)
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {showNoEvaluationsMessage ? (
         <p className="text-center text-gray-500 italic">
