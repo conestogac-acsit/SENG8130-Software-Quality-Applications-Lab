@@ -88,10 +88,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         />
       </div>
 
-      {/* Conflict warning block */}
       {conflicts.length > 0 && (
         <div className="bg-red-100 text-red-800 p-3 rounded shadow text-sm">
-          ⚠️ Conflicts detected on these dates with multiple heavy-weight evaluations:
+          Conflicts detected on these dates with multiple heavy-weight evaluations:
           <ul className="list-disc list-inside mt-2">
             {conflicts.map((c) => (
               <li key={c.date}>
