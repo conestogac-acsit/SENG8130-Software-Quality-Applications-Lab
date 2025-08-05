@@ -19,20 +19,21 @@ describe("SectionList Component", () => {
     expect(screen.getByText("No sections available")).toBeInTheDocument();
   });
 
-  test("does not render any section rows", () => {
+  test("renders two rows when no sections exist", () => {
     render(<SectionList />);
-    const sectionRows = screen.queryAllByRole("row");
-    expect(sectionRows.length).toBe(2); // 1 for header, 1 for empty row
+    const sectionRows = screen.getAllByRole("row");
+    expect(sectionRows.length).toBe(2);
   });
 
   test("renders the search input field", () => {
     render(<SectionList />);
-    expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
+    const input = screen.getByRole("textbox");
+    expect(input).toBeInTheDocument();
   });
 
   test("updates search input value on change", () => {
     render(<SectionList />);
-    const input = screen.getByPlaceholderText("Search...");
+    const input = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "test" } });
     expect(input).toHaveValue("test");
   });

@@ -13,8 +13,8 @@ const SectionList: React.FC = () => {
       <h1 className="text-2xl font-semibold mb-6">Section List</h1>
       <div className="mb-4">
         <input
+          id="section-search"
           type="text"
-          placeholder="Search..."
           className="border rounded px-3 py-1 w-full max-w-md"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
