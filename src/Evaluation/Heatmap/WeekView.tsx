@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { Evaluation } from '../EvaluationService';
+import EvaluationTypeBreakdown  from './EvaluationTypeBreakdown';
+import { getEvaluationCountsByType } from './getEvaluationCountsByType';
 
 type WeekViewProps = {
   year: number;
@@ -25,24 +27,38 @@ function getMonthWeekRange(year: number, month: number): { start: Date; end: Dat
 const WeekView: React.FC<WeekViewProps> = ({ year, month, evaluations }) => {
   const weeklyData = useMemo(() => {
     const { start, end } = getMonthWeekRange(year, month);
-    const weeks: { weekLabel: string; count: number }[] = [];
+    const weeks: {
+      weekLabel: string;
+      weekCount: number;
+      typeCounts: Record<Evaluation["type"], number>;
+    }[] = [];
 
     let cursor = new Date(start);
     while (cursor <= end) {
       const weekStart = new Date(cursor);
       const weekEnd = new Date(cursor);
       weekEnd.setDate(weekStart.getDate() + 6);
+      weekEnd.setHours(23, 59, 59, 999);
 
       const count = evaluations.filter((e) => {
         const d = e.dueDate;
         return d >= weekStart && d <= weekEnd;
       }).length;
 
+      const weekEvaluations = evaluations.filter((e) => {
+        const d = e.dueDate;
+        return d >= weekStart && d <= weekEnd;
+      });
+
+      const typeCounts = getEvaluationCountsByType(weekEvaluations);
+
+
       const label = `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
 
       weeks.push({
         weekLabel: label,
-        count,
+        weekCount: weekEvaluations.length,
+        typeCounts,
       });
 
       cursor.setDate(cursor.getDate() + 7);
@@ -53,17 +69,15 @@ const WeekView: React.FC<WeekViewProps> = ({ year, month, evaluations }) => {
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {weeklyData.map(({ weekLabel, count }) => (
-        <div
-          key={weekLabel}
-          className={`rounded p-4 text-center shadow-sm ${
-            count ? 'text-white' : 'text-gray-500'
-          }`}
-        >
-          <div className="font-semibold">{weekLabel}</div>
-          <div className="text-sm mt-1">{count} evaluations</div>
+    {weeklyData.map(({ weekLabel, weekCount, typeCounts }) => (
+      <div key={weekLabel} className="rounded p-4 text-center shadow-sm border border-gray-200">
+        <div className="font-semibold mb-2">{weekLabel}</div>
+        <div className="text-sm font-bold	mb-2">
+          {weekCount} evaluations
         </div>
-      ))}
+        <EvaluationTypeBreakdown typeCounts={typeCounts} />
+      </div>
+    ))}
     </div>
   );
 };
