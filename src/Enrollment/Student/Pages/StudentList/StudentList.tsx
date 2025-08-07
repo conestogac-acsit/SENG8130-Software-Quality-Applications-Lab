@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getStudents } from '../../studentData/paginateStudents';
+import { Student } from "../../studentData";
+import StudentEmail from "../StudentEmail/StudentEmail";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -13,6 +15,8 @@ const StudentList: React.FC = () => {
 
   const pageFromUrl = parseInt(query.get("page") || "1", 10);
   const [page, setPage] = useState<number>(isNaN(pageFromUrl) ? 1 : pageFromUrl);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const pageSize = 10;
 
   const { data: students, total, totalPages } = getStudents(page, pageSize);
@@ -34,7 +38,15 @@ const StudentList: React.FC = () => {
     setPage(newPage);
     updatePageInUrl(newPage);
   }, [page, totalPages, updatePageInUrl]);
+const handleEmailClick = (student: Student) => {
+    setSelectedStudent(student);
+    setShowEmailModal(true);
+  };
 
+  const handleCloseModal = () => {
+    setShowEmailModal(false);
+    setSelectedStudent(null);
+  };
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -72,7 +84,11 @@ const StudentList: React.FC = () => {
                 <td className="px-4 py-3">{student.section}</td>
                 <td className="px-4 py-3">{student.group}</td>
                 <td className="px-4 py-3 text-right">
-                  <button className="text-blue-600"> ✉️ </button>
+                 <button onClick={() => handleEmailClick(student)}
+                    className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
+                    title={`Email ${student.name}`}>
+                    ✉️
+                  </button>
                 </td>
               </tr>
             ))}
@@ -101,6 +117,15 @@ const StudentList: React.FC = () => {
           </button>
         </div>
       </div>
+      {showEmailModal && selectedStudent && (
+        <StudentEmail
+          student={selectedStudent}
+          onClose={handleCloseModal}
+          onComposeEmail={(mailtoUrl: string) => {
+            window.location.href = mailtoUrl;
+          }}
+        />
+      )}
     </div>
   );
 };
