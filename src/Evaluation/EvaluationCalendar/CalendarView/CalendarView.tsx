@@ -4,8 +4,10 @@ import { useCalendarNavigation } from "../useCalendarNavigation";
 import CalendarDayCard from "../../../Components/CalendarDayCard";
 import MonthlyView from "../MonthlyView/MonthlyView";
 import { Evaluation } from "../../EvaluationService";
-import Button from "../../../Components/Button/Button"; 
+import Button from "../../../Components/Button/Button";
 import { filterEvaluations, FilterOptions } from "./FilterEvaluation";
+import { buildEvaluationReport } from "../PdfExport/reportBuilder";
+import { EvaluationReportTemplate } from "../PdfExport/PdfTemplates";
 
 interface CalendarViewProps {
   evaluations: Evaluation[];
@@ -45,7 +47,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     filteredEvaluations.forEach((ev) => {
       const dateKey = ev.dueDate.toISOString().split("T")[0];
-
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(ev);
     });
@@ -57,6 +58,27 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
   const showNoEvaluationsMessage =
     view === "weekly" && sortedDates.length === 0;
+
+  // 🔍 Extract evaluations visible in the current view
+  const visibleEvaluations = useMemo(() => {
+    if (view === "weekly") {
+      const start = new Date(startDate);
+      const end = new Date(startDate);
+      end.setDate(end.getDate() + 6);
+      return filteredEvaluations.filter((ev) => {
+        const d = new Date(ev.dueDate);
+        return d >= start && d <= end;
+      });
+    } else {
+      return filteredEvaluations.filter((ev) => {
+        const d = new Date(ev.dueDate);
+        return d.getFullYear() === year && d.getMonth() === month;
+      });
+    }
+  }, [filteredEvaluations, startDate, view, year, month]);
+
+  // 📄 Prepare report (used internally or for export later)
+  const report = useMemo(() => buildEvaluationReport(visibleEvaluations), [visibleEvaluations]);
 
   return (
     <div className="space-y-4">
@@ -70,6 +92,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         }
       />
 
+      {/* View toggles */}
       <div className="flex justify-center gap-4">
         <Button
           onClick={() => setView("weekly")}
@@ -81,29 +104,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           label="Monthly"
           disabled={view === "monthly"}
         />
-
-      <div className="space-y-4">
-        {sortedDates.map((isoDate) => {
-          const displayDate = new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "America/Toronto",
-          }).format(new Date(isoDate));
-
-          return (
-            <CalendarDayCard
-              key={isoDate}
-              date={displayDate}
-              evaluations={groupedByDate[isoDate]}
-            />
-          );
-        })}
-        </div>
-
       </div>
 
+      {/* Calendar Content */}
       {showNoEvaluationsMessage ? (
         <p className="text-center text-gray-500 italic">
           No evaluations scheduled
@@ -119,8 +122,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           ))}
         </div>
       ) : (
-        <MonthlyView evaluations={evaluations} year={year} month={month} />
+        <MonthlyView evaluations={filteredEvaluations} year={year} month={month} />
       )}
+
+      {/* Hidden Report Render Target for PDF Export */}
+      <div id="calendar-pdf" style={{ display: "none" }}>
+        <EvaluationReportTemplate report={report} />
+      </div>
     </div>
   );
 };
