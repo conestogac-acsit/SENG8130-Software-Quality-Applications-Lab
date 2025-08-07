@@ -3,15 +3,22 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import EnrollmentActionSection from './EnrollmentActionSection';
 
 describe('EnrollmentActionSection', () => {
-  it('renders heading and button', () => {
+  it('renders the heading and the button', () => {
     render(<EnrollmentActionSection />);
-    expect(screen.getByText('Enrollment Action')).toBeInTheDocument();
-    expect(screen.getByText('Enroll in GitHub')).toBeInTheDocument();
+    const heading = screen.getByText('Enrollment Action');
+    const button = screen.getByText('Enroll in GitHub');
+
+    expect(heading).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
   });
 
-  it('displays message on button click', () => {
+  it('displays a message when the button is clicked', () => {
     render(<EnrollmentActionSection />);
-    fireEvent.click(screen.getByText('Enroll in GitHub'));
-    expect(screen.getByText('Enrollment triggered')).toBeInTheDocument();
+    const button = screen.getByText('Enroll in GitHub');
+
+    fireEvent.click(button);
+
+    const message = screen.getByText('Enrollment triggered');
+    expect(message).toBeInTheDocument();
   });
 });
