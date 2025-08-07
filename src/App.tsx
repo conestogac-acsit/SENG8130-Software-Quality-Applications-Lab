@@ -1,9 +1,11 @@
 import React from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
-import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
+const ModuleNotFound = lazy(() => import('./Components/ModuleNotFound'));
+
 function App() {
   return (
     <BrowserRouter>
@@ -11,7 +13,11 @@ function App() {
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="*" element={<ModuleNotFound />} />
+        <Route path="*" element={
+        <Suspense fallback={<div>Loading...</div>}>
+          <ModuleNotFound />
+        </Suspense>
+      } />
       </Routes>
     </BrowserRouter>
   );
