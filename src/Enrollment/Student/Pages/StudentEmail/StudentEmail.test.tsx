@@ -59,4 +59,11 @@ describe("StudentEmail Component", () => {
     fireEvent.click(button);
     expect(screen.getByText("Please enter email content before composing.")).toBeInTheDocument();
   });
+  it("calls onClose when Cancel button is clicked", () => {
+    const mockClose = jest.fn();
+    render(<StudentEmail student={testStudent} onComposeEmail={() => {}} onClose={mockClose} />);
+    const cancelButton = screen.getByText("Cancel");
+    fireEvent.click(cancelButton);
+    expect(mockClose).toHaveBeenCalled();
+  });
 });
