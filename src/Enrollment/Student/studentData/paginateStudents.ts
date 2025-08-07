@@ -1,12 +1,17 @@
-import { getAllStudents, Student, StudentDataGetter} from ".";
+import { Student } from './studentTypes';
+import { getAllStudents } from './loadAllStudents';
+import { LocalStorage } from '../../../localStorageService';
+
 
 export function getStudents(
-  studentGetter: StudentDataGetter,
   page: number = 1,
   pageSize: number = 10
 ): { data: Student[]; total: number; totalPages: number } {
-  const students = getAllStudents(studentGetter);
-  if (!students || !Array.isArray(students)) return { data: [], total: 0, totalPages: 0 };
+
+  const storage = new LocalStorage(); 
+  const students = getAllStudents(() => {
+    return storage.load<Student[]>("students_list_key") || [];  
+  });
 
   const total = students.length;
   const totalPages = Math.ceil(total / pageSize);
