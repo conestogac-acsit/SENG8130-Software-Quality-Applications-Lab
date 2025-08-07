@@ -76,3 +76,12 @@ describe("EvaluationCard", () => {
     fireEvent.click(backButton);
   });
 });
+
+test("renders evaluation heatmap card", () => {
+  render(
+    <MemoryRouter>
+      <EvaluationCard />
+    </MemoryRouter>
+  );
+  expect(screen.getByText(/Evaluation Heatmap/i)).toBeInTheDocument();
+});
