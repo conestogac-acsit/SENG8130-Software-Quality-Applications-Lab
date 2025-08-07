@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, dialog } = require('electron');
+const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const path = require('path');
 
 const isDev = !app.isPackaged;
@@ -14,6 +14,21 @@ function createWindow() {
     webPreferences: {
       contextIsolation: true,
     },
+  });
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('http')) {
+      shell.openExternal(url);
+      return { action: 'deny' };
+    }
+    return { action: 'allow' };
+  });
+
+  win.webContents.on('will-navigate', (event, url) => {
+    if (url.startsWith('http')) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
   });
 
   if (isDev) {
