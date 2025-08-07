@@ -1,4 +1,3 @@
-// StudentList.tsx
 import React, { useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getStudents } from '../../studentData/paginateStudents';
