@@ -4,6 +4,8 @@ import logo from './assets/logo.png';
 import ModuleNotFound from './Components/ModuleNotFound'; 
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
+import FeedbackForm from './FeedbackForm/FeedbackForm'; 
+
 function App() {
   return (
     <BrowserRouter>
@@ -13,6 +15,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
       </Routes>
+
+      <FeedbackForm />
     </BrowserRouter>
   );
 }
@@ -36,4 +40,5 @@ function HomePage() {
     </div>
   );
 }
+
 export default App;
