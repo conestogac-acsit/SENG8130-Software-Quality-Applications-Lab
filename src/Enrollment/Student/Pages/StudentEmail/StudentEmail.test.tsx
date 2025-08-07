@@ -23,4 +23,9 @@ describe("StudentEmail Component", () => {
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("Test student for verifying email functionality.")).toBeInTheDocument();
   });
+  it("renders textarea and button", () => {
+    render(<StudentEmail student={testStudent} onComposeEmail={() => {}} onClose={() => {}} />);
+    expect(screen.getByPlaceholderText("Write your message here...")).toBeInTheDocument();
+    expect(screen.getByText("Compose Email")).toBeInTheDocument();
+  });
 });
