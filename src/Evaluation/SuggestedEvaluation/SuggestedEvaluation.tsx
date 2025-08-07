@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Evaluation } from '../EvaluationService';
+import TimeSavedStats from './TimeSavedStats';
 
 interface Props {
   evaluations: Evaluation[];
@@ -46,21 +47,25 @@ const SuggestedEvaluation: React.FC<Props> = ({ evaluations }) => {
 
   return (
     <div>
-      <h4 className="text-lg font-semibold mb-2"> Suggested Evaluation Window</h4>
-      <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
+      <h4 className="text-lg font-semibold mb-2">📅 Suggested Evaluation Window</h4>
+      <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 mb-4">
         {suggestions.length > 0 ? (
           suggestions.map((sugg, i) => <li key={i}>{sugg}</li>)
         ) : (
           <li>No suggestions available</li>
         )}
       </ul>
+
+      {/* ⏳ Time Saved Stats shown below suggestions */}
+      <TimeSavedStats evaluations={evaluations} />
     </div>
   );
 };
 
 export function formatWeekRange(date: Date): string {
-  const day = date.getDay(); 
-  const daysToMonday = (day + 6) % 7; 
+  const day = date.getDay();
+  const daysToMonday = (day + 6) % 7;
+
   const monday = new Date(date);
   monday.setDate(date.getDate() - daysToMonday);
 

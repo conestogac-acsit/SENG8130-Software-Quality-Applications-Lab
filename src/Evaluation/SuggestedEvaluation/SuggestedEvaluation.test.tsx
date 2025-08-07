@@ -1,6 +1,6 @@
 import React from 'react';
 import SuggestedEvaluation from './SuggestedEvaluation';
-import { Evaluation } from '../EvaluationService/EvaluationService';
+import { Evaluation } from '../EvaluationService';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
@@ -17,7 +17,20 @@ describe('SuggestedEvaluation Component', () => {
     };
   };
 
-  test(' renders fallback when no high or low weeks exist (evenly spaced out)', () => {
+  test('renders suggestions between high and low load weeks', () => {
+    const mockEvaluations: Evaluation[] = [
+      createEval('Eval 1', '2024-01-15'),
+      createEval('Eval 2', '2024-01-15'),
+      createEval('Eval 3', '2024-01-15'),
+      createEval('Eval 4', '2024-03-04'),
+    ];
+
+    render(<SuggestedEvaluation evaluations={mockEvaluations} />);
+    expect(screen.getByText(/Suggested Evaluation Window/i)).toBeInTheDocument();
+    expect(screen.getByRole('listitem')).toHaveTextContent('Consider moving one evaluation');
+  });
+
+  test('renders fallback when no suggestions are available', () => {
     const evenEvaluations: Evaluation[] = [
       createEval('Eval 1', '2024-01-08'),
       createEval('Eval 2', '2024-01-15'),
@@ -28,7 +41,7 @@ describe('SuggestedEvaluation Component', () => {
     expect(screen.getByText(/No suggestions available/i)).toBeInTheDocument();
   });
 
-  test(' renders suggestion when there are multiple high load weeks', () => {
+  test('handles multiple high load weeks', () => {
     const mockEvaluations: Evaluation[] = [
       createEval('Eval 1', '2024-01-15'),
       createEval('Eval 2', '2024-01-15'),
@@ -42,7 +55,7 @@ describe('SuggestedEvaluation Component', () => {
     expect(listItems.length).toBeGreaterThanOrEqual(1);
   });
 
-  test(' renders suggestion when there are multiple low load weeks', () => {
+  test('handles multiple low load weeks', () => {
     const mockEvaluations: Evaluation[] = [
       createEval('Eval 1', '2024-01-15'),
       createEval('Eval 2', '2024-01-15'),
@@ -55,7 +68,7 @@ describe('SuggestedEvaluation Component', () => {
     expect(screen.getByText(/Consider moving one evaluation/i)).toBeInTheDocument();
   });
 
-  test(' handles multiple high and multiple low load weeks', () => {
+  test('handles multiple high and low weeks', () => {
     const mockEvaluations: Evaluation[] = [
       createEval('Eval 1', '2024-01-15'),
       createEval('Eval 2', '2024-01-15'),
@@ -74,16 +87,17 @@ describe('SuggestedEvaluation Component', () => {
     expect(items.length).toBeGreaterThanOrEqual(2);
   });
 
-  test(' renders generic suggestion between high and low load weeks', () => {
-    const mockEvaluations: Evaluation[] = [
-      createEval('Eval 1', '2024-01-15'),
-      createEval('Eval 2', '2024-01-15'),
-      createEval('Eval 3', '2024-01-15'),
-      createEval('Eval 4', '2024-03-04'),
-    ];
+  test('renders TimeSavedStats component', () => {
+  const mockEvaluations: Evaluation[] = [
+    createEval('Eval 1', '2024-01-15'),
+    createEval('Eval 2', '2024-01-15'),
+    createEval('Eval 3', '2024-01-15'),
+    createEval('Eval 4', '2024-02-26'),
+  ];
 
-    render(<SuggestedEvaluation evaluations={mockEvaluations} />);
-    expect(screen.getByText(/Suggested Evaluation Window/i)).toBeInTheDocument();
-    expect(screen.getByRole('listitem')).toHaveTextContent('Consider moving one evaluation');
-  });
+  render(<SuggestedEvaluation evaluations={mockEvaluations} />);
+  expect(
+    screen.getByText((content) => content.includes('Estimated Time Saved'))
+  ).toBeInTheDocument();
+});
 });
