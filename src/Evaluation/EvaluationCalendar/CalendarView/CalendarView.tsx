@@ -90,6 +90,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     container.innerHTML = "";
     const element = <EvaluationReportTemplate report={report} />;
+    // Assumes DOM is already rendered via React; otherwise use ReactDOM.render()
     setTimeout(() => {
       exportEvaluationReportToPDF("calendar-pdf", filename);
     }, 100);
@@ -162,6 +163,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         />
       </div>
 
+      {/* Export buttons */}
       <CalendarPdfExportButtons
         onExportDaily={handleExportDaily}
         onExportWeekly={handleExportWeekly}
@@ -169,6 +171,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         onExportCourse={handleExportCourse}
       />
 
+      {/* Calendar Content */}
       {showNoEvaluationsMessage ? (
         <p className="text-center text-gray-500 italic">
           No evaluations scheduled
@@ -191,6 +194,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         />
       )}
 
+      {/* Hidden Report Render Target for PDF Export */}
       <div id="calendar-pdf" style={{ display: "none" }}>
         <EvaluationReportTemplate report={report} />
       </div>
