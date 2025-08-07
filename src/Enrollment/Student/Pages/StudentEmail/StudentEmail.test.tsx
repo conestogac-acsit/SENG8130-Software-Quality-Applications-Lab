@@ -53,4 +53,10 @@ describe("StudentEmail Component", () => {
     expect(capturedUrl).toContain("subject=Message%20for%20John%20Doe");
     expect(capturedUrl).toContain("body=Hello%20student!");
   });
+  it("displays an error message when the email content is empty", () => {
+    render(<StudentEmail student={testStudent} onComposeEmail={() => {}} onClose={() => {}} />);
+    const button = screen.getByText("Compose Email");
+    fireEvent.click(button);
+    expect(screen.getByText("Please enter email content before composing.")).toBeInTheDocument();
+  });
 });
