@@ -28,4 +28,10 @@ describe("StudentEmail Component", () => {
     expect(screen.getByPlaceholderText("Write your message here...")).toBeInTheDocument();
     expect(screen.getByText("Compose Email")).toBeInTheDocument();
   });
+  it("updates textarea value when typing", () => {
+    render(<StudentEmail student={testStudent} onComposeEmail={() => {}} onClose={() => {}} />);
+    const textarea = screen.getByPlaceholderText("Write your message here...") as HTMLTextAreaElement;
+    fireEvent.change(textarea, { target: { value: "Hello!" } });
+    expect(textarea.value).toBe("Hello!");
+  });
 });
