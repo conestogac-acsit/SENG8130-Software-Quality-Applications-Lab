@@ -1,14 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.png';
-import ModuleNotFound from './Components/ModuleNotFound'; 
+import ModuleNotFound from './Components/ModuleNotFound';
 import EnrollmentDashboard from './Enrollment/Dashboard/Dashboard';
 import EvaluationCard from '../src/Dashboard/EvaluationCard';
+import StudentDetailsByID from './Enrollment/Student/Pages/StudentEmail/StudentDetailsByID';
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/enrollment" element={<EnrollmentDashboard />} />
+        <Route path="/enrollment/students/:id" element={<StudentDetailsByID />} />
         <Route path="/evaluation" element={<EvaluationCard />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<ModuleNotFound />} />
