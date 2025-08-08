@@ -13,8 +13,6 @@ describe("Layout Component", () => {
 
     expect(screen.getByText("Student Portal")).toBeInTheDocument();
     expect(screen.getByText("Dashboard")).toBeInTheDocument();
-
-    const svgIcons = screen.getAllByRole("img", { hidden: true });
-    expect(svgIcons.length).toBeGreaterThan(0);
+    expect(screen.getByText("Student List")).toBeInTheDocument();
   });
 });

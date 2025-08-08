@@ -1,5 +1,4 @@
-import { Student } from ".";
-
+import { Student } from "./studentTypes";
 export type StudentDataGetter = () => Student[];
 
 export const getAllStudents = (studentGetter: StudentDataGetter): Student[] => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Users } from "lucide-react";
 
 const Layout: React.FC = () => {
   const location = useLocation();
@@ -8,12 +8,12 @@ const Layout: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/enrollment", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/enrollment/students", label: "Student List", icon: Users },
   ];
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
       <aside
         className="fixed top-0 left-0 h-full bg-white shadow-md z-50 transform transition-transform duration-300 ease-in-out
         -translate-x-full md:translate-x-0 md:static md:w-64">
