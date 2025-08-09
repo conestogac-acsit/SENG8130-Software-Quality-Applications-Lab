@@ -1,1 +1,1 @@
-export {WorkloadAccuracyMeter} from "./WorkloadAccuracyMeter"
+export { default as SuggestedEvaluation } from "./SuggestedEvaluation"
