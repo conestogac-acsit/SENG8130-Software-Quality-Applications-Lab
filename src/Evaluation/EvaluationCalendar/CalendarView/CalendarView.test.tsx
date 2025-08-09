@@ -92,4 +92,23 @@ describe("CalendarView", () => {
     fireEvent.click(weeklyButton);
     expect(screen.getAllByText(/Assignment 1/i).length).toBeGreaterThanOrEqual(1);
   });
+
+  it("renders all PDF export buttons", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    expect(screen.getByText("Export Daily PDF")).toBeInTheDocument();
+    expect(screen.getByText("Export Weekly PDF")).toBeInTheDocument();
+    expect(screen.getByText("Export Monthly PDF")).toBeInTheDocument();
+    expect(screen.getByText("Export Entire Course PDF")).toBeInTheDocument();
+  });
+
+  it("clicking PDF buttons does not crash", () => {
+    render(<CalendarView evaluations={mockEvaluations} />);
+    
+    fireEvent.click(screen.getByText("Export Daily PDF"));
+    fireEvent.click(screen.getByText("Export Weekly PDF"));
+    fireEvent.click(screen.getByText("Export Monthly PDF"));
+    fireEvent.click(screen.getByText("Export Entire Course PDF"));
+
+    expect(true).toBe(true);
+  });
 });
