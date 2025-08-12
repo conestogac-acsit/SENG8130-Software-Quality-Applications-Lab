@@ -6,6 +6,7 @@ import type { StorageService } from "../localStorageService";
 import { Evaluation } from "../Evaluation/EvaluationService/EvaluationService";
 import { Heatmap } from "../Evaluation/Heatmap";
 import SuggestedEvaluation from "../Evaluation/SuggestedEvaluation/SuggestedEvaluation";
+import { WorkloadAccuracyMeter } from "../Evaluation/WorkloadAccuracyMeter"; 
 
 const EvaluationCard = () => {
   const navigate = useNavigate();
@@ -35,6 +36,10 @@ const EvaluationCard = () => {
 
       <div className="mb-6">
         <SuggestedEvaluation evaluations={evaluations} />
+      </div>
+
+       <div className="mb-6">
+        <WorkloadAccuracyMeter evaluations={evaluations} />
       </div>
 
       <div className="cursor-pointer hover:bg-green-100 transition">
